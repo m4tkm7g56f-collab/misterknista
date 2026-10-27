@@ -21,7 +21,7 @@ Voraussetzungen:
 In einer Claude-Code-Session:
 
 ```text
-/plugin marketplace add OWNER/REPO
+/plugin marketplace add m4tkm7g56f-collab/misterknista
 /plugin install ai-vendor-assessment@ai-vendor-assessment
 /plugin install playwright@claude-plugins-official
 ```
@@ -29,7 +29,7 @@ In einer Claude-Code-Session:
 Oder in der Shell:
 
 ```bash
-claude plugin marketplace add OWNER/REPO
+claude plugin marketplace add m4tkm7g56f-collab/misterknista
 ```
 
 ```bash
