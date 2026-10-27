@@ -33,6 +33,9 @@ Typische Fundorte je Kriterium. Hinweise für die Suche, kein Beleg. Was hier st
 - DPA bzw. AVV als Webseite oder PDF
 - Nutzungsbedingungen (Einbeziehung per Click-Through)
 - Hinweise, dass das DPA nur auf Anfrage oder nur in bestimmten Tarifen gilt
+- Fassung: Titel, Versionsnummer oder „Last updated“ am Dokumentanfang oder -ende
+- Einbeziehung von Standardvertragsklauseln: Abschnitte „Standard Contractual Clauses“, „SCCs“, „Commission Decision 2021/915“ bzw. „2021/914“, „Module Two“, „Module Three“, Vorrangklausel („in the event of conflict, the SCCs shall prevail“)
+- Pflichtmerkmale nach Art. 28 Abs. 3, typische Abschnittstitel: „Scope“ bzw. „Description of Processing“ (Anhang, GRUND), „Instructions“ (A), „Confidentiality“ bzw. „Personnel“ (B), „Security Measures“ bzw. „Technical and Organizational Measures“ (C), „Sub-processors“ (D), „Data Subject Requests“ (E), „Security Incident“ bzw. „Personal Data Breach“ sowie „Data Protection Impact Assessment“ (F), „Deletion or Return“ bzw. „Termination“ (G), „Audits“ bzw. „Audit Rights“ (H), „Unlawful Instructions“ bzw. Hinweis im Abschnitt „Instructions“ (UA2)
 
 ## AUTH
 

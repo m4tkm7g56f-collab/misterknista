@@ -16,6 +16,7 @@ Lies vollständig:
 
 - `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml`: einzige Bewertungsgrundlage
 - `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md`: Report-Format
+- `${CLAUDE_PLUGIN_ROOT}/references/dsgvo-art28.md`: einzige Grundlage für rechtliche Aussagen zum Kriterium AVV
 - die Belegliste aus dem Auftrag
 
 ## Regeln
@@ -39,6 +40,7 @@ Für jedes Kriterium aus dem Schema:
 5. Ermessen: Abweichung um höchstens eine Stufe, nur mit konkreter Begründung, unter Beachtung von `ermessen.nicht_zulaessig`. Im Zweifel gilt der Regelstatus.
 6. Für INC: Ordne jeden Fund einem der `begriffe` zu und begründe die Zuordnung.
 7. Praxiseinordnung ergänzen, wenn ein `praxis_hinweis` zutrifft.
+8. Für AVV: Bestimme je Pflichtmerkmal den Status nach `pflichtmerkmale.status_je_merkmal` und den Regeln `belegt_auch`, `eingeschraenkt`, `ausgeschlossen`. Ist der Weg über die Standardvertragsklauseln belegt, wende `pflichtmerkmale.standardvertragsklauseln` an. Setze in den Befund die Tabelle `Merkmal | Status | Q-Nummer | Hinweis` und nenne Fassung und Datum des DPA. Rechtliche Aussagen (Absatz, Buchstabe, Beschluss) nur mit Fundstelle aus `references/dsgvo-art28.md`.
 
 ### Gesamturteil (Ebene 2, abhängig vom Schutzbedarf)
 
@@ -65,6 +67,7 @@ Enthält der Auftrag einen Prüfbericht: Korrigiere jede Aussage, die dort als �
 - [ ] Jede Aussage hat eine Q-Nummer aus der Belegliste, als klickbarer Link.
 - [ ] Keine Q-Nummer im Report fehlt in der Belegliste.
 - [ ] Kein Status Grün ohne B- oder A-Quelle.
+- [ ] AVV: Merkmal-Tabelle vollständig, jedes Merkmal mit Status und Q-Nummer oder „nicht gefunden“.
 - [ ] Jede Abweichung von der Regel ist begründet und beträgt höchstens eine Stufe.
 - [ ] Gesamtampel nachvollziehbar aus den Schutzbedarfsregeln hergeleitet.
 - [ ] Alle Daten im Format DD.MM.YYYY, Haftungshinweis vorhanden.

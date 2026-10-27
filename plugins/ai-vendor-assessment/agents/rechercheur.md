@@ -36,7 +36,8 @@ Lies:
 2. Arbeite die `prueffragen` aller Kriterien ab. Suche zuerst auf Domains des Anbieters, dann Primärnachweise (Register, Vertragsdokumente), dann Drittquellen.
 3. Für INC arbeite die `quellen_reihenfolge` vollständig ab (Anbieter, CISA-KEV-Feed, NVD, Presse) und protokolliere jede Suchanfrage und jede durchsuchte Quelle. Vermerke je Fund, welchem der `begriffe` er nach dem Wortlaut der Quelle entspricht, ohne ihn zu bewerten.
 4. Erfasse auch Fundstellen zu vertraglichen Ausschlüssen von Datenarten (AVV, Nutzungsbedingungen, KI-Zusatzbedingungen) und zu Tarifunterschieden.
-5. Erfasse ausdrücklich, wonach du gesucht und was du nicht gefunden hast. Fehlende Funde sind ein Ergebnis.
+5. Für AVV: Halte Titel, Version oder Datum des DPA fest. Prüfe zuerst, ob es Standardvertragsklauseln einbezieht (`pflichtmerkmale.standardvertragsklauseln`), und belege das. Erfasse dann je Pflichtmerkmal aus `pflichtmerkmale.liste` eine eigene Zeile, in der Spalte Kriterium als `AVV-<Merkmal-ID>` (z. B. `AVV-H`), mit Abschnitt und wörtlicher Belegstelle. Nicht gefundene Merkmale gehören unter „Nicht gefunden“. Bewerte nicht, ob ein Merkmal eingeschränkt oder ausgeschlossen ist, sondern zitiere den Wortlaut.
+6. Erfasse ausdrücklich, wonach du gesucht und was du nicht gefunden hast. Fehlende Funde sind ein Ergebnis.
 
 ## Ausgabe
 

@@ -1,8 +1,8 @@
 # Bewertungsschema Vendor-Security-Assessment
 # Status: fachlich abgestimmt, in Testläufen erprobt, nicht unabhängig geprüft
 
-schema_version: "0.6"
-stand: "25.10.2026"
+schema_version: "0.7"
+stand: "27.10.2026"
 
 # --- Grundsatz ---------------------------------------------------------------
 # Die Bewertung ist praxisnah, die Belegpflicht nicht verhandelbar:
@@ -205,11 +205,61 @@ kriterien:
   - id: AVV
     kategorie: kern
     name: "Auftragsverarbeitungsvertrag (AVV/DPA)"
+    rechtsgrundlage: "references/dsgvo-art28.md (Art. 28 Abs. 2 bis 4 DSGVO, Durchführungsbeschlüsse (EU) 2021/914 und 2021/915)"
     prueffragen:
       - "Wird eine AVV/ein DPA nach DSGVO angeboten?"
       - "Ist das Dokument öffentlich einsehbar oder nur auf Anfrage?"
-      - "Sind bei Drittlandbezug Standardvertragsklauseln enthalten?"
+      - "Welche Fassung (Titel, Version oder Datum) ist abrufbar?"
+      - "Bezieht das DPA Standardvertragsklauseln der Kommission ein (2021/915 oder 2021/914 Modul 2 oder 3), unverändert und mit Vorrang bei Widerspruch?"
+      - "Sind bei Drittlandbezug Standardvertragsklauseln oder eine andere Übermittlungsgrundlage enthalten?"
+      - "Welche Pflichtmerkmale nach Art. 28 Abs. 3 sind im Dokument enthalten (siehe pflichtmerkmale), mit Abschnitt?"
       - "Schließen AVV/DPA oder Nutzungsbedingungen bestimmte Datenarten aus (z. B. Gesundheitsdaten, Daten Minderjähriger, besondere Kategorien personenbezogener Daten, Zahlungskartendaten)?"
+    dokumentation: "Die Belegliste nennt Titel, Version oder Datum, URL und Abrufdatum des bewerteten DPA. Je Pflichtmerkmal eine eigene Q-Nummer mit Abschnitt und wörtlicher Belegstelle, oder ein Eintrag unter „Nicht gefunden“. Der Befund im Report enthält eine Tabelle Merkmal | Status | Q-Nummer | Hinweis."
+    pflichtmerkmale:   # Art. 28 Abs. 3 DSGVO, Wortlaut in references/dsgvo-art28.md
+      status_je_merkmal:
+        belegt: "Im Dokument enthalten, auch in einer der unter „belegt_auch“ genannten Ausgestaltungen."
+        eingeschraenkt: "Enthalten, aber in einer unter „eingeschraenkt“ genannten Form."
+        nicht_gefunden: "Im abgerufenen Dokument nicht auffindbar. Kein Beleg für einen Mangel."
+        ausgeschlossen: "Das Dokument schließt das Merkmal ausdrücklich aus, mit Zitat."
+      liste:
+        - id: GRUND
+          inhalt: "Gegenstand, Dauer, Art und Zweck der Verarbeitung, Art der Daten, Kategorien betroffener Personen, Pflichten und Rechte des Verantwortlichen (Abs. 3 Unterabs. 1 Satz 1)"
+          belegt_auch: "Angaben in einem Anhang, z. B. „Description of Processing“."
+        - id: A
+          inhalt: "Verarbeitung nur auf dokumentierte Weisung, auch bei Drittlandübermittlung (Buchst. a)"
+          belegt_auch: "Vertrag, Dokumentation und Konfiguration durch den Kunden gelten als Weisung, die Verarbeitung ist darauf beschränkt."
+          ausgeschlossen: "Anbieter behält sich die Verarbeitung von Kundendaten für eigene Zwecke vor."
+        - id: B
+          inhalt: "Vertraulichkeitsverpflichtung der befugten Personen (Buchst. b)"
+        - id: C
+          inhalt: "Maßnahmen nach Art. 32 (Buchst. c)"
+          belegt_auch: "TOMs als Anhang oder per Verweis auf eine öffentliche Sicherheitsdokumentation einbezogen. Bewertet wird nur, dass sie vertraglich einbezogen sind, nicht ihre Angemessenheit."
+        - id: D
+          inhalt: "Bedingungen für weitere Auftragsverarbeiter nach Abs. 2 und 4 (Buchst. d)"
+          belegt_auch: "Allgemeine Genehmigung mit Liste, Vorabinformation über Änderungen und Einspruchsmöglichkeit. Besteht der Einspruch nur aus einem Kündigungsrecht: belegt, mit Hinweis „Auslegungsfrage, siehe references/dsgvo-art28.md Abschnitt 3 Nr. 3“."
+          eingeschraenkt: "Keine Vorabinformation über Änderungen."
+        - id: E
+          inhalt: "Unterstützung bei Anträgen betroffener Personen (Buchst. e)"
+          belegt_auch: "Unterstützung über Funktionen im Produkt."
+        - id: F
+          inhalt: "Unterstützung bei Art. 32 bis 36, einschließlich Meldung von Datenschutzverletzungen (Buchst. f)"
+          belegt_auch: "Meldung „unverzüglich“, „ohne unangemessene Verzögerung“ oder mit fester Frist zugesagt."
+          eingeschraenkt: "Meldung ohne jede Zeitangabe."
+        - id: G
+          inhalt: "Löschung oder Rückgabe nach Vertragsende (Buchst. g)"
+          belegt_auch: "Löschung mit genannter Frist, auch für Backups."
+          eingeschraenkt: "Löschung ohne Frist."
+          ausgeschlossen: "Keine Löschung und keine Rückgabe vorgesehen."
+        - id: H
+          inhalt: "Nachweise und Überprüfungen einschließlich Inspektionen (Buchst. h)"
+          belegt_auch: "Nachweis vorrangig über Zertifikate oder Prüfberichte, Vor-Ort-Prüfung auf begründete Anfrage möglich, auch mit Kosten oder Ankündigungsfrist."
+          eingeschraenkt: "Inspektionen nur für Aufsichtsbehörden oder bestimmte Kunden."
+          ausgeschlossen: "Jede Überprüfung außer Berichten ausgeschlossen."
+        - id: UA2
+          inhalt: "Hinweis an den Verantwortlichen bei rechtswidriger Weisung (Abs. 3 Unterabs. 2)"
+      standardvertragsklauseln:
+        regel: "Bezieht das DPA die Klauseln nach Durchführungsbeschluss (EU) 2021/915 ein, gelten alle Pflichtmerkmale als belegt, mit einer Q-Nummer für die Einbeziehung. Bezieht es die Klauseln nach 2021/914 Modul 2 oder 3 unverändert ein und gibt ihnen bei Widerspruch Vorrang, gelten die Pflichtmerkmale für die Übermittlung als belegt. Ohne Vorrangklausel oder bei Verarbeitung ohne Drittlandbezug: Prüfung je Merkmal."
+        grundlage: "references/dsgvo-art28.md Abschnitt 2 und Abschnitt 3 Nr. 1"
     nutzungsausschluesse:
       erfassen: "Jeder vertragliche Ausschluss von Datenarten wird mit Fundstelle im Befund genannt, unabhängig vom Anwendungsfall."
       wirkung_status: "Kein Einfluss auf den Status des Kriteriums AVV."
@@ -218,12 +268,16 @@ kriterien:
       - "Eigenständige AVV bzw. eigenständiges DPA"
       - "In die Nutzungsbedingungen einbezogenes DPA (Click-Through)"
     ampel:
-      gruen: "AVV/DPA öffentlich einsehbar, DSGVO-Bezug, bei Drittlandbezug mit Übermittlungsgrundlage."
-      gelb: "AVV/DPA nur auf Anfrage oder nur in bestimmten Tarifen."
-      rot: "Anbieter bietet keine AVV/kein DPA an."
+      gruen: "AVV/DPA öffentlich einsehbar, DSGVO-Bezug, bei Drittlandbezug mit Übermittlungsgrundlage, und alle Pflichtmerkmale belegt (einzeln oder über die Standardvertragsklauseln)."
+      gelb: "AVV/DPA nur auf Anfrage oder nur in bestimmten Tarifen (Befund: „inhaltlich nicht geprüft“, offener Punkt: „DPA anfordern und Pflichtmerkmale prüfen“), oder mindestens ein Pflichtmerkmal nicht gefunden oder eingeschränkt, jeweils benannt."
+      rot: "Anbieter bietet keine AVV/kein DPA an, oder mindestens ein Pflichtmerkmal ist ausdrücklich ausgeschlossen (mit Zitat)."
+    auslegung:
+      - "„Nicht gefunden“ ergibt Gelb, nicht Rot: Rot setzt einen belegten Mangel voraus. Ein nicht gefundenes Merkmal kann in einem anderen Dokument stehen."
+      - "Hinweise zu Auslegungsfragen (z. B. Einspruch nur als Kündigungsrecht) stehen im Befund und unter „Offene Punkte“. Sie ändern den Status nicht."
     praxis_hinweise:
       - "Click-Through-DPAs sind bei SaaS-Anbietern üblich, Individualverhandlung meist nur ab Enterprise-Volumen."
-
+      - "Bei Standard-DPAs großer Anbieter sind die Pflichtmerkmale in der Regel enthalten. Fehlt eines, ist das ein Hinweis auf ein ungewöhnliches DPA."
+  
   - id: AUTH
     kategorie: kern
     name: "Authentifizierung und Zugriffskontrolle"

@@ -115,6 +115,8 @@ Das Schema in [`criteria.yaml`](plugins/ai-vendor-assessment/schema/criteria.yam
 
 Rot setzt einen belegten Mangel voraus. Fehlende Informationen ergeben „nicht belegt“, nicht Rot.
 
+Beim Auftragsverarbeitungsvertrag prüft das Schema die zehn Pflichtmerkmale nach Art. 28 Abs. 3 DSGVO einzeln, jeweils mit Fundstelle im Vertrag. Übliche Ausgestaltungen, etwa ein Prüfrecht vorrangig über Zertifikate und Prüfberichte, gelten als erfüllt, solange der Kern gewahrt ist. Bezieht ein DPA die Standardvertragsklauseln der Kommission ein, genügt der Beleg dafür. Rechtsgrundlage und Auslegung stehen in [`references/dsgvo-art28.md`](plugins/ai-vendor-assessment/references/dsgvo-art28.md).
+
 Der AI-Act-Fragebogen in [`ai-act-fragebogen.yaml`](plugins/ai-vendor-assessment/schema/ai-act-fragebogen.yaml) trennt drei Ebenen:
 
 - **Einstufung:** Anwendungsbereich, Rolle, Verbote, Hochrisiko, Transparenz. Jede Antwort mit Fundstelle.
@@ -227,6 +229,7 @@ Was die Zahlen nicht aussagen:
 | ↳ [`agents/`](plugins/ai-vendor-assessment/agents/) | Die sechs Subagents |
 | ↳ [`schema/`](plugins/ai-vendor-assessment/schema/) | Kriterien, Fragebogen, Regeln für das Gesamtbild, Report-Vorlagen |
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
+| ↳ [`references/dsgvo-art28.md`](plugins/ai-vendor-assessment/references/dsgvo-art28.md) | Datierte Referenz zu Art. 28 DSGVO und den Standardvertragsklauseln, Grundlage des Kriteriums AVV |
 | [`evals/`](evals/) | Testfälle, Soll-Werte, Auswertungsskript |
 | [`examples/`](examples/) | Beispielreport mit Prüfberichten und Hinweis zur Auswahl |
 | [`reviews/`](reviews/) | Review-Log mit Befunden externer Prüfungen und Prüfauftrag |
