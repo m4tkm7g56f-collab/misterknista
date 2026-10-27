@@ -5,7 +5,7 @@ argument-hint: '"Beschreibung des Anwendungsfalls" [dialog|test]'
 arguments: [beschreibung, modus]
 disable-model-invocation: true
 allowed-tools: Read
-disallowed-tools: WebSearch WebFetch
+disallowed-tools: WebSearch
 ---
 
 # EU-AI-Act-Ersteinschätzung
@@ -27,14 +27,13 @@ Eingaben:
 
 | Subagent | Aufgabe | Webzugriff |
 |---|---|---|
-| `ai-act-klassifizierer` | Fragebogen auswerten, Report schreiben | nein (technisch) |
 | `pruefer-aktualitaet` | Vor der Einstufung prüfen, ob die Referenz dem neuesten veröffentlichten Rechtsstand entspricht | nur Abruf von zwei festen Abfrage-URLs, keine Rechtsinhalte |
 | `ai-act-klassifizierer` | Fragebogen auswerten, Report schreiben | nein (technisch) |
 | `pruefer-referenz` | Deckung jeder rechtlichen Aussage durch die Referenz prüfen | nein (technisch) |
 
 Im Plugin tragen die Subagents den Präfix des Plugins, z. B. `ai-vendor-assessment:ai-act-klassifizierer`.
 
-Der Hauptagent stuft nicht selbst ein. Er führt den Dialog mit dem Nutzer, beauftragt die Subagents und wartet auf jedes Ergebnis, bevor er die nächste Phase startet. Websuche und Webabruf sind für den Hauptagent dieses Skills zusätzlich gesperrt. Einziger Webzugriff im AI-Act-Teil ist die Aktualitätsprüfung, und sie liefert nur Metadaten, keine Rechtsinhalte.
+Der Hauptagent stuft nicht selbst ein. Er führt den Dialog mit dem Nutzer, beauftragt die Subagents und wartet auf jedes Ergebnis, bevor er die nächste Phase startet. Websuche ist für diesen Skill gesperrt. Webabruf ist nicht gesperrt, weil die Sperre eines Skills auch für die von ihm beauftragten Subagents gilt und die Aktualitätsprüfung den Abruf braucht. Der Hauptagent ruft selbst keine Webseiten ab. Einziger Webzugriff im AI-Act-Teil ist die Aktualitätsprüfung, und sie liefert nur Metadaten, keine Rechtsinhalte. Klassifizierer und Referenz-Prüfer bleiben technisch ohne Webzugriff.
 
 ## Ablauf
 
@@ -62,7 +61,7 @@ Beauftrage den Subagent `ai-act-klassifizierer` mit: Beschreibung (wörtlich), M
 
 1. Beauftrage den Subagent `pruefer-referenz` mit: Pfad des Reports, Pfad der Aktualitätsprüfung, Runde 1, Zielpfad `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/pruefbericht-1.md`.
 2. Bei Befunden mit Handlungsbedarf (`teilweise gedeckt`, `nicht gedeckt`, `nicht ausgewertet`): Korrekturrunde durch den `ai-act-klassifizierer` mit dem Prüfbericht und denselben bestätigten Antworten, dann `pruefer-referenz` Runde 2 (`pruefbericht-2.md`). Keine weitere Runde.
-3. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/ai-act-report-template.md` (feste Tabelle mit Runde 1 und Runde 2, verbliebene Befunde, Links auf die Prüfberichte).
+3. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/ai-act-report-template.md` (feste Tabelle mit Runde 1 und Runde 2, verbliebene Befunde, Links auf die Prüfberichte). Kommentare der Vorlage (`<!-- … -->`) nicht in den Report übernehmen.
 
 ### 6. Ausgabe im Chat
 

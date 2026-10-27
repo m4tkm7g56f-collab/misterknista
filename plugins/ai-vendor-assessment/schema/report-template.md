@@ -89,7 +89,7 @@ Betrachtungszeitraum: {{DD.MM.YYYY}} bis {{DD.MM.YYYY}}
 
 <!-- Wird nach der Prüfung durch den Subagent pruefer vom Skill ergänzt. Format fest, damit evals/ die Prüfbefunde auswerten kann: Zeilen und Spalten nicht umbenennen, keine weiteren einfügen. Runde 2 = „–“, wenn keine Korrekturrunde nötig war. -->
 
-Geprüft durch den Subagent `pruefer` gegen die Belegliste und erneut abgerufene Quellen, Stand {{DD.MM.YYYY}}. Maßgeblich ist die letzte Runde.
+Geprüft am {{DD.MM.YYYY}} durch den Subagent `pruefer` gegen die Belegliste und erneut abgerufene Quellen. Maßgeblich ist die letzte Runde.
 
 | Befund | Runde 1 | Runde 2 |
 |---|---|---|
@@ -106,7 +106,7 @@ Erneut abgerufen: {{n}} tragende Q-Nummern (Runde 1), {{n / –}} (Runde 2).
 
 {{Nummerierte Liste: Kriterium, Q-Nummer, Befund, Begründung in einem Satz. Sonst „Keine“.}}
 
-Prüfberichte: [Runde 1]({{reports/_arbeit/<lauf-id>/pruefbericht-1.md}}), [Runde 2]({{reports/_arbeit/<lauf-id>/pruefbericht-2.md}})
+Prüfberichte: [Runde 1]({{_arbeit/<lauf-id>/pruefbericht-1.md, relativ zum Report}}), [Runde 2]({{_arbeit/<lauf-id>/pruefbericht-2.md, relativ zum Report}})
 
 ## Haftungshinweis
 

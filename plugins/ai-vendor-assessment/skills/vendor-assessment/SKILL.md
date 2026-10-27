@@ -69,7 +69,7 @@ Beauftrage den Subagent `bewerter` mit: Pfad der Belegliste, Schutzbedarf mit He
    - Beauftrage den `bewerter` mit einer Korrekturrunde: zusätzlich Pfad des Prüfberichts.
    - Beauftrage den `pruefer` mit Runde 2, Zielpfad `pruefbericht-2.md`.
    - Keine weitere Runde.
-3. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md` (feste Tabelle mit Runde 1 und Runde 2, verbliebene Befunde mit Handlungsbedarf, Links auf die Prüfberichte). Befunde wörtlich übernehmen, nicht umdeuten.
+3. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md` (feste Tabelle mit Runde 1 und Runde 2, verbliebene Befunde mit Handlungsbedarf, Links auf die Prüfberichte). Befunde wörtlich übernehmen, nicht umdeuten. Kommentare der Vorlage (`<!-- … -->`) nicht in den Report übernehmen.
 
 ### 5. Ausgabe im Chat
 
