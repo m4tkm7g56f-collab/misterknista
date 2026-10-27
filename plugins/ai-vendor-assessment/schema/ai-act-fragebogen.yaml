@@ -1,8 +1,8 @@
 # Fragebogen EU-AI-Act-Klassifizierer
-# Status: fachlich abgestimmt, Testläufe ausstehend
+# Status: fachlich abgestimmt, in Blindtests erprobt (evals/), nicht juristisch geprüft
 # Rechtsgrundlage ausschließlich references/eu-ai-act.md (Abschnittsnummern dort = "ref")
 
-fragebogen_version: "0.7"
+fragebogen_version: "0.8"
 stand: "27.10.2026"
 referenz: "references/eu-ai-act.md"
 referenz_stand: "26.10.2026, ergänzt 27.10.2026"
@@ -258,7 +258,7 @@ bloecke:
             text: "Justiz, Schlichtung, Wahlen"
             beispiele: {ja: "Ein Gericht nutzt ein KI-System, das bei der Anwendung des Rechts auf einen Fall unterstützt.", nein: "Eine Kanzlei nutzt KI zur Terminverwaltung."}
             anhang_iii: "8"
-        wirkung: {ja: "weiter mit D3", alle_nein: "kein Anhang-III-Hochrisiko"}
+        wirkung: {ja: "weiter mit D3 (mindestens ein Bereich ja)", unklar: "hochrisiko_nicht_ausgeschlossen, wenn kein Bereich ja und mindestens einer unklar ist (Klärungsauftrag: Einsatzbereich)", alle_nein: "kein Anhang-III-Hochrisiko"}
       - id: D3
         frage: "Wertet das System personenbezogene Daten automatisch aus, um Menschen zu bewerten oder Vorhersagen über sie zu treffen, etwa zu Arbeitsleistung, wirtschaftlicher Lage, Gesundheit, Vorlieben, Interessen, Zuverlässigkeit, Verhalten oder Aufenthaltsort?"
         hilfe: "Das nennt das Gesetz „Profiling“. Ist das der Fall, bleibt ein System in einem der Bereiche aus D2 immer hochriskant, ohne Ausnahme."

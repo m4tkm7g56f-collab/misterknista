@@ -11,7 +11,7 @@
 #   seit        Fragebogen-Version, ab der dieser Soll-Wert gilt
 
 stand: "27.10.2026"
-fragebogen: "0.6"
+fragebogen: "0.8"   # Fragebogen-Version bei der letzten Durchsicht der Soll-Werte. Gezählt wird je Fall nach „seit“.
 
 ai_act:
   - fall: 1

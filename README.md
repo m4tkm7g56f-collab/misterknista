@@ -1,6 +1,6 @@
 # AI Vendor Assessment
 
-> Status: Version 0.1.0. Beide Module und der gemeinsame Einstiegspunkt sind lauffähig und in Blindtests erprobt. Eine unabhängige fachliche Prüfung der Soll-Werte steht aus. **Keine Rechtsberatung**, siehe [Haftungshinweis](#haftungshinweis).
+> Status: Version 0.1.1. Beide Module und der gemeinsame Einstiegspunkt sind lauffähig und in Blindtests erprobt. Eine erste Gegenprüfung durch ein anderes KI-Modell ist im [Review-Log](reviews/review-log.md) dokumentiert, mit offenen Befunden. Eine fachliche Prüfung durch Menschen steht aus. **Keine Rechtsberatung**, siehe [Haftungshinweis](#haftungshinweis).
 
 Ein Plugin für [Claude Code](https://code.claude.com/docs) mit zwei Aufgaben aus der Informationssicherheit und AI Governance:
 
@@ -163,7 +163,7 @@ Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit ge
 | `bewerter` | Ampel je Kriterium, nur aus der Belegliste | nein | [`bewerter.md`](plugins/ai-vendor-assessment/agents/bewerter.md) |
 | `pruefer` | Deckung jeder Aussage prüfen, tragende Quellen erneut abrufen | nur Abruf | [`pruefer.md`](plugins/ai-vendor-assessment/agents/pruefer.md) |
 
-- Der Rechercheur erhält weder Anwendungsfall noch Schutzbedarf. Diese Angaben können deshalb nicht in Suchanfragen gelangen.
+- Der Rechercheur erhält weder den Text des Anwendungsfalls noch den Schutzbedarf. ⚠️ Bei `assessment` erhält er aber den daraus abgeleiteten Dienstumfang, z. B. Modul und KI-Funktion, und darf ihn in Suchanfragen verwenden. Ein Teil des Anwendungsfalls kann so nach außen gelangen.
 - Der Bewerter kann nicht nachrecherchieren. Was nicht in der Belegliste steht, ist „nicht belegt“.
 - Die Prüfer ändern keinen Report. Bei Befunden gibt es genau eine Korrekturrunde, danach werden verbliebene Befunde im Report als Prüfvermerk ausgewiesen.
 - Die Zwischenergebnisse unter `reports/_arbeit/` machen jeden Schritt nachvollziehbar.
@@ -187,7 +187,7 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
 
 - **Webzugriff ohne Einzelbestätigung.** Rechercheur und Prüfer rufen während eines Laufs Webseiten und Suchen ab. Abgerufene Inhalte gelten laut Anweisung als Daten, nicht als Anweisungen. Ein verlässlicher Schutz gegen Prompt Injection ist das nicht.
 - ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Dass die Aktualitätsprüfung nur die zwei festen URLs abruft, ist ebenfalls nur eine Anweisung.
-- **Datenminimierung.** Suchanfragen enthalten nur Anbieter und Kriterium, nie Angaben zum Anwendungsfall. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
+- **Datenminimierung.** Suchanfragen enthalten Anbieter, Dienstumfang und Kriterium, aber nicht den Text des Anwendungsfalls. Bei `assessment` wird der Dienstumfang aus dem Anwendungsfall abgeleitet, siehe Abschnitt Architektur. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
 - **Beschreibungen sind Daten.** Die Beschreibung des Anwendungsfalls wird als Daten behandelt, nicht als Anweisung. Vertrauliche Details gehören trotzdem nicht hinein: Sie werden an das Sprachmodell übertragen und stehen im Report.
 
 ## Qualitätssicherung
@@ -229,6 +229,7 @@ Was die Zahlen nicht aussagen:
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
 | [`evals/`](evals/) | Testfälle, Soll-Werte, Auswertungsskript |
 | [`examples/`](examples/) | Beispielreport mit Prüfberichten und Hinweis zur Auswahl |
+| [`reviews/`](reviews/) | Review-Log mit Befunden externer Prüfungen und Prüfauftrag |
 | [`.claude/hooks/`](.claude/hooks/) | Hook für Mitwirkende, siehe [CONTRIBUTING](CONTRIBUTING.md) |
 
 ## Mitwirken
