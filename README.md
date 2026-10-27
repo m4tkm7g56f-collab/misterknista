@@ -194,7 +194,7 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
 
 ### Eval-Suite für den AI-Act-Teil
 
-Zehn erfundene Testfälle mit Soll-Einstufung in [`evals/ai-act-testfaelle.md`](evals/ai-act-testfaelle.md), Soll-Werte in [`evals/soll.yaml`](evals/soll.yaml). Jeder Fall läuft als Blindtest in einer frischen Session. Ein Skript vergleicht den Report mit dem Soll-Wert:
+Elf erfundene Testfälle mit Soll-Einstufung in [`evals/ai-act-testfaelle.md`](evals/ai-act-testfaelle.md), Soll-Werte in [`evals/soll.yaml`](evals/soll.yaml). Jeder Fall läuft als Blindtest in einer frischen Session. Ein Skript vergleicht den Report mit dem Soll-Wert:
 
 ```bash
 ruby evals/auswerten.rb 9=reports/<report>.md
@@ -204,7 +204,7 @@ ruby evals/auswerten.rb 9=reports/<report>.md
 |---|---|
 | Gezählte Läufe während der Entwicklung | 15 von 15 Risikoklassen getroffen, 15 von 15 mit Fundstelle |
 | Grenzfälle Verbot und Hochrisiko (Fälle 4, 9, 10) | je 3 Läufe, 9 von 9 getroffen |
-| Läufe mit dem installierten Plugin | Fall 9 (verboten) und Fall 10 (Hochrisiko), beide getroffen, nach der Korrekturrunde keine Aussage „teilweise“ oder „nicht gedeckt“ |
+| Läufe mit dem installierten Plugin | Fall 2 (Transparenz), Fall 9 (verboten) und Fall 10 (Hochrisiko), alle getroffen, nach der Korrekturrunde keine Aussage „teilweise“ oder „nicht gedeckt“ |
 
 Was die Zahlen nicht aussagen:
 

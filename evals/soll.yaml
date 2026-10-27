@@ -64,3 +64,8 @@ ai_act:
     klasse: hochrisiko
     fundstelle: "Anhang III Nr. 4"
     seit: "0.6"
+  - fall: 11
+    kurz: "Stimmungsanalyse schriftlicher Kundenanfragen"
+    klasse: keine_besonderen
+    fundstelle: "Art. 4"
+    seit: "0.8"

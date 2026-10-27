@@ -187,7 +187,7 @@ bloecke:
           nein: "Eine Zutrittskontrolle nutzt nur Fotos, die Beschäftigte selbst für ihren Werksausweis eingereicht haben."
         rechtsgrundlage: "Art. 5 Abs. 1 Buchst. e"
       - id: C7
-        frage: "Erkennt das System Gefühle, Stimmungen oder Absichten von Beschäftigten oder Bewerbenden oder von Lernenden in Schule, Hochschule oder Ausbildung, ohne medizinischen oder Sicherheitsgrund?"
+        frage: "Erkennt das System aus Körpermerkmalen oder Verhalten (z. B. Mimik, Stimme, Tippverhalten) Gefühle, Stimmungen oder Absichten von Beschäftigten oder Bewerbenden oder von Lernenden in Schule, Hochschule oder Ausbildung, ohne medizinischen oder Sicherheitsgrund?"
         hilfe: "Gemeint ist nur das Ableiten aus Körpermerkmalen und Verhalten: Mimik, Stimme, Körpersprache, Tippverhalten. Bewerbende zählen zum Arbeitsplatz, schon im Auswahlverfahren. Nicht erfasst sind Auswertungen von geschriebenem Text und, nach Auslegung der Referenz, des Inhalts transkribierter Antworten, Müdigkeit oder Schmerz und das bloße Erkennen eines Lächelns ohne Rückschluss auf Gefühle. Emotionserkennung bei Kunden fällt nicht unter dieses Verbot. Sie ist aber hochriskant (D2.1) und transparenzpflichtig (E3)."
         ableitung: "Ein „nein“ ist aus der Funktionsbeschreibung ableitbar, wenn die Beschreibung weder Video-, Ton- oder Bildaufnahmen von Personen noch eine Auswertung von Gefühlen, Stimmung oder Absichten aus solchen Aufnahmen nennt. Nennt sie Aufnahmen von Personen, ohne zu sagen, was ausgewertet wird, lautet die Antwort „unklar“."
         beispiele:
@@ -227,7 +227,8 @@ bloecke:
         rechtsgrundlage: "Art. 6 Abs. 2, Anhang III"
         optionen:
           - id: D2.1
-            text: "Biometrie: Personen aus der Ferne identifizieren, nach sensiblen Merkmalen einordnen oder Emotionen erkennen"
+            text: "Biometrie: Personen aus der Ferne identifizieren, nach sensiblen Merkmalen einordnen oder Emotionen aus biometrischen Daten erkennen"
+            hilfe: "Emotionserkennung im Sinne des Gesetzes setzt voraus, dass Gefühle oder Absichten aus biometrischen Daten abgeleitet werden: Mimik, Stimme, Körpersprache, Tippverhalten (Art. 3 Nr. 39). Die Auswertung von geschriebenem Text, auch eine Stimmungsanalyse von E-Mails oder Bewertungen, fällt nicht darunter (Leitlinien C(2025) 5052 Rn. 245 Fn. 153 und Beispiele nach Rn. 251, ref 3)."
             beispiele: {ja: "Gesichtserkennung im Kaufhaus identifiziert Personen beim Betreten.", nein: "Entsperren des eigenen Diensthandys per Gesicht (nur Bestätigung der Identität)."}
             anhang_iii: "1"
           - id: D2.2
@@ -307,10 +308,11 @@ bloecke:
         rechtsgrundlage: "Art. 50 Abs. 2, Art. 111 Abs. 4"
         pflicht_fuer: anbieter
       - id: E3
-        frage: "Setzt Ihre Organisation Emotionserkennung oder eine Einordnung von Menschen nach biometrischen Merkmalen ein?"
+        frage: "Setzt Ihre Organisation ein System ein, das Gefühle oder Absichten von Menschen aus biometrischen Daten ableitet (z. B. aus Mimik oder Stimme) oder Menschen nach biometrischen Merkmalen einordnet?"
+        hilfe: "Emotionserkennung im Sinne des Gesetzes setzt voraus, dass Gefühle oder Absichten aus biometrischen Daten abgeleitet werden: Mimik, Stimme, Körpersprache, Tippverhalten (Art. 3 Nr. 39). Die Auswertung von geschriebenem Text, auch eine Stimmungsanalyse von E-Mails oder Bewertungen, fällt nicht darunter (Leitlinien C(2025) 5052 Rn. 245 Fn. 153 und Beispiele nach Rn. 251, ref 3)."
         beispiele:
           ja: "Ein Bildschirm in einer Messehalle passt Werbung an die erkannte Stimmung der Vorbeigehenden an."
-          nein: "Eine Kamera zählt nur, wie viele Personen einen Raum betreten."
+          nein: "Eine Software ordnet schriftliche Kundenanfragen nach Stimmung (positiv, neutral, verärgert)."
         rechtsgrundlage: "Art. 50 Abs. 3"
         pflicht_fuer: betreiber
       - id: E4

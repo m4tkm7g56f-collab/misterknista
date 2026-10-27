@@ -1,6 +1,6 @@
 # AI-Act-Klassifizierer: Testfälle
 
-Zehn erfundene, allgemein gehaltene Anwendungsfälle mit erwarteter Einstufung. Sie dienen als Regressionstest: Nach einer Änderung an Fragebogen, Referenz oder Agents zeigt ein erneuter Lauf, ob die Einstufungen noch der Erwartung entsprechen.
+Elf erfundene, allgemein gehaltene Anwendungsfälle mit erwarteter Einstufung. Sie dienen als Regressionstest: Nach einer Änderung an Fragebogen, Referenz oder Agents zeigt ein erneuter Lauf, ob die Einstufungen noch der Erwartung entsprechen.
 
 **Status: Hypothese, keine Referenz.** Die erwarteten Einstufungen sind eine Lesart der Referenzdatei (`plugins/ai-vendor-assessment/references/eu-ai-act.md`) und nicht juristisch geprüft. Eine Übereinstimmung misst Konsistenz mit dieser Lesart, nicht Richtigkeit.
 
@@ -22,6 +22,7 @@ Jede Beschreibung nennt einen Ort in der EU und die Herkunft des Systems. Ohne d
 | 8 | Ein Zahlungsdienstleister in Deutschland nutzt ein zugekauftes KI-System eines Drittanbieters, um verdächtige Kartenzahlungen in Echtzeit als möglichen Betrug zu markieren. Die Prüfung übernehmen Menschen. | Keine besonderen Pflichten außer KI-Kompetenz | nur KI-Kompetenz | Anhang III Nr. 5 Buchst. b, Ausnahme Betrugserkennung; Art. 4 | Betreiber |
 | 9 | Ein Unternehmen in Deutschland nutzt ein zugekauftes KI-System eines Drittanbieters für Video-Bewerbungsinterviews. Das System wertet Mimik und Stimme der Bewerbenden aus und gibt an, wie selbstsicher, nervös oder begeistert sie wirken. Die Personalabteilung nutzt diese Angaben für die Vorauswahl. | Verbotene Praktik | Einsatz unzulässig | Art. 5 Abs. 1 Buchst. f; Leitlinien C(2025) 5052 Rn. 254 (Bewerbende zählen zum Arbeitsplatz) | Betreiber |
 | 10 | Ein Unternehmen in Deutschland nutzt ein zugekauftes KI-System eines Drittanbieters für Video-Bewerbungsinterviews. Das System transkribiert die Antworten der Bewerbenden und bewertet nur deren Inhalt anhand vorgegebener Anforderungen. Mimik und Stimme werden nicht ausgewertet. Die Personalabteilung nutzt die Bewertung für die Vorauswahl. | Hochrisiko | KI-Kompetenz; Betreiberpflichten Art. 26 ab 02.12.2027 | Anhang III Nr. 4 Buchst. a; Profiling (D3), daher keine Rückausnahme; Art. 5 Abs. 1 Buchst. f nicht einschlägig (Inhaltsauswertung, Leitlinien Beispiele nach Rn. 251) | Betreiber |
+| 11 | Ein Onlinehändler in Deutschland nutzt ein zugekauftes KI-System eines Drittanbieters, das schriftliche Kundenanfragen aus E-Mails und dem Kontaktformular auswertet und ihre Stimmung als positiv, neutral oder verärgert einordnet. Nachrichten verärgerter Kunden bearbeitet der Kundenservice zuerst. | Keine besonderen Pflichten außer KI-Kompetenz | nur KI-Kompetenz | Art. 4; keine Emotionserkennung, weil keine biometrischen Daten (Art. 3 Nr. 39; Leitlinien Rn. 245 Fn. 153, Beispiele nach Rn. 251) | Betreiber |
 
 ## Was die Fälle prüfen
 
@@ -30,11 +31,12 @@ Jede Beschreibung nennt einen Ort in der EU und die Herkunft des Systems. Ohne d
 | Profiling schließt Rückausnahme aus | 1 |
 | Rollenwechsel nach Art. 25 | 1 |
 | Abgrenzung Verbot vs. Hochrisiko bei Emotionserkennung | 3, 4 |
+| Stimmungsanalyse aus Text ist keine Emotionserkennung (Gegenstück zu Fall 3) | 11 |
 | Emotionserkennung bei Bewerbenden (Arbeitsplatz) vs. reine Inhaltsauswertung | 9, 10 |
 | Nur Transparenz | 2, 7 |
 | Grundrechte-Folgenabschätzung | 6 |
 | Ausdrückliche Ausnahme in Anhang III | 8 |
-| Keine besonderen Pflichten | 5, 8 |
+| Keine besonderen Pflichten | 5, 8, 11 |
 | Geltungsbeginn: Verbot seit 02.02.2025, Transparenz seit 02.08.2026, Hochrisiko ab 02.12.2027 | 4, 2, 1 |
 
 ## Bekannte Unschärfen
@@ -42,6 +44,7 @@ Jede Beschreibung nennt einen Ort in der EU und die Herkunft des Systems. Ohne d
 - Fall 9: Die Erwartung stützt sich auf die Leitlinien der Kommission, die nicht verbindlich sind. Fall 10 prüft die Gegenrichtung: Ein Video allein macht ein System nicht zur Emotionserkennung. Dass die Inhaltsauswertung transkribierter Antworten nicht unter Art. 5 Abs. 1 Buchst. f fällt, ist eine in der Referenz gekennzeichnete eigene Auslegung.
 - Fall 7: Ob realistische Bilder nicht existierender Personen ein „Deepfake“ sind, hängt an Art. 3 Nr. 60: Der Inhalt muss „wirklichen Personen … ähneln“ und fälschlicherweise als echt erscheinen. Ob eine erfundene, aber fotorealistische Person „wirklichen Personen ähnelt“, ist nach dem Wortlaut nicht eindeutig. Erwartet wird, dass der Klassifizierer Art. 50 Abs. 4 als offenen Punkt ausweist und nicht selbst entscheidet.
 - Fall 1: Ob die Nutzung eines allgemeinen Sprachmodells für die Bewerberbewertung ein Rollenwechsel nach Art. 25 Abs. 1 Buchst. c ist, hängt davon ab, ob das Unternehmen die Zweckbestimmung „verändert“. Die Beschreibung belegt das nicht, deshalb wird B3 „unklar“ und der Rollenwechsel ein offener Punkt (korrigiert am 27.10.2026 nach Befund A03 im [Review-Log](../reviews/review-log.md)). Die erwartete Einstufung Hochrisiko gilt unabhängig davon.
+- Fall 11: Dass Anhang III Nr. 1 Buchst. c und Art. 50 Abs. 3 nur Ableitungen aus biometrischen Daten erfassen, folgt aus der Definition in Art. 3 Nr. 39. Die Leitlinien bestätigen das in Rn. 245 Fn. 153, sind aber nicht verbindlich. Angelegt am 27.10.2026 nach Befund A01 im [Review-Log](../reviews/review-log.md).
 - Fall 4: Ein Prüfvorbehalt zu Social Scoring (C4) ist vertretbar, weil die Beschreibung offenlässt, ob Beschäftigte einzeln und über längere Zeit bewertet werden. Er ändert die Klasse nicht.
 
 ## Ausführen und auswerten
