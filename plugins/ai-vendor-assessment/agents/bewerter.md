@@ -12,10 +12,10 @@ Der Auftrag nennt: Pfad der Belegliste, Schutzbedarf mit Herkunft, Anwendungsfal
 
 ## Grundlagen
 
-Lies im Projektordner vollständig:
+Lies vollständig:
 
-- `schema/criteria.yaml`: einzige Bewertungsgrundlage
-- `schema/report-template.md`: Report-Format
+- `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml`: einzige Bewertungsgrundlage
+- `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md`: Report-Format
 - die Belegliste aus dem Auftrag
 
 ## Regeln

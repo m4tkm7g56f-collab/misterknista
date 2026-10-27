@@ -1,5 +1,5 @@
 # Bewertungsschema Vendor-Security-Assessment
-# Status: fachlich abgestimmt, Testläufe (Schritt 4) ausstehend
+# Status: fachlich abgestimmt, in Testläufen erprobt, nicht unabhängig geprüft
 
 schema_version: "0.6"
 stand: "25.10.2026"

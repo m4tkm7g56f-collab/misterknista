@@ -8,7 +8,7 @@
 # Übersicht über alle gespeicherten Läufe mit Trefferquote:
 #   ruby evals/auswerten.rb --uebersicht
 #
-# Das Skript liest nur die Ergebnistabelle des Reports (Vorlage: schema/ai-act-report-template.md).
+# Das Skript liest nur die Ergebnistabelle des Reports (Vorlage: plugins/ai-vendor-assessment/schema/ai-act-report-template.md).
 # Es bewertet nicht, ob die Begründung im Report stimmt. Das bleibt Aufgabe des Prüfers.
 
 require "csv"

@@ -8,13 +8,14 @@
 | Enthaltene Berichtigungen | ►C1 Berichtigung zu 2024/1689 (ABl. vom 09.10.2025), ►C2 Berichtigung zu 2026/1744 (ABl. vom 29.09.2026) |
 | Primärquelle | [EUR-Lex, konsolidierter Text DE](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:02024R1689-20260727) |
 | Änderungsverordnung | [EUR-Lex, Verordnung (EU) 2026/1744](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32026R1744) |
-| Prüfung auf neuere Fassung | EUR-Lex-Metadaten zu CELEX `32024R1689` am 26.10.2026: neueste konsolidierte Fassung `02024R1689-20260727`, einzige Änderungsverordnung `32026R1744` |
+| Bekannte Änderungsrechtsakte | `32026R1744` (08.07.2026) |
+| Prüfung auf neuere Fassung | EUR-Lex-Metadaten zu CELEX `32024R1689` am 26.10.2026: neueste konsolidierte Fassung `02024R1689-20260727`, einzige Änderungsverordnung `32026R1744`. Bestätigt am 27.10.2026 über den SPARQL-Dienst des Amts für Veröffentlichungen der EU (publications.europa.eu) |
 | Ergänzung 27.10.2026 | Art. 3 Nr. 34 und 39, Auslegung zu Art. 5 Abs. 1 Buchst. f (Erwägungsgrund 44, Leitlinien der Kommission C(2025) 5052), siehe Abschnitt 3. Eigene Folgerungen dort ausdrücklich gekennzeichnet |
 
 ## Nutzungsregeln
 
 1. Der AI-Act-Klassifizierer zitiert Rechtsinhalte **nur aus dieser Datei**, mit Artikelangabe. Kein Rückgriff auf Modellwissen.
-2. Vor jeder Nutzung ist zu prüfen, ob das Stand-Datum älter als 3 Monate ist oder EUR-Lex eine neuere konsolidierte Fassung führt. Dann ist diese Datei zu aktualisieren, bevor eingestuft wird.
+2. Vor jeder Einstufung prüft der Subagent `pruefer-aktualitaet`, ob eine neuere konsolidierte Fassung oder ein neuer Änderungsrechtsakt veröffentlicht ist. Ist das der Fall, ist diese Datei zu aktualisieren. Bis dahin weist jeder Report den veralteten Rechtsstand aus (Regel im Subagent `ai-act-klassifizierer`). Bei einer Aktualisierung sind „Rechtsstand“ und „Bekannte Änderungsrechtsakte“ oben mitzuführen, weil die Prüfung sie vergleicht.
 3. Inhalte sind sinngemäß wiedergegeben. Wörtliche Zitate stehen in Anführungszeichen. Grundlage ist der konsolidierte Text. Dieser trägt selbst den Hinweis: „Dieser Text dient lediglich zu Informationszwecken und hat keine Rechtswirkung.“ Verbindlich sind nur die im Amtsblatt veröffentlichten Rechtsakte (2024/1689 und 2026/1744).
 4. Die Begriffe „begrenztes Risiko“ und „minimales Risiko“ kommen in der Verordnung nicht vor. Der Klassifizierer verwendet sie nur als Arbeitskategorien und verweist auf die Rechtsgrundlage (Art. 5, 6, 50).
 5. Diese Datei ist keine Rechtsberatung.

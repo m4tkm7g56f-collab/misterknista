@@ -6,7 +6,7 @@
 | Einstiegs-URL | {{url}} |
 | Anwendungsfall | {{kurzname_anwendungsfall}} |
 | Bewertungsdatum | {{DD.MM.YYYY}} |
-| Regelwerke | Vendor-Schema {{schema_version}}, AI-Act-Fragebogen {{fragebogen_version}}, Gesamtbild {{gesamtbild_version}}, AI-Act-Referenz Stand {{referenz_stand}} |
+| Regelwerke | Vendor-Schema {{schema_version}}, AI-Act-Fragebogen {{fragebogen_version}}, Gesamtbild {{gesamtbild_version}}, AI-Act-Referenz Stand {{referenz_stand}}, Aktualität: {{aktualitaet}} |
 | Modus | {{Dialog / Test}} |
 
 Beschreibung des Anwendungsfalls (Eingabe, wörtlich):

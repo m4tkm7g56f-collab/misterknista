@@ -5,11 +5,15 @@
 | Anwendungsfall | {{kurzname_anwendungsfall}} |
 | Bewertungsdatum | {{DD.MM.YYYY}} |
 | Fragebogen-Version | {{fragebogen_version}} |
-| Rechtsstand der Referenz | {{referenz_stand}}, konsolidierte Fassung vom 27.07.2026 |
+| Rechtsstand der Referenz | {{referenz_stand}}, konsolidierte Fassung CELEX {{celex_konsolidiert}} |
+| Aktualität der Referenz | {{aktuell: „geprüft am DD.MM.YYYY: keine neuere konsolidierte Fassung, kein neuer Änderungsrechtsakt“ / veraltet: „geprüft am DD.MM.YYYY: neuere Fassung bzw. neuer Änderungsrechtsakt CELEX …“ / nicht geprüft: „nicht geprüft (Grund), Referenz n Monate alt“}} |
 | Modus | {{Dialog / Test}} |
 | Methode | Fragebogen nach `schema/ai-act-fragebogen.yaml`, Rechtsinhalte ausschließlich aus `references/eu-ai-act.md` |
 
 ## Ergebnis
+
+<!-- Nur bei Aktualität „veraltet“ oder bei „nicht geprüft“ mit einer Referenz älter als 3 Monate, sonst weglassen -->
+**Hinweis Rechtsstand:** {{Die Referenz ist veraltet: CELEX … ist seit … veröffentlicht. / Die Aktualität der Referenz konnte nicht geprüft werden, sie ist n Monate alt.}} Änderungen danach sind in dieser Einschätzung nicht berücksichtigt. Sicherheit deshalb höchstens „vorläufig“.
 
 **{{Kopfzeile nach format_kopfzeile}}**
 
@@ -78,6 +82,7 @@ Reihenfolge: tragende, dann ausschließende, dann nicht entscheidende Annahmen. 
 
 - Inhalte, die laut `references/eu-ai-act.md` Abschnitt 8 nicht ausgewertet sind, u. a. Anbieterpflichten im Detail (Art. 8 bis 22), Sanktionen, Leitlinien der Kommission, nationale Vorschriften.
 - Datenschutz, Arbeitsrecht und weitere Rechtsgebiete.
+- Aktualität: Die Aktualitätsprüfung erfasst nur konsolidierte Fassungen und Änderungsrechtsakte der Verordnung, keine Leitlinien der Kommission, Berichtigungen ohne neue konsolidierte Fassung, delegierten Rechtsakte, Normen oder nationalen Vorschriften.
 
 ## Prüfvermerk
 

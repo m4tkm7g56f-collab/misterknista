@@ -9,14 +9,14 @@ Du bist der Rechercheur des AI Vendor Assessment Toolkit. Du sammelst Belege. Du
 
 ## Auftrag
 
-Der Auftrag nennt: Anbieter-URL, Dienstumfang (z. B. Modul und KI-Funktion) und Tarif (falls bekannt), Bewertungsdatum und den Pfad der Belegliste (z. B. `reports/_arbeit/<lauf-id>/belege.md`). Angaben zum Anwendungsfall oder Schutzbedarf erhältst du nicht und brauchst du nicht.
+Der Auftrag nennt: Anbieter-URL, Dienstumfang (z. B. Modul und KI-Funktion) und Tarif (falls bekannt), Bewertungsdatum und den Pfad der Belegliste (z. B. `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/belege.md`). Angaben zum Anwendungsfall oder Schutzbedarf erhältst du nicht und brauchst du nicht.
 
 ## Grundlagen
 
-Lies im Projektordner:
+Lies:
 
-- `schema/criteria.yaml`: die Kriterien mit ihren `prueffragen`, die `belegstufen` und für INC die `begriffe` und `quellen_reihenfolge`
-- `.claude/skills/vendor-assessment/quellen-leitfaden.md`: typische Fundorte je Kriterium
+- `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml`: die Kriterien mit ihren `prueffragen`, die `belegstufen` und für INC die `begriffe` und `quellen_reihenfolge`
+- `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/quellen-leitfaden.md`: typische Fundorte je Kriterium
 
 ## Regeln
 

@@ -18,23 +18,24 @@ Eingaben:
 
 ## Verbindliche Regeln
 
-1. Es gelten alle Regeln der beiden Teil-Skills unverändert: `${CLAUDE_PROJECT_DIR}/.claude/skills/ai-act-check/SKILL.md` und `${CLAUDE_PROJECT_DIR}/.claude/skills/vendor-assessment/SKILL.md`.
-2. **AI-Act-Teil ohne Web.** Die Einstufung erstellen die Subagents `ai-act-klassifizierer` und `pruefer-referenz`, die technisch keinen Webzugriff haben. Der Hauptagent ruft in Phase 2 ebenfalls keine Webseiten ab.
+1. Es gelten alle Regeln der beiden Teil-Skills unverändert: `${CLAUDE_PLUGIN_ROOT}/skills/ai-act-check/SKILL.md` und `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/SKILL.md`.
+2. **AI-Act-Einstufung ohne Web.** Die Einstufung erstellen die Subagents `ai-act-klassifizierer` und `pruefer-referenz`, die technisch keinen Webzugriff haben. Der Hauptagent ruft in Phase 2 ebenfalls keine Webseiten ab. Einzige Ausnahme ist die Aktualitätsprüfung durch `pruefer-aktualitaet` vor der Einstufung: zwei feste Abfragen, nur Metadaten, ohne Angaben zum Anwendungsfall.
 3. **Reihenfolge einhalten.** Die AI-Act-Einstufung ist abgeschlossen, geprüft und gespeichert, bevor der Rechercheur beauftragt wird. Später gelesene Webinhalte ändern die AI-Act-Einstufung nicht.
-4. **Keine Zusammenrechnung zu einem Punktwert.** Das Gesamtbild folgt allein den Regeln in `schema/gesamtbild.yaml`.
+4. **Subagent-Namen:** Im Plugin tragen die Subagents den Präfix des Plugins, z. B. `ai-vendor-assessment:pruefer-aktualitaet`.
+5. **Keine Zusammenrechnung zu einem Punktwert.** Das Gesamtbild folgt allein den Regeln in `${CLAUDE_PLUGIN_ROOT}/schema/gesamtbild.yaml`.
 
 ## Ablauf
 
 ### 1. Vorbereitung
 
-- Lies `${CLAUDE_PROJECT_DIR}/schema/gesamtbild.yaml` und `${CLAUDE_PROJECT_DIR}/schema/gesamt-report-template.md` vollständig.
+- Lies `${CLAUDE_PLUGIN_ROOT}/schema/gesamtbild.yaml` und `${CLAUDE_PLUGIN_ROOT}/schema/gesamt-report-template.md` vollständig.
 - Lies beide Teil-Skills. Sie beschreiben die Abläufe der Phasen 2 und 4.
 - Fehlen URL oder Anwendungsfall: Modus `dialog` → nachfragen. Modus `test` → abbrechen. Für nur einen der beiden Teile auf `/vendor-assessment` bzw. `/ai-act-check` verweisen.
 
 ### 2. AI-Act-Ersteinschätzung
 
 - Führe den Ablauf aus `ai-act-check/SKILL.md` vollständig aus, mit Beschreibung = Anwendungsfall und dem angegebenen Modus.
-- Speichere den AI-Act-Report wie dort beschrieben unter `reports/ai-act_…`.
+- Speichere den AI-Act-Report wie dort beschrieben unter `${CLAUDE_PROJECT_DIR}/reports/ai-act_…`.
 - Ergibt A1 „nein“: AI-Act-Teil endet mit dieser Feststellung (`gesamtbild.yaml/ueberspringen.ai_act_ohne_ki`).
 
 ### 3. Kopplung Schutzbedarf
@@ -48,7 +49,7 @@ Eingaben:
 - Sonst: Führe den Ablauf aus `vendor-assessment/SKILL.md` aus, mit URL, Tarif, Anwendungsfall und dem Schutzbedarf aus Phase 3 als angegebenem Schutzbedarf.
 - Bestimme aus dem Anwendungsfall den zu bewertenden Dienst- und Funktionsumfang (z. B. Modul und KI-Funktion) und gib ihn als „Dienstumfang“ weiter. Den Text des Anwendungsfalls erhält der Rechercheur nicht.
 - Bei AI-Act-Ergebnis „hochrisiko_nicht_ausgeschlossen“: Ermittle zusätzlich die Vendor-Gesamtampel für Schutzbedarf „hoch“ aus denselben Einzelbewertungen (keine neue Recherche).
-- Speichere den Vendor-Report wie dort beschrieben unter `reports/<anbieter-slug>_…`.
+- Speichere den Vendor-Report wie dort beschrieben unter `${CLAUDE_PROJECT_DIR}/reports/<anbieter-slug>_…`.
 
 ### 5. Synthese
 
@@ -66,7 +67,7 @@ Eingaben:
 
 ## Selbstprüfung vor dem Speichern
 
-- [ ] Der AI-Act-Report wurde gespeichert, bevor die erste Webseite abgerufen wurde.
+- [ ] Der AI-Act-Report wurde gespeichert, bevor der Rechercheur beauftragt wurde.
 - [ ] Der verwendete Schutzbedarf ist mit beiden Quellen begründet.
 - [ ] Das Gesamtbild folgt der ersten zutreffenden Regel, die auslösende Bedingung ist genannt.
 - [ ] Jede zutreffende Wechselwirkung ist aufgeführt.
