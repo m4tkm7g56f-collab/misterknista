@@ -1,0 +1,403 @@
+# Fragebogen EU-AI-Act-Klassifizierer
+# Status: fachlich abgestimmt, Testläufe ausstehend
+# Rechtsgrundlage ausschließlich references/eu-ai-act.md (Abschnittsnummern dort = "ref")
+
+fragebogen_version: "0.7"
+stand: "27.10.2026"
+referenz: "references/eu-ai-act.md"
+referenz_stand: "26.10.2026, ergänzt 27.10.2026"
+
+# --- Grundsätze ----------------------------------------------------------------
+grundsaetze:
+  - "Jede Frage hat die Antwortoption „unklar“. Unklar wird nie als „nein“ gewertet, sondern als offener Punkt."
+  - "Unsicherheit verändert nicht die Einstufung, sondern deren Sicherheit. Aus „unklar“ wird „offen“ mit Klärungsauftrag, nie automatisch die strengere Klasse. Strenger wird es nur, wo das Gesetz es selbst vorgibt (Profiling = ja, D3)."
+  - "Das Ergebnis trennt drei Ebenen: Einstufung (was gilt rechtlich), Sicherheit (wie gut sind die Antworten abgesichert), Dringlichkeit (was gilt seit wann bzw. ab wann)."
+  - "Die Einstufung ist kumulativ: Verbote, Hochrisiko und Transparenzpflichten werden unabhängig voneinander geprüft."
+  - "Zwei Perspektiven werden getrennt: Die Risikoklasse beschreibt das KI-System. Die Pflichten beschreiben, was die Organisation in ihrer Rolle tun muss. Eine Pflicht, die nur den Anbieter trifft, ist für eine Organisation in der Rolle Betreiber keine eigene Pflicht."
+  - "Jede Wirkung nennt ihre Fundstelle (Artikel und Abschnitt der Referenzdatei)."
+  - "Der Fragebogen richtet sich auch an Personen ohne Vorwissen zum AI Act. Fragen werden in Alltagssprache gestellt, Hilfe und Beispiele werden mit angeboten."
+  - "Das Ergebnis ist eine Ersteinschätzung, keine Rechtsberatung."
+
+antworten: [ja, nein, unklar]
+antwortzustaende:
+  bestaetigt: "Vom Nutzer ausdrücklich bestätigt."
+  angenommen: "Vom Klassifizierer aus der Beschreibung abgeleitet. Die Textstelle der Beschreibung wird zitiert. Gilt ohne Bestätigung, macht das Ergebnis aber vorläufig."
+  unklar: "Weder bestätigt noch aus der Beschreibung ableitbar."
+
+# --- Hilfen für Nutzer ohne Vorwissen ---------------------------------------------
+hilfen:
+  darstellung: "Zu jeder abgefragten Frage werden die Hilfe und je ein Ja- und ein Nein-Beispiel angezeigt. Bei angenommenen Antworten nur auf Nachfrage."
+  beispiele_hinweis: "Die Beispiele veranschaulichen den Normalfall und sind keine Rechtsauslegung. Passt der eigene Fall nicht eindeutig zu einem Beispiel, ist „unklar“ die richtige Antwort."
+  beispiele_regel: "Beispiele dürfen nicht mit den Fällen in evals/ai-act-testfaelle.md übereinstimmen, damit Testläufe die Einstufung prüfen und nicht das Wiedererkennen von Beispielen."
+
+glossar:   # Kurzfassungen in Alltagssprache, maßgeblich ist die Definition in der Referenz
+  - {begriff: "KI-System", kurz: "Software, die aus Eingaben selbst ableitet, was sie ausgibt, z. B. Texte, Vorhersagen oder Empfehlungen, statt nur fest programmierte Regeln abzuarbeiten.", rechtsgrundlage: "Art. 3 Nr. 1"}
+  - {begriff: "Anbieter", kurz: "Wer ein KI-System entwickelt oder entwickeln lässt und es unter eigenem Namen anbietet oder selbst in Betrieb nimmt.", rechtsgrundlage: "Art. 3 Nr. 3"}
+  - {begriff: "Betreiber", kurz: "Wer ein KI-System beruflich in eigener Verantwortung nutzt, z. B. ein Unternehmen, das ein gekauftes KI-Tool einsetzt.", rechtsgrundlage: "Art. 3 Nr. 4"}
+  - {begriff: "Inverkehrbringen", kurz: "Das erstmalige Bereitstellen eines KI-Systems auf dem EU-Markt, z. B. der Verkaufsstart.", rechtsgrundlage: "Art. 3 Nr. 9"}
+  - {begriff: "Inbetriebnahme", kurz: "Das erstmalige Bereitstellen zur Nutzung, an einen Kunden oder zum eigenen Gebrauch.", rechtsgrundlage: "Art. 3 Nr. 11"}
+  - {begriff: "Zweckbestimmung", kurz: "Wofür der Anbieter das System laut Anleitung, Werbung und Dokumentation vorsieht.", rechtsgrundlage: "Art. 3 Nr. 12"}
+  - {begriff: "Profiling", kurz: "Automatisierte Auswertung personenbezogener Daten, um Menschen zu bewerten oder Vorhersagen über sie zu treffen, etwa zu Leistung, Verhalten oder Zuverlässigkeit.", rechtsgrundlage: "Art. 3 Nr. 52 i. V. m. Art. 4 Nr. 4 DSGVO"}
+  - {begriff: "Hochrisiko-KI-System", kurz: "KI-System, das wegen seines Einsatzbereichs besonders streng geregelt ist, z. B. in Personalentscheidungen oder bei der Kreditvergabe.", rechtsgrundlage: "Art. 6, Anhang I und III"}
+  - {begriff: "KI-Modell mit allgemeinem Verwendungszweck", kurz: "Großes, vielseitig einsetzbares Modell, auf dem viele Anwendungen aufbauen, z. B. ein großes Sprachmodell.", rechtsgrundlage: "Art. 3 Nr. 63"}
+  - {begriff: "Deepfake", kurz: "KI-erzeugtes oder -verändertes Bild, Video oder Tonstück, das echt wirkt und realen Personen, Orten oder Ereignissen ähnelt.", rechtsgrundlage: "Art. 3 Nr. 60"}
+
+# --- Eingabe -------------------------------------------------------------------
+eingabe:
+  beschreibung: "Freitext: Was macht das System, wer nutzt es wofür, wessen Daten, welche Entscheidungen hängen daran?"
+  leitfragen:   # Werden angezeigt, um Nutzer ohne Vorwissen bei der Beschreibung zu unterstützen
+    - "Was genau tut das System? Was gibt man ein, was kommt heraus?"
+    - "Wer nutzt es: Ihre Organisation selbst, Ihre Kunden oder beide?"
+    - "Haben Sie das System selbst entwickelt oder von einem Anbieter gekauft bzw. abonniert?"
+    - "Über wen werden Daten verarbeitet: Beschäftigte, Bewerber, Kunden, Bürger?"
+    - "Werden auf Grundlage der Ergebnisse Entscheidungen über Menschen getroffen? Welche?"
+    - "Wird etwas, das das System erzeugt, veröffentlicht?"
+  zuordnung: "Der Klassifizierer beantwortet aus der Beschreibung, was ableitbar ist (Zustand „angenommen“, mit Zitat), und fragt nur die übrigen Fragen ab. Der Nutzer kann jede Annahme bestätigen oder korrigieren."
+
+# --- Blöcke in Prüfreihenfolge -----------------------------------------------------
+bloecke:
+
+  - id: A
+    name: "Anwendungsbereich"
+    erklaerung: "Zuerst wird geklärt, ob der AI Act überhaupt anwendbar ist."
+    ref: "2"
+    fragen:
+      - id: A1
+        frage: "Leitet das System aus Eingaben ab, wie es Ausgaben wie Vorhersagen, Inhalte, Empfehlungen oder Entscheidungen erzeugt, mit einem gewissen Grad an Selbstständigkeit?"
+        hilfe: "Gemeint ist Software, die nicht nur feste, von Menschen geschriebene Regeln abarbeitet, sondern selbst ableitet, was sie ausgibt. Das ist typisch für maschinelles Lernen, Sprachmodelle sowie Bild- und Spracherkennung."
+        beispiele:
+          ja: "Ein Tool liest eingescannte Lieferscheine per Bilderkennung aus und schlägt die Buchung vor."
+          nein: "Eine Tabellenkalkulation berechnet Urlaubstage nach fest eingegebenen Formeln."
+        rechtsgrundlage: "Art. 3 Nr. 1"
+        wirkung: {nein: "ausserhalb_anwendungsbereich"}
+      - id: A2
+        frage: "Hat die nutzende Organisation ihren Sitz in der EU, oder werden die Ergebnisse des Systems in der EU verwendet?"
+        hilfe: "Der AI Act gilt auch für Anbieter und Nutzer außerhalb der EU, wenn die Ergebnisse in der EU verwendet werden."
+        beispiele:
+          ja: "Ein Unternehmen in Wien nutzt ein KI-Tool eines Anbieters aus den USA."
+          nein: "Ein Unternehmen in Kanada nutzt ein KI-Tool ausschließlich für Kunden in Kanada, ohne Bezug zur EU."
+        rechtsgrundlage: "Art. 2 Abs. 1"
+        wirkung: {nein: "ausserhalb_anwendungsbereich"}
+      - id: A3
+        frage: "Wird das System ausschließlich für militärische Zwecke, Verteidigung oder nationale Sicherheit eingesetzt?"
+        hilfe: "Entscheidend ist der Zweck des Einsatzes, nicht die Branche der Organisation."
+        beispiele:
+          ja: "Ein System wertet Aufklärungsdaten ausschließlich für Streitkräfte aus."
+          nein: "Ein Rüstungsunternehmen nutzt ein KI-Tool für seine Buchhaltung."
+        rechtsgrundlage: "Art. 2 Abs. 3"
+        wirkung: {ja: "ausserhalb_anwendungsbereich"}
+      - id: A4
+        frage: "Wird das System ausschließlich für wissenschaftliche Forschung und Entwicklung genutzt oder nur vor dem Marktstart getestet, ohne Tests unter realen Bedingungen?"
+        hilfe: "Sobald das System mit echten Nutzern oder Kunden im Alltag erprobt wird, greift diese Ausnahme nicht mehr."
+        beispiele:
+          ja: "Ein Forschungsprototyp an einer Universität läuft nur im Labor mit Testdaten."
+          nein: "Ein Pilotprojekt setzt das System bereits bei ausgewählten echten Kunden ein."
+        rechtsgrundlage: "Art. 2 Abs. 6 und 8"
+        wirkung: {ja: "ausserhalb_anwendungsbereich"}
+      - id: A5
+        frage: "Nutzt eine Privatperson das System ausschließlich privat und nicht beruflich?"
+        hilfe: "Wer KI nur privat nutzt, hat als Nutzer keine Pflichten nach dem AI Act. Für Selbstständige und Unternehmen gilt das nicht."
+        beispiele:
+          ja: "Jemand lässt sich von einem Chatbot einen Reiseplan für den Familienurlaub erstellen."
+          nein: "Eine selbstständige Grafikerin nutzt einen Chatbot für Angebotsschreiben an Kunden."
+        rechtsgrundlage: "Art. 2 Abs. 10, Art. 3 Nr. 4"
+        wirkung: {ja: "keine_betreiberpflichten"}
+
+  - id: B
+    name: "Rolle"
+    erklaerung: "Die Pflichten hängen davon ab, ob die Organisation ein KI-System anbietet oder nur nutzt. Beides gleichzeitig ist möglich."
+    ref: "2"
+    fragen:
+      - id: B1
+        frage: "Entwickelt die Organisation das System selbst (oder lässt es entwickeln) und bietet es unter eigenem Namen an oder setzt es selbst ein?"
+        hilfe: "Auch ein intern selbst entwickeltes und intern genutztes KI-System macht die Organisation zum Anbieter."
+        beispiele:
+          ja: "Ein Softwarehaus entwickelt ein KI-Tool zur Lagerplanung und verkauft es unter eigener Marke."
+          nein: "Ein Unternehmen abonniert ein fertiges KI-Tool und nutzt es so, wie der Hersteller es vorsieht."
+        rechtsgrundlage: "Art. 3 Nr. 3"
+        wirkung: {ja: "rolle_anbieter"}
+      - id: B2
+        frage: "Nutzt die Organisation ein KI-System eines anderen Anbieters in eigener Verantwortung?"
+        hilfe: "„In eigener Verantwortung“ heißt: Die Organisation entscheidet selbst, wofür und wie sie das System einsetzt."
+        beispiele:
+          ja: "Eine Steuerkanzlei nutzt ein gekauftes KI-Übersetzungstool für Mandantenunterlagen."
+          nein: "Ein Softwarehaus entwickelt ein KI-Tool nur für Kunden und nutzt es selbst nicht."
+        rechtsgrundlage: "Art. 3 Nr. 4"
+        wirkung: {ja: "rolle_betreiber"}
+      - id: B3
+        frage: "Bringt die Organisation ihren eigenen Namen auf ein fremdes Hochrisiko-KI-System, verändert sie es wesentlich, oder setzt sie ein allgemeines KI-System (z. B. einen Chatbot) gezielt für einen Zweck ein, der hochriskant ist?"
+        hilfe: "Dann kann der Nutzer selbst zum Anbieter werden, mit deutlich mehr Pflichten. Welche Zwecke hochriskant sind, zeigt Block D. Ob der gezielte Einsatz eines allgemeinen KI-Systems die Zweckbestimmung „verändert“, ist im Einzelfall auslegungsbedürftig. Im Zweifel „unklar“ wählen."
+        beispiele:
+          ja: "Ein Unternehmen setzt einen allgemeinen Chatbot gezielt ein, um aus Ticketdaten die Leistung einzelner Mitarbeitender zu bewerten."
+          nein: "Ein Unternehmen nutzt einen allgemeinen Chatbot, um Protokolle von Besprechungen zusammenzufassen."
+        rechtsgrundlage: "Art. 25 Abs. 1"
+        wirkung: {ja: "rolle_anbieter_durch_rollenwechsel (nur wenn Block D hochriskant ergibt)"}
+      - id: B4
+        frage: "Trainiert die Organisation ein großes, vielseitig einsetzbares KI-Modell und bietet es anderen an?"
+        hilfe: "Das betrifft nur Entwickler solcher Modelle. Wer ein fremdes Modell nutzt oder per Schnittstelle einbindet, ist kein Modellanbieter."
+        beispiele:
+          ja: "Ein Start-up trainiert ein eigenes großes Sprachmodell und bietet es per Schnittstelle an."
+          nein: "Ein Unternehmen baut eine Anwendung, die per Schnittstelle das Sprachmodell eines anderen Anbieters nutzt."
+        rechtsgrundlage: "Art. 3 Nr. 63, Art. 53"
+        wirkung: {ja: "rolle_gpai_modellanbieter (Pflichten nach Kapitel V, in der Referenz nur in Grundzügen erfasst)"}
+
+  - id: C
+    name: "Verbotene Praktiken"
+    erklaerung: "Bestimmte Einsatzweisen von KI sind in der EU seit 02.02.2025 verboten. Im normalen Geschäftsbetrieb sind diese Fragen fast immer mit „nein“ zu beantworten. Sie werden trotzdem alle gestellt."
+    ref: "3"
+    regel: "Ein „ja“ ergibt Risikoklasse „verboten“. Ein „unklar“ ergibt einen Prüfvorbehalt: Die Einstufung folgt aus den übrigen Blöcken, der Vorbehalt „Verbot nach Art. 5 Abs. 1 Buchst. x nicht ausgeschlossen, Klärung vorrangig, gilt seit 02.02.2025“ steht an erster Stelle des Ergebnisses."
+    fragen:
+      - id: C1
+        frage: "Beeinflusst das System Menschen unterschwellig oder gezielt manipulativ oder täuschend, sodass sie Entscheidungen treffen, die ihnen oder anderen erheblich schaden?"
+        hilfe: "Gemeint sind Techniken, die Menschen nicht bemerken oder die sie bewusst täuschen. Übliche Werbung und Produktempfehlungen fallen nicht darunter, solange sie nicht täuschen und keinen erheblichen Schaden anrichten."
+        beispiele:
+          ja: "Eine App drängt Nutzer mit versteckten Tricks zu immer neuen Käufen, die sie finanziell erheblich schädigen."
+          nein: "Ein Onlineshop zeigt Produktempfehlungen auf Basis früherer Käufe an."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. a"
+      - id: C2
+        frage: "Nutzt das System gezielt Schwächen von Menschen wegen ihres Alters, einer Behinderung oder ihrer sozialen oder wirtschaftlichen Lage aus, mit erheblichem Schaden?"
+        beispiele:
+          ja: "Ein System spricht gezielt ältere Menschen mit nachlassendem Urteilsvermögen an, um ihnen nachteilige Verträge zu verkaufen."
+          nein: "Eine App bietet älteren Menschen eine vereinfachte Bedienung mit größerer Schrift."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. b"
+      - id: C3
+        frage: "Erzeugt das System realistische Nackt- oder Sexdarstellungen bestimmbarer Personen ohne deren ausdrückliche Zustimmung oder Darstellungen von sexuellem Kindesmissbrauch?"
+        hilfe: "Verboten ab 02.12.2026. Erfasst sind Systeme, die dafür bestimmt sind oder dies ohne wirksame Schutzvorkehrungen leicht ermöglichen. Bildbearbeitung, die nichts zusätzlich sichtbar macht, fällt nicht darunter."
+        beispiele:
+          ja: "Eine App „entkleidet“ Personen auf hochgeladenen Fotos."
+          nein: "Eine Bildbearbeitung tauscht auf Porträtfotos nur den Hintergrund aus."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. ba, bb, Abs. 1a, 1b (ab 02.12.2026)"
+      - id: C4
+        frage: "Bewertet das System Menschen über längere Zeit nach ihrem sozialen Verhalten oder ihren persönlichen Eigenschaften, mit Nachteilen in Zusammenhängen, die damit nichts zu tun haben, oder mit unverhältnismäßigen Nachteilen?"
+        hilfe: "Das ist das sogenannte Social Scoring. Bewertet werden Menschen, nicht Produkte oder Vorgänge."
+        beispiele:
+          ja: "Ein System vergibt Punkte für das Verhalten in sozialen Netzwerken und verweigert Menschen mit wenig Punkten eine Mietwohnung."
+          nein: "Ein System wertet Kundenbewertungen zu Produkten aus, um das Sortiment zu verbessern."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. c"
+      - id: C5
+        frage: "Sagt das System voraus, ob eine Person eine Straftat begehen wird, und zwar nur anhand eines Persönlichkeitsprofils oder persönlicher Merkmale?"
+        beispiele:
+          ja: "Ein System sagt anhand von Wohnort, Alter und Persönlichkeitsprofil voraus, wer straffällig werden könnte."
+          nein: "Ein System hilft Ermittlern, bereits vorliegende Beweise zu einer konkreten Tat zu ordnen."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. d"
+      - id: C6
+        frage: "Baut das System eine Gesichtsdatenbank auf, indem es wahllos Gesichtsbilder aus dem Internet oder von Überwachungskameras sammelt?"
+        beispiele:
+          ja: "Ein Tool sammelt massenhaft Profilfotos aus sozialen Netzwerken, um Personen per Gesichtssuche zu finden."
+          nein: "Eine Zutrittskontrolle nutzt nur Fotos, die Beschäftigte selbst für ihren Werksausweis eingereicht haben."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. e"
+      - id: C7
+        frage: "Erkennt das System Gefühle, Stimmungen oder Absichten von Beschäftigten oder Bewerbenden oder von Lernenden in Schule, Hochschule oder Ausbildung, ohne medizinischen oder Sicherheitsgrund?"
+        hilfe: "Gemeint ist nur das Ableiten aus Körpermerkmalen und Verhalten: Mimik, Stimme, Körpersprache, Tippverhalten. Bewerbende zählen zum Arbeitsplatz, schon im Auswahlverfahren. Nicht erfasst sind Auswertungen von geschriebenem Text und, nach Auslegung der Referenz, des Inhalts transkribierter Antworten, Müdigkeit oder Schmerz und das bloße Erkennen eines Lächelns ohne Rückschluss auf Gefühle. Emotionserkennung bei Kunden fällt nicht unter dieses Verbot. Sie ist aber hochriskant (D2.1) und transparenzpflichtig (E3)."
+        ableitung: "Ein „nein“ ist aus der Funktionsbeschreibung ableitbar, wenn die Beschreibung weder Video-, Ton- oder Bildaufnahmen von Personen noch eine Auswertung von Gefühlen, Stimmung oder Absichten aus solchen Aufnahmen nennt. Nennt sie Aufnahmen von Personen, ohne zu sagen, was ausgewertet wird, lautet die Antwort „unklar“."
+        beispiele:
+          ja: "Eine Software für Video-Bewerbungsinterviews bewertet anhand von Mimik und Stimme, wie selbstsicher, nervös oder begeistert Bewerbende wirken."
+          nein: "Eine Software transkribiert Video-Bewerbungsinterviews und bewertet nur den Inhalt der Antworten."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. f; Art. 3 Nr. 39; Erwägungsgrund 44; Auslegung nach Leitlinien C(2025) 5052 Rn. 245 bis 254 (ref 3)"
+      - id: C8
+        frage: "Ordnet das System Menschen anhand biometrischer Merkmale (z. B. Gesicht, Stimme) ein, um auf Herkunft, politische Meinung, Gewerkschaftszugehörigkeit, Religion, Sexualleben oder sexuelle Orientierung zu schließen?"
+        beispiele:
+          ja: "Eine Kamera-Software schätzt aus Gesichtsbildern die sexuelle Orientierung von Personen."
+          nein: "Eine Software sortiert Fotos nach Bildschärfe und Belichtung."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. g"
+      - id: C9
+        frage: "Wird das System von oder für Strafverfolgungsbehörden eingesetzt, um Personen in öffentlich zugänglichen Räumen in Echtzeit per Gesicht oder anderen biometrischen Merkmalen zu identifizieren?"
+        hilfe: "Betrifft nur die Strafverfolgung. Gesichtserkennung durch Unternehmen fällt nicht unter dieses Verbot, kann aber hochriskant sein (D2.1)."
+        beispiele:
+          ja: "Die Polizei gleicht Live-Bilder einer Bahnhofshalle automatisch mit einer Fahndungsliste ab."
+          nein: "Ein Unternehmen lässt Beschäftigte ihr Diensthandy per Gesichtserkennung entsperren."
+        rechtsgrundlage: "Art. 5 Abs. 1 Buchst. h, Abs. 2 bis 7"
+
+  - id: D
+    name: "Hochrisiko"
+    erklaerung: "Hochrisiko-KI-Systeme sind erlaubt, aber streng geregelt. Die Pflichten gelten ab 02.12.2027 (Anhang III) bzw. 02.08.2028 (Produkte nach Anhang I)."
+    ref: "4"
+    fragen:
+      - id: D1
+        frage: "Ist das System Teil eines Produkts, das für seine Sicherheit sorgt (oder selbst ein solches Produkt), und muss dieses Produkt von einer externen Prüfstelle zugelassen werden, z. B. Medizinprodukte, Maschinen, Spielzeug, Fahrzeuge?"
+        hilfe: "Funktionen, die nur der Bedienung, Effizienz, Automatisierung oder Qualitätskontrolle dienen, zählen nicht, solange ihr Ausfall Gesundheit und Sicherheit nicht gefährdet. Die vollständige Liste der Produktbereiche steht in der Referenz, Abschnitt 4."
+        beispiele:
+          ja: "Eine KI in einer Industriemaschine erkennt Personen im Gefahrenbereich und stoppt die Maschine."
+          nein: "Eine KI in einer Industriemaschine optimiert nur den Energieverbrauch."
+        rechtsgrundlage: "Art. 6 Abs. 1, 1a bis 1c"
+        wirkung: {ja: "hochrisiko_anhang_i (Pflichten ab 02.08.2028)"}
+      - id: D2
+        frage: "Wird das System in einem der folgenden Bereiche eingesetzt? (Mehrfachauswahl, je Bereich ja, nein oder unklar)"
+        hilfe: "Entscheidend ist, wofür das System eingesetzt wird, nicht, was es technisch kann."
+        rechtsgrundlage: "Art. 6 Abs. 2, Anhang III"
+        optionen:
+          - id: D2.1
+            text: "Biometrie: Personen aus der Ferne identifizieren, nach sensiblen Merkmalen einordnen oder Emotionen erkennen"
+            beispiele: {ja: "Gesichtserkennung im Kaufhaus identifiziert Personen beim Betreten.", nein: "Entsperren des eigenen Diensthandys per Gesicht (nur Bestätigung der Identität)."}
+            anhang_iii: "1"
+          - id: D2.2
+            text: "Sicherheitsbauteil kritischer Infrastruktur: digitale Infrastruktur, Straßenverkehr, Wasser, Gas, Wärme, Strom"
+            beispiele: {ja: "Eine KI steuert als Sicherheitsfunktion die Lastverteilung in einem Stromnetz.", nein: "Eine KI erstellt Wartungsberichte für ein Stadtwerk."}
+            anhang_iii: "2"
+          - id: D2.3
+            text: "Bildung: Zulassung, Bewertung von Lernergebnissen, Einstufung des Bildungsniveaus, Prüfungsaufsicht"
+            beispiele: {ja: "Eine Software bewertet Klausuren automatisch und vergibt Noten.", nein: "Eine Lernplattform erinnert an Abgabetermine."}
+            anhang_iii: "3"
+          - id: D2.4
+            text: "Beschäftigung: Stellenanzeigen gezielt schalten, Bewerbungen sichten oder bewerten, Entscheidungen über Arbeitsbedingungen, Beförderung oder Kündigung, Aufgabenverteilung nach Verhalten oder Merkmalen, Leistungs- und Verhaltensbewertung"
+            beispiele: {ja: "Eine Software verteilt Schichten danach, wie produktiv einzelne Beschäftigte laut Auswertung sind.", nein: "Eine Software formuliert den Text einer Stellenanzeige, die allen Interessierten gleich angezeigt wird."}
+            anhang_iii: "4"
+          - id: D2.5
+            text: "Grundlegende Dienste: Sozialleistungen durch Behörden, Kreditwürdigkeit von Privatpersonen, Lebens- und Krankenversicherung, Notrufe und Triage"
+            beispiele: {ja: "Eine Versicherung berechnet Prämien für Krankenversicherungen mit einem KI-Modell.", nein: "Eine Versicherung ordnet eingehende Post per KI den zuständigen Abteilungen zu."}
+            anhang_iii: "5"
+          - id: D2.6
+            text: "Strafverfolgung (nur Behörden oder in deren Auftrag)"
+            beispiele: {ja: "Eine Ermittlungsbehörde lässt die Verlässlichkeit von Beweismitteln durch ein KI-System bewerten.", nein: "Eine Behörde nutzt KI zur Terminplanung."}
+            anhang_iii: "6"
+          - id: D2.7
+            text: "Migration, Asyl, Grenzkontrolle (nur Behörden oder in deren Auftrag)"
+            beispiele: {ja: "Eine Behörde lässt Visumanträge durch ein KI-System vorprüfen.", nein: "Eine Behörde übersetzt Informationsblätter mit KI."}
+            anhang_iii: "7"
+          - id: D2.8
+            text: "Justiz, Schlichtung, Wahlen"
+            beispiele: {ja: "Ein Gericht nutzt ein KI-System, das bei der Anwendung des Rechts auf einen Fall unterstützt.", nein: "Eine Kanzlei nutzt KI zur Terminverwaltung."}
+            anhang_iii: "8"
+        wirkung: {ja: "weiter mit D3", alle_nein: "kein Anhang-III-Hochrisiko"}
+      - id: D3
+        frage: "Wertet das System personenbezogene Daten automatisch aus, um Menschen zu bewerten oder Vorhersagen über sie zu treffen, etwa zu Arbeitsleistung, wirtschaftlicher Lage, Gesundheit, Vorlieben, Interessen, Zuverlässigkeit, Verhalten oder Aufenthaltsort?"
+        hilfe: "Das nennt das Gesetz „Profiling“. Ist das der Fall, bleibt ein System in einem der Bereiche aus D2 immer hochriskant, ohne Ausnahme."
+        beispiele:
+          ja: "Eine Software schätzt aus E-Mail- und Kalenderdaten, wie produktiv einzelne Beschäftigte sind."
+          nein: "Eine Software sortiert eingehende Dokumente nach Dokumenttyp, ohne Personen zu bewerten."
+        rechtsgrundlage: "Art. 6 Abs. 3 Unterabs. 3, Art. 3 Nr. 52 i. V. m. Art. 4 Nr. 4 DSGVO"
+        wirkung: {ja: "hochrisiko_anhang_iii (Rückausnahme ausgeschlossen)", nein: "weiter mit D4", unklar: "hochrisiko_nicht_ausgeschlossen"}
+      - id: D4
+        frage: "Erledigt das System nur eine eng begrenzte Hilfsaufgabe, ohne das Ergebnis von Entscheidungen wesentlich zu beeinflussen? Das ist der Fall, wenn mindestens eines zutrifft: a) eng gefasste Verfahrensaufgabe, b) verbessert nur ein bereits fertiges Ergebnis eines Menschen, c) erkennt nur Muster oder Abweichungen und ersetzt die menschliche Bewertung nicht ohne Überprüfung, d) erledigt nur eine Vorbereitung für eine spätere menschliche Bewertung"
+        hilfe: "Faustregel: Entscheidet am Ende ein Mensch auf eigener Grundlage, und das System hilft nur zu? Dann kann die Ausnahme greifen. Schlägt das System selbst vor, wie entschieden werden soll, greift sie eher nicht."
+        beispiele:
+          ja: "Ein System übersetzt Unterlagen, die anschließend ein Mensch selbst bewertet (Vorbereitung)."
+          nein: "Ein System schlägt vor, welche Beschäftigten befördert werden sollen."
+        rechtsgrundlage: "Art. 6 Abs. 3 Unterabs. 1 und 2"
+        wirkung: {ja: "weiter mit D5", nein: "hochrisiko_anhang_iii", unklar: "hochrisiko_nicht_ausgeschlossen"}
+      - id: D5
+        frage: "Nur wenn Sie das System von einem Anbieter beziehen: Hat der Anbieter schriftlich dokumentiert, warum sein System trotz des Einsatzbereichs nicht hochriskant ist?"
+        hilfe: "Diese Ausnahme kann nur der Anbieter für sein System feststellen. Als Nutzer sollten Sie sich die Dokumentation geben lassen."
+        beispiele:
+          ja: "Der Anbieter stellt eine schriftliche Einstufung bereit, die die Ausnahme begründet."
+          nein: "Der Anbieter macht dazu keine Angaben."
+        rechtsgrundlage: "Art. 6 Abs. 4"
+        wirkung: {ja: "nicht_hochriskant_laut_anbieter (Dokumentation anfordern und ablegen)", nein: "voraussichtlich_nicht_hochriskant (Bestätigung durch den Anbieter einholen)", unklar: "voraussichtlich_nicht_hochriskant (Bestätigung durch den Anbieter einholen)"}
+        nur_wenn: "Rolle Betreiber. Für Anbieter gilt: Bewertung nach Art. 6 Abs. 4 dokumentieren und registrieren."
+
+  - id: E
+    name: "Transparenzpflichten"
+    erklaerung: "Unabhängig vom Risiko müssen Menschen in bestimmten Fällen erfahren, dass KI im Spiel ist. Gilt seit 02.08.2026."
+    ref: "5"
+    fragen:
+      - id: E1
+        frage: "Spricht oder schreibt das System direkt mit Menschen, z. B. als Chatbot oder Sprachassistent?"
+        hilfe: "Die Pflicht, auf die KI hinzuweisen, trifft vor allem den Anbieter. Als Nutzer sollten Sie prüfen, ob der Hinweis tatsächlich erscheint."
+        beispiele:
+          ja: "Ein Sprachassistent nimmt Anrufe in einer Telefonhotline entgegen."
+          nein: "Eine KI sortiert intern eingehende E-Mails, ohne mit Kunden zu kommunizieren."
+        rechtsgrundlage: "Art. 50 Abs. 1"
+        pflicht_fuer: anbieter
+      - id: E2
+        frage: "Erzeugt das System neue Texte, Bilder, Ton- oder Videoinhalte?"
+        hilfe: "Reine Hilfsfunktionen wie Rechtschreibkorrektur, die den Inhalt nicht wesentlich verändern, fallen nicht darunter."
+        beispiele:
+          ja: "Ein Tool erstellt Produktbeschreibungen für einen Onlineshop."
+          nein: "Ein Tool korrigiert Tippfehler in einem selbst geschriebenen Text."
+        rechtsgrundlage: "Art. 50 Abs. 2, Art. 111 Abs. 4"
+        pflicht_fuer: anbieter
+      - id: E3
+        frage: "Setzt Ihre Organisation Emotionserkennung oder eine Einordnung von Menschen nach biometrischen Merkmalen ein?"
+        beispiele:
+          ja: "Ein Bildschirm in einer Messehalle passt Werbung an die erkannte Stimmung der Vorbeigehenden an."
+          nein: "Eine Kamera zählt nur, wie viele Personen einen Raum betreten."
+        rechtsgrundlage: "Art. 50 Abs. 3"
+        pflicht_fuer: betreiber
+      - id: E4
+        frage: "Veröffentlicht Ihre Organisation mit KI erzeugte oder veränderte Bilder, Videos oder Tonaufnahmen, die echt wirken und realen Personen, Orten oder Ereignissen ähneln?"
+        hilfe: "Das sind sogenannte Deepfakes. Bei erkennbar künstlerischen, satirischen oder fiktionalen Werken genügt ein zurückhaltender Hinweis."
+        beispiele:
+          ja: "Ein Video zeigt den realen Geschäftsführer, der per KI etwas sagt, das er nie gesagt hat."
+          nein: "Eine erkennbar gezeichnete Comic-Illustration für einen Blogartikel."
+        rechtsgrundlage: "Art. 50 Abs. 4 Unterabs. 1, Art. 3 Nr. 60"
+        pflicht_fuer: betreiber
+      - id: E5
+        frage: "Veröffentlicht Ihre Organisation KI-erzeugte Texte, die die Öffentlichkeit über Themen von öffentlichem Interesse informieren sollen, ohne dass ein Mensch sie prüft und redaktionell verantwortet?"
+        beispiele:
+          ja: "Ein Nachrichtenportal veröffentlicht automatisch KI-Artikel über Kommunalpolitik ohne Redaktion."
+          nein: "Eine Redaktion lässt Entwürfe von KI erstellen, prüft sie und verantwortet die Veröffentlichung."
+        rechtsgrundlage: "Art. 50 Abs. 4 Unterabs. 2"
+        pflicht_fuer: betreiber
+
+  - id: F
+    name: "Kontext für Betreiberpflichten"
+    erklaerung: "Diese Fragen bestimmen, welche Pflichten bei einem Hochrisiko-System konkret anfallen."
+    ref: "7"
+    hinweis: "Nur relevant, wenn Block D hochriskant ergibt."
+    fragen:
+      - id: F1
+        frage: "Ist Ihre Organisation Arbeitgeber und wird das System am Arbeitsplatz eingesetzt?"
+        beispiele:
+          ja: "Das System wird für die Arbeitsorganisation im eigenen Lager eingesetzt."
+          nein: "Das System wird nur für externe Kunden eingesetzt."
+        rechtsgrundlage: "Art. 26 Abs. 7"
+      - id: F2
+        frage: "Trifft das System Entscheidungen über Menschen oder unterstützt es solche Entscheidungen?"
+        beispiele:
+          ja: "Das System schlägt vor, welche Anträge abgelehnt werden."
+          nein: "Das System optimiert nur Lagerbestände."
+        rechtsgrundlage: "Art. 26 Abs. 11"
+      - id: F3
+        frage: "Ist Ihre Organisation eine öffentliche Stelle (Einrichtung des öffentlichen Rechts) oder ein privates Unternehmen, das öffentliche Dienstleistungen erbringt?"
+        beispiele:
+          ja: "Eine Gemeindeverwaltung."
+          nein: "Ein privater Onlinehändler."
+        rechtsgrundlage: "Art. 27 Abs. 1"
+      - id: F4
+        frage: "Bestimmt Ihre Organisation selbst, welche Daten in das System eingegeben werden?"
+        beispiele:
+          ja: "Die Organisation lädt eigene Kundendaten in das System."
+          nein: "Das System arbeitet ausschließlich mit Daten, die der Anbieter bereitstellt."
+        rechtsgrundlage: "Art. 26 Abs. 4"
+      - id: F5
+        frage: "Hat Ihre Organisation Zugriff auf die Protokolle (Logs), die das System automatisch erzeugt?"
+        beispiele:
+          ja: "Die Protokolle sind im eigenen Administrationsbereich abrufbar."
+          nein: "Der Anbieter speichert Protokolle nur intern, ohne Zugriff für Kunden."
+        rechtsgrundlage: "Art. 26 Abs. 6"
+
+# --- Ergebnis --------------------------------------------------------------------------
+ergebnis:
+  risikoklassen:   # Arbeitskategorien, absteigend. Die höchste zutreffende Klasse ist die Risikoklasse.
+    - {id: ausserhalb_anwendungsbereich, label: "Außerhalb des Anwendungsbereichs", grundlage: "Art. 2, Art. 3 Nr. 1"}
+    - {id: verboten, label: "Verbotene Praktik", grundlage: "Art. 5"}
+    - {id: hochrisiko, label: "Hochrisiko-KI-System", grundlage: "Art. 6, Anhang I bzw. III"}
+    - {id: hochrisiko_nicht_ausgeschlossen, label: "Hochrisiko nicht ausgeschlossen", grundlage: "Art. 6 Abs. 2 und 3", hinweis: "Anhang-III-Bereich, Profiling oder Voraussetzungen der Rückausnahme unklar"}
+    - {id: voraussichtlich_nicht_hochriskant, label: "Voraussichtlich nicht hochriskant (Rückausnahme)", grundlage: "Art. 6 Abs. 3 und 4", hinweis: "Anhang-III-Bereich, kein Profiling, Bedingung a bis d erkennbar erfüllt, Bestätigung durch den Anbieter ausstehend. Für die Einstufung zählt die nächstniedrigere zutreffende Klasse, der Punkt bleibt offen."}
+    - {id: transparenz, label: "Transparenzpflichten", grundlage: "Art. 50", hinweis: "In der Verordnung kein eigener Risikobegriff"}
+    - {id: keine_besonderen, label: "Keine besonderen Pflichten außer KI-Kompetenz", grundlage: "Art. 4", hinweis: "Arbeitskategorie, entspricht dem oft genannten „minimalen Risiko“"}
+  sicherheit:
+    bestaetigt: "Alle für die Einstufung entscheidenden Antworten sind bestätigt."
+    vorlaeufig: "Mindestens eine entscheidende Antwort ist angenommen. Alle Annahmen werden mit Zitat aufgeführt, die entscheidenden sind gekennzeichnet."
+    offen: "Mindestens eine entscheidende Antwort ist unklar, oder ein Prüfvorbehalt besteht."
+    entscheidend: "Eine Antwort ist entscheidend, wenn ihre Änderung die Risikoklasse ändern würde."
+    tragend: "Entscheidende Antwort, die die ermittelte Risikoklasse begründet, z. B. D2.5 = ja bei Hochrisiko wegen Kreditwürdigkeit oder E2 = ja bei Transparenzpflichten."
+    ausschliessend: "Entscheidende Antwort, die eine andere, strengere Klasse ausschließt, z. B. C6 = nein (kein Verbot) oder D2.4 = nein (kein Hochrisiko im Bereich Beschäftigung)."
+  dringlichkeit: "Jede Pflicht und jeder Prüfvorbehalt nennt „gilt seit“ oder „gilt ab“ laut Referenz Abschnitt 1. Bereits geltende Punkte stehen vor künftigen."
+  bei_verbot: "Lautet die Risikoklasse „verboten“, steht unter den eigenen Pflichten an erster Stelle „Verwendung unterlassen“ mit „gilt seit“. Pflichten, die einen zulässigen Betrieb voraussetzen (z. B. Art. 26, Art. 27, Art. 50 Abs. 3), werden nicht als eigene Pflichten aufgeführt. Sie stehen unter „Weitere zutreffende Klassen“ mit dem Hinweis „nur relevant, falls das Verbot entfällt“, z. B. wegen eines medizinischen oder Sicherheitsgrunds. Das ist eine Darstellungsregel des Fragebogens, keine Rechtsaussage."
+  beispiel_kopfzeile_verbot: "System: Verbotene Praktik (Art. 5 Abs. 1 Buchst. f) · Pflichten der Organisation als Betreiber: Verwendung unterlassen (seit 02.02.2025), KI-Kompetenz (seit 02.02.2025) · vorläufig, 5 tragende Annahmen (0 ausschließende im Report), 0 Prüfvorbehalte"
+  format_kopfzeile: "System: <Risikoklasse> (<Fundstelle>) · Pflichten der Organisation als <Rolle(n)>: <Kurzliste mit gilt seit/ab> · <Sicherheit>, <n> tragende Annahmen (<k> ausschließende im Report), <m> Prüfvorbehalte"
+  beispiel_kopfzeile: "System: Hochrisiko (Anhang III Nr. 4) · Pflichten der Organisation als Betreiber: KI-Kompetenz (seit 02.02.2025), Betreiberpflichten nach Art. 26 (ab 02.12.2027) · vorläufig, 2 tragende Annahmen (24 ausschließende im Report), 0 Prüfvorbehalte"
+  beispiel_kopfzeile_anbieterpflicht: "System: Transparenzpflichten (Art. 50 Abs. 2, Pflicht des Anbieters) · Pflichten der Organisation als Betreiber: KI-Kompetenz (seit 02.02.2025) · vorläufig, 1 tragende Annahme (25 ausschließende im Report), 0 Prüfvorbehalte"
+  zaehlung_annahmen: "Die Kopfzeile nennt tragende Annahmen mit Zahl und ausschließende nur als Zahl mit Verweis auf den Report. Nicht entscheidende Annahmen erscheinen nur im Report. Lautet die Klasse „Keine besonderen Pflichten“, gibt es keine tragenden Annahmen außer denen aus Block A (Anwendungsbereich)."
+  verstaendlichkeit: "Zusätzlich zur Kopfzeile eine Zusammenfassung in zwei bis drei Sätzen Alltagssprache: Was bedeutet das Ergebnis, was ist als Nächstes zu tun?"
+  bestandteile:
+    - "Risikoklasse (höchste zutreffende) und alle zusätzlich zutreffenden Klassen"
+    - "Rolle(n) der Organisation"
+    - "Pflichten je Rolle mit Fundstelle und Geltungsbeginn (gilt seit / gilt ab), getrennt nach eigenen Pflichten der Organisation und Pflichten anderer Akteure (z. B. des Anbieters)"
+    - "Prüfvorbehalte (an erster Stelle)"
+    - "Annahmen mit zitierter Textstelle der Beschreibung"
+    - "Offene Punkte aus allen „unklar“-Antworten, jeweils mit Klärungsauftrag (wer, was)"
+    - "Hinweis auf nicht ausgewertete Bereiche laut Referenz Abschnitt 8"
+  immer_enthalten:
+    - "KI-Kompetenz nach Art. 4 für alle Anbieter und Betreiber im Anwendungsbereich, gilt seit 02.02.2025"

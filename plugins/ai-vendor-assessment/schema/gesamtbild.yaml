@@ -1,0 +1,95 @@
+# Regeln für das Zusammenführen von Vendor-Assessment und AI-Act-Ersteinschätzung
+# Status: abgestimmt am 26.10.2026, Testlauf ausstehend
+
+gesamtbild_version: "0.1"
+stand: "26.10.2026"
+grundlagen:
+  vendor: "schema/criteria.yaml"
+  ai_act: "schema/ai-act-fragebogen.yaml"
+
+# --- Ablauf ---------------------------------------------------------------------
+reihenfolge:
+  - schritt: aufnahme
+    beschreibung: "Eine gemeinsame Beschreibung des Anwendungsfalls für beide Module."
+  - schritt: ai_act
+    beschreibung: "AI-Act-Ersteinschätzung zuerst und ohne Webzugriff, damit Inhalte von Anbieter-Webseiten die rechtliche Einstufung nicht beeinflussen können."
+  - schritt: kopplung
+    beschreibung: "Schutzbedarf für das Vendor-Modul unter Berücksichtigung des AI-Act-Ergebnisses festlegen."
+  - schritt: vendor
+    beschreibung: "Vendor-Assessment mit dem gekoppelten Schutzbedarf. Entfällt bei verbotener Praktik."
+  - schritt: synthese
+    beschreibung: "Gesamtbild, Wechselwirkungen, priorisierte offene Punkte."
+
+ueberspringen:
+  vendor_bei_verbot: "Ergibt die AI-Act-Einstufung „verbotene Praktik“, entfällt das Vendor-Assessment. Der Report weist das ausdrücklich aus."
+  ai_act_ohne_ki: "Ergibt Frage A1 „nein“ (kein KI-System), entfällt der AI-Act-Teil bis auf diese Feststellung. Das Vendor-Assessment läuft normal."
+
+# --- Kopplung Schutzbedarf -----------------------------------------------------
+kopplung:
+  regel: "Schutzbedarf für das Vendor-Modul = höhere Stufe aus (a) Herleitung nach criteria.yaml/einstufungshilfe bzw. Angabe des Nutzers und (b) „hoch“, wenn die AI-Act-Risikoklasse „hochrisiko“ ist."
+  begruendung: "Hochrisiko-Bereiche nach Anhang III betreffen Grundrechte. Ein Lieferant für ein solches System wird nach den Regeln für hohen Schutzbedarf beurteilt."
+  hochrisiko_nicht_ausgeschlossen: "Keine automatische Anhebung. Der Report nennt zusätzlich die Vendor-Gesamtampel, die bei Schutzbedarf „hoch“ gälte. Das ist ohne neue Recherche möglich, weil die Einzelbewertung nicht vom Schutzbedarf abhängt."
+  dokumentation: "Jede Anhebung wird mit Herkunft beider Stufen begründet."
+
+# --- Gesamtbild ----------------------------------------------------------------------
+# Regeln von oben nach unten, die erste zutreffende gilt. Kein neuer Punktwert.
+gesamtbild:
+  stufen:
+    - id: nicht_zulaessig
+      label: "Einsatz in dieser Form nicht zulässig"
+      wenn:
+        - "AI-Act-Risikoklasse „verbotene Praktik“"
+        - "Vendor-Gesamtampel „Rot – vertraglich unzulässig“"
+    - id: zwingend_klaeren
+      label: "Vor Einsatz zwingend zu klären"
+      wenn:
+        - "Vendor-Gesamtampel Rot"
+        - "Mindestens ein AI-Act-Prüfvorbehalt"
+        - "AI-Act-Sicherheit „offen“ wegen einer unklaren tragenden Antwort"
+    - id: mit_klaerungen
+      label: "Einsatz mit Klärungen und Auflagen möglich"
+      wenn:
+        - "Vendor-Gesamtampel Gelb"
+        - "Eigene Pflichten der Organisation nach AI Act über die KI-Kompetenz hinaus"
+        - "AI-Act-Sicherheit „vorläufig“ oder „offen“"
+    - id: keine_hindernisse
+      label: "Keine Hindernisse festgestellt"
+      wenn:
+        - "Sonst"
+      hinweis: "Bedeutet nicht „freigegeben“. Die Freigabe ist eine Entscheidung der Organisation."
+  ausschlaggebend: "Der Report nennt, welche Bedingung die Stufe ausgelöst hat."
+
+# --- Wechselwirkungen ------------------------------------------------------------
+# Querbezüge zwischen den Modulen. Jeder Treffer wird im Report genannt.
+wechselwirkungen:
+  - id: W1
+    wenn: "AVV/DPA schließt eine Datenart aus, die der Anwendungsfall enthält"
+    folge: "Gesamtbild „nicht zulässig“ (über die Vendor-Regel „vertraglich unzulässig“)"
+  - id: W2
+    wenn: "AI-Act-Rolle Betreiber eines Hochrisiko-KI-Systems"
+    folge: "Nachfrage an den Anbieter: Betriebsanleitung und Informationen nach Art. 13 anfordern, die der Betreiber für Art. 26 und die Datenschutz-Folgenabschätzung braucht (Art. 26 Abs. 1 und 9). Inhalt von Art. 13 ist in der Referenz nicht ausgewertet."
+  - id: W3
+    wenn: "AI-Act-Ergebnis „voraussichtlich nicht hochriskant“ oder D5 offen"
+    folge: "Nachfrage an den Anbieter: Dokumentation der Bewertung nach Art. 6 Abs. 4"
+  - id: W4
+    wenn: "AI-Act-Pflicht nach Art. 50 Abs. 1 oder 2 liegt beim Anbieter"
+    folge: "Nachfrage an den Anbieter: Wie und seit wann wird der Hinweis bzw. die Kennzeichnung umgesetzt?"
+  - id: W5
+    wenn: "AI-Act-Hochrisiko mit Rolle Betreiber und Frage F5 (Protokolle) nicht mit „ja“ beantwortet"
+    folge: "Nachfrage an den Anbieter: Zugriff des Kunden auf automatisch erzeugte Protokolle (Art. 26 Abs. 6)"
+  - id: W6
+    wenn: "AI-Act-Rolle Anbieter durch Rollenwechsel (Art. 25)"
+    folge: "Hinweis: Der ursprüngliche Anbieter muss nach Art. 25 Abs. 2 Informationen und Unterstützung bereitstellen. Vertraglich absichern."
+  - id: W7
+    wenn: "Vendor-Kriterium KIDAT nicht anwendbar, aber AI-Act-Frage A1 „ja“ (oder umgekehrt)"
+    folge: "Widerspruch zwischen den Modulen zur Frage, ob KI im Spiel ist. Als offener Punkt vorrangig klären."
+
+# --- Offene Punkte ---------------------------------------------------------------------
+priorisierung_offene_punkte:
+  - "1. Gründe für „nicht zulässig“"
+  - "2. AI-Act-Prüfvorbehalte (Verbote gelten seit 02.02.2025)"
+  - "3. Vendor-Kriterien mit Rot"
+  - "4. Unklare tragende AI-Act-Antworten"
+  - "5. Vendor-Kernkriterien „nicht belegt“"
+  - "6. Nachfragen an den Anbieter, aus beiden Modulen zusammengeführt und ohne Dubletten"
+  - "7. Künftige Pflichten, nach Datum"

@@ -1,0 +1,25 @@
+# --- Zugangsdaten und Secrets: niemals ins Repo ---
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# --- Persönliche Claude-Code-Einstellungen (lokale Freigaben) ---
+.claude/settings.local.json
+
+# --- Eigene Läufe bleiben lokal: Reports, Zwischenergebnisse, Eval-Ergebnisse ---
+reports/
+evals/ergebnisse.csv
+
+# --- Browser-Mitschnitte von Playwright (Seiten-Snapshots, Logs) ---
+.playwright-mcp/
+# Sicherheitsnetz: Browser-Snapshots, die versehentlich im Hauptordner landen
+/*.yml
+
+# --- macOS ---
+.DS_Store
+
+# --- Editoren ---
+.vscode/
+.idea/

@@ -1,0 +1,318 @@
+# Bewertungsschema Vendor-Security-Assessment
+# Status: fachlich abgestimmt, Testläufe (Schritt 4) ausstehend
+
+schema_version: "0.6"
+stand: "25.10.2026"
+
+# --- Grundsatz ---------------------------------------------------------------
+# Die Bewertung ist praxisnah, die Belegpflicht nicht verhandelbar:
+# Ohne Quelle gibt es keinen Status außer "nicht belegt". Ermessen gilt nur für belegte Befunde.
+#
+# Zwei Ebenen:
+#   1. Einzelbewertung je Kriterium: Fakten über den Anbieter, unabhängig vom Schutzbedarf.
+#   2. Gesamturteil: abhängig vom Schutzbedarf des Anwendungsfalls (Abschnitt "schutzbedarf").
+
+# --- Statuswerte -------------------------------------------------------------
+# "nicht belegt" ist kein Rot. Rot setzt einen positiven Beleg für einen Mangel voraus.
+statuswerte:
+  gruen:
+    label: "Grün"
+    bedeutung: "Anforderung erfüllt, durch Quelle belegt."
+  gelb:
+    label: "Gelb"
+    bedeutung: "Anforderung teilweise erfüllt oder mit Einschränkungen belegt."
+  rot:
+    label: "Rot"
+    bedeutung: "Mangel durch Quelle belegt."
+  nicht_belegt:
+    label: "Nicht belegt"
+    bedeutung: "Keine öffentliche Quelle gefunden. Keine Aussage über Erfüllung oder Mangel."
+  nicht_anwendbar:
+    label: "Nicht anwendbar"
+    bedeutung: "Kriterium für diesen Dienst nicht relevant, Begründung erforderlich."
+
+# --- Belegstufen und Konfidenz -----------------------------------------------
+# Die Belegstufe wird mit dem Status ausgewiesen, z. B. "Grün (B)".
+belegstufen:
+  A:
+    label: "Primärnachweis"
+    beispiele: ["Zertifikat oder Registereintrag der Zertifizierungsstelle", "Vertragsdokument (AVV/DPA)", "Prüfbericht"]
+  B:
+    label: "Selbstauskunft des Anbieters"
+    beispiele: ["Trust Center", "Security-Seite", "Dokumentation", "Subprozessorenliste"]
+  C:
+    label: "Drittquelle"
+    beispiele: ["Presseberichte", "Behördenmeldungen", "Schwachstellendatenbanken"]
+konfidenz:
+  gruen_mindestens: B          # Grün erfordert mindestens eine B-Quelle
+  nur_stufe_c_maximal: gelb    # Allein auf Drittquellen gestützte Befunde höchstens Gelb
+  rot_ab: C                    # Ein belegter Mangel darf auch aus einer Drittquelle stammen
+
+# --- Kompensation ------------------------------------------------------------
+# Gleichwertige Nachweise sind je Kriterium unter "gleichwertig" gelistet und führen zum selben Status.
+# Kompensierende Nachweise (Feld "kompensation") ersetzen den Regelnachweis nur teilweise: höchstens Gelb.
+kompensation:
+  maximal: gelb
+
+# --- Ermessen ----------------------------------------------------------------
+ermessen:
+  max_abweichung_stufen: 1     # Reihenfolge: Rot - Gelb - Grün
+  begruendung_pflicht: true    # Im Report als "Abweichung von Regel: ..." ausweisen
+  nicht_zulaessig:
+    - "Abweichung von oder zu „nicht belegt“ bzw. „nicht anwendbar“"
+    - "Grün ohne Quelle mindestens der Stufe B"
+    - "Abweichung ohne konkrete, im Report genannte Begründung"
+  schutzbedarf: "Bei Schutzbedarf sehr hoch zählen Aufwertungen nicht im Gesamturteil (siehe schutzbedarf)."
+
+# --- Praxiseinordnung ----------------------------------------------------------
+# Optionales Feld je Kriterium im Report. Ordnet den Befund ein, ändert den Status nicht.
+# Die Liste "praxis_hinweise" je Kriterium nennt typische Fälle.
+
+# --- Schutzbedarf ------------------------------------------------------------
+# Stufen angelehnt an die Schutzbedarfskategorien des BSI IT-Grundschutz.
+# Wirkt nur auf das Gesamturteil (Ebene 2). Der Einzelstatus im Report bleibt unverändert.
+schutzbedarf:
+  default: normal
+  default_hinweis: "Ohne Angabe gilt „normal“. Der Report weist das ausdrücklich aus."
+  einstufungshilfe:
+    prinzip: "Maximumprinzip: Die höchste zutreffende Stufe gilt."
+    fragen:
+      - frage: "Werden besondere Kategorien personenbezogener Daten (z. B. Gesundheit, Biometrie, religiöse Überzeugung) oder Daten Minderjähriger verarbeitet?"
+        wenn_ja: sehr_hoch
+      - frage: "Könnte eine Verletzung von Vertraulichkeit, Integrität oder Verfügbarkeit Leib und Leben gefährden oder die Organisation existenziell bedrohen?"
+        wenn_ja: sehr_hoch
+      - frage: "Werden personenbezogene Daten in größerem Umfang oder vertrauliche Geschäftsdaten (z. B. Finanzen, Strategie, Quellcode) verarbeitet?"
+        wenn_ja: hoch
+      - frage: "Unterstützt der Dienst einen geschäftskritischen Prozess, dessen Ausfall nicht kurzfristig überbrückbar ist?"
+        wenn_ja: hoch
+    sonst: normal
+  stufen:
+    normal:
+      bedeutung: "Schadensauswirkungen begrenzt und überschaubar."
+      zusaetzliche_kernkriterien: []
+      nicht_belegt_in_kern: gelb
+      zusatzanforderungen: []
+      ermessen_im_gesamturteil: beidseitig
+    hoch:
+      bedeutung: "Schadensauswirkungen können beträchtlich sein."
+      zusaetzliche_kernkriterien: [KRYPT, SUBP]
+      nicht_belegt_in_kern: gelb
+      zusatzanforderungen:
+        - kriterium: ZERT
+          anforderung: "Grün nur mit Belegstufe A."
+      ermessen_im_gesamturteil: beidseitig
+    sehr_hoch:
+      bedeutung: "Schadensauswirkungen können ein existenziell bedrohliches Ausmaß erreichen."
+      zusaetzliche_kernkriterien: [KRYPT, SUBP, INC, VULN]
+      nicht_belegt_in_kern: rot
+      zusatzanforderungen:
+        - kriterium: ZERT
+          anforderung: "Grün nur mit Belegstufe A."
+        - kriterium: HOST
+          anforderung: "Grün nur bei Verarbeitung ausschließlich in EU/EWR ohne Drittlandzugriff."
+      ermessen_im_gesamturteil: nur_abwertung
+  wirkung_zusatzanforderung: "Ist eine Zusatzanforderung nicht erfüllt, zählt ein grünes Kriterium im Gesamturteil als Gelb."
+  wirkung_nur_abwertung: "Aufwertungen durch Ermessen bleiben im Gesamturteil unberücksichtigt, es zählt der Regelstatus."
+
+# --- Gesamtbewertung ---------------------------------------------------------
+# "Kernkriterium" meint: Kategorie kern laut Kriterium plus zusätzliche Kernkriterien laut Schutzbedarf.
+# Grundlage ist der Status nach Anwendung der Zusatzanforderungen und Ermessensregeln des Schutzbedarfs.
+# Kriterien mit Status "nicht anwendbar" bleiben unberücksichtigt.
+# Regeln werden von oben nach unten geprüft, die erste zutreffende gilt.
+gesamtbewertung:
+  regeln:
+    - wenn: "Der Anwendungsfall umfasst eine Datenart, die AVV/DPA oder Nutzungsbedingungen des Anbieters ausschließen (siehe AVV, nutzungsausschluesse)"
+      dann: rot
+      label: "Rot – vertraglich unzulässig"
+    - wenn: "Mindestens ein Kernkriterium Rot"
+      dann: rot
+    - wenn: "Mindestens ein Kernkriterium nicht belegt und Schutzbedarf mit nicht_belegt_in_kern: rot"
+      dann: rot
+      label: "Rot – ohne Nachweis nicht freigabefähig"
+    - wenn: "Mindestens ein Ergänzungskriterium Rot"
+      dann: gelb
+    - wenn: "Mindestens ein Kernkriterium Gelb oder nicht belegt"
+      dann: gelb
+    - wenn: "Sonst"
+      dann: gruen
+  hinweis: "Gelbe oder nicht belegte Ergänzungskriterien erscheinen bei Gesamtampel Grün als offene Punkte."
+  zaehlzusatz:
+    format: "<Gesamtampel> (<x> von <y> Kernkriterien mit Einschränkung)"
+    beispiel: "Gelb (3 von 5 Kernkriterien mit Einschränkung)"
+    definition: "y = Anzahl der anwendbaren Kernkriterien laut Schutzbedarf. x = davon im Gesamturteil Gelb, Rot oder nicht belegt."
+    zweck: "Zeigt, wie ausgeprägt die Einschränkungen sind, ohne ein Punktesystem einzuführen. Ändert die Gesamtampel nicht."
+
+# --- Kriterien ---------------------------------------------------------------
+kriterien:
+
+  - id: ZERT
+    kategorie: kern
+    name: "Zertifizierungen und Attestierungen"
+    prueffragen:
+      - "Welche Zertifizierungen/Attestierungen bestehen (ISO/IEC 27001, 27017, 27018, 42001, SOC 2, BSI C5)?"
+      - "Umfasst der Geltungsbereich den bewerteten Dienst?"
+      - "Ist das Zertifikat gültig (Ausstellungs- und Ablaufdatum)?"
+      - "Wer ist die Zertifizierungsstelle bzw. der Prüfer?"
+    gleichwertig:
+      - "ISO/IEC 27001"
+      - "SOC 2 Typ II"
+      - "BSI C5 Typ 2"
+    kompensation:
+      - "Veröffentlichter Bericht eines externen Penetrationstests zusammen mit ausführlicher Sicherheitsdokumentation"
+    ampel:
+      gruen: "Ein gleichwertiger Nachweis gültig, Geltungsbereich umfasst den Dienst."
+      gelb: "Zertifizierung genannt, aber Geltungsbereich oder Gültigkeit unklar, nur Typ-I-Bericht, oder Kompensation."
+      rot: "Zertifikat abgelaufen, entzogen oder Dienst ausdrücklich nicht im Geltungsbereich."
+    auslegung:
+      - "Gültigkeit gilt als belegt, wenn für den Nachweis ein Datum im folgenden Zeitfenster vor dem Bewertungsdatum genannt ist: bei SOC 2 und BSI C5 das Berichts- oder Veröffentlichungsdatum innerhalb von 12 Monaten (jährlicher Berichtszyklus), bei ISO/IEC 27001 das Datum der Ausstellung oder Rezertifizierung innerhalb von 36 Monaten (dreijähriger Zertifizierungszyklus) oder eines Überwachungsaudits innerhalb von 12 Monaten. Ein genanntes Ablaufdatum in der Zukunft genügt ebenfalls."
+      - "Geltungsbereich gilt als belegt, wenn eine Quelle den bewerteten Dienst ausdrücklich als im Scope nennt. Eine allgemeine Unternehmensaussage („Unternehmen X ist zertifiziert“) genügt nicht."
+    praxis_hinweise:
+      - "US-Anbieter weisen häufig SOC 2 statt ISO/IEC 27001 aus."
+      - "Zertifikatsdokumente sind oft nur nach Login im Trust Center abrufbar."
+
+  - id: HOST
+    kategorie: kern
+    name: "Hosting und Datenresidenz"
+    prueffragen:
+      - "In welchen Ländern/Regionen werden Kundendaten gespeichert und verarbeitet?"
+      - "Ist eine EU/EWR-Region wählbar oder zugesichert?"
+      - "Findet Zugriff aus Drittländern statt (z. B. Support), und auf welcher Übermittlungsgrundlage?"
+    ampel:
+      gruen: "Speicherung und Verarbeitung in EU/EWR zugesichert, Drittlandzugriffe ausgeschlossen oder mit genannter Übermittlungsgrundlage."
+      gelb: "EU-Region verfügbar, aber Drittlandzugriffe (Support, Subprozessoren) mit unklarer Grundlage, oder Verarbeitung im Drittland mit genannter Übermittlungsgrundlage, ohne EU-Option im bewerteten Tarif."
+      rot: "Verarbeitung in Drittland ohne genannte Übermittlungsgrundlage."
+    praxis_hinweise:
+      - "EU-Datenresidenz ist häufig an höhere Tarife gebunden."
+      - "Follow-the-Sun-Support bedeutet meist Drittlandzugriff trotz EU-Hosting."
+
+  - id: SUBP
+    kategorie: ergaenzend
+    name: "Subprozessoren"
+    prueffragen:
+      - "Gibt es eine öffentliche Subprozessorenliste?"
+      - "Enthält sie Name, Zweck und Standort je Subprozessor?"
+      - "Gibt es ein Verfahren zur Benachrichtigung über Änderungen?"
+    ampel:
+      gruen: "Öffentliche Liste mit Name, Zweck, Standort und dokumentiertem Änderungsverfahren."
+      gelb: "Liste vorhanden, aber unvollständig (Zweck oder Standort fehlt) oder ohne Änderungsverfahren."
+      rot: null   # Kein positiver Mangelbeleg realistisch, Fehlen ergibt "nicht belegt"
+    auslegung:
+      - "Standortangaben wie „Global“ oder „weltweit“ gelten als fehlender Standort (Regelstatus Gelb, keine Ermessensabweichung)."
+      - "Ist die Existenz einer Liste belegt (z. B. per DPA oder Trust Center), der Inhalt aber nur im Kundenkonto oder nach Freischaltung einsehbar, ist der Regelstatus Gelb, nicht „nicht belegt“."
+    praxis_hinweise:
+      - "Änderungsbenachrichtigung läuft oft über ein Abo-Formular oder RSS."
+
+  - id: AVV
+    kategorie: kern
+    name: "Auftragsverarbeitungsvertrag (AVV/DPA)"
+    prueffragen:
+      - "Wird eine AVV/ein DPA nach DSGVO angeboten?"
+      - "Ist das Dokument öffentlich einsehbar oder nur auf Anfrage?"
+      - "Sind bei Drittlandbezug Standardvertragsklauseln enthalten?"
+      - "Schließen AVV/DPA oder Nutzungsbedingungen bestimmte Datenarten aus (z. B. Gesundheitsdaten, Daten Minderjähriger, besondere Kategorien personenbezogener Daten, Zahlungskartendaten)?"
+    nutzungsausschluesse:
+      erfassen: "Jeder vertragliche Ausschluss von Datenarten wird mit Fundstelle im Befund genannt, unabhängig vom Anwendungsfall."
+      wirkung_status: "Kein Einfluss auf den Status des Kriteriums AVV."
+      wirkung_gesamturteil: "Umfasst der angegebene Anwendungsfall eine ausgeschlossene Datenart, ist das Gesamturteil Rot (erste Regel der Gesamtbewertung). Ohne Anwendungsfall nur Hinweis unter „Offene Punkte“."
+    gleichwertig:
+      - "Eigenständige AVV bzw. eigenständiges DPA"
+      - "In die Nutzungsbedingungen einbezogenes DPA (Click-Through)"
+    ampel:
+      gruen: "AVV/DPA öffentlich einsehbar, DSGVO-Bezug, bei Drittlandbezug mit Übermittlungsgrundlage."
+      gelb: "AVV/DPA nur auf Anfrage oder nur in bestimmten Tarifen."
+      rot: "Anbieter bietet keine AVV/kein DPA an."
+    praxis_hinweise:
+      - "Click-Through-DPAs sind bei SaaS-Anbietern üblich, Individualverhandlung meist nur ab Enterprise-Volumen."
+
+  - id: AUTH
+    kategorie: kern
+    name: "Authentifizierung und Zugriffskontrolle"
+    prueffragen:
+      - "Ist MFA verfügbar und durch Administratoren erzwingbar?"
+      - "Wird SSO (SAML 2.0 oder OIDC) unterstützt, in welchem Tarif?"
+      - "Gibt es rollenbasierte Berechtigungen?"
+    ampel:
+      gruen: "MFA durch Administratoren erzwingbar."
+      gelb: "MFA verfügbar, aber nicht erzwingbar."
+      rot: "Keine MFA verfügbar."
+    praxis_hinweise:
+      - "SSO nur im Enterprise-Tarif ist marktüblich, wird vermerkt, wirkt sich nicht auf den Status aus."
+      - "Fehlendes SSO wird als offener Punkt vermerkt."
+
+  - id: INC
+    kategorie: ergaenzend
+    name: "Incident-Historie und Schwachstellen"
+    betrachtungszeitraum_monate: 36
+    begriffe:
+      vorfall: "Belegter unbefugter Zugriff auf Kundendaten oder belegter Abfluss von Kundendaten."
+      schwachstelle: "Sicherheitslücke ohne Beleg für tatsächlichen Zugriff oder Abfluss, z. B. Forschungsbericht, Proof of Concept, CVE."
+      ausgenutzte_schwachstelle: "Schwachstelle mit Eintrag im CISA-Katalog Known Exploited Vulnerabilities (KEV). Wird wie ein Vorfall behandelt."
+      unbestaetigte_behauptung: "Behaupteter Vorfall (z. B. Datenverkaufsangebot), den der Anbieter bestreitet und für den kein unabhängiger Beleg vorliegt. Wird nicht als Vorfall gewertet, aber im Befund genannt."
+    quellen_reihenfolge:   # Alle Stufen sind zu durchsuchen, die Reihenfolge bestimmt das Gewicht bei Widersprüchen
+      - "Advisories, Post-Mortems und Security-Blog des Anbieters"
+      - "Behördliche Quellen: CISA KEV, Entscheidungen von Datenschutzbehörden, bei börsennotierten US-Unternehmen SEC-Pflichtmeldungen"
+      - "NVD: CVEs zu Produkten des Anbieters"
+      - "Fachpresse und Sicherheitsforschung"
+    prueffragen:
+      - "Sind Vorfälle oder ausgenutzte Schwachstellen im Betrachtungszeitraum öffentlich bekannt?"
+      - "Waren Kundendaten betroffen?"
+      - "Hat der Anbieter transparent informiert (Post-Mortem, Advisory)?"
+      - "Wie ist der Anbieter mit gemeldeten Schwachstellen umgegangen (Behebungsdauer, Einstufung der Meldung)?"
+      - "Gibt es eine öffentliche Statusseite und einen Meldekanal für Schwachstellen?"
+    ampel:
+      gruen: "Keine bekannten Vorfälle oder ausgenutzten Schwachstellen im Zeitraum, keine Schwachstelle mit Gelb-Merkmal, öffentliche Statusseite und Meldekanal vorhanden, Suchmethode dokumentiert."
+      gelb: "Vorfall transparent aufgearbeitet, oder Schwachstelle mit Kundendatenbezug, die länger als 90 Tage nach Meldung offen war oder vom Anbieter als nicht relevant abgewiesen wurde."   # 90 Tage angelehnt an übliche Coordinated-Disclosure-Fristen
+      rot: "Vorfall oder ausgenutzte Schwachstelle mit Kundendatenbezug ohne öffentliche Aufarbeitung, oder mehrere Vorfälle im Zeitraum."
+    hinweis: "Fehlende Funde belegen keine Vorfallsfreiheit. Für reine SaaS-Dienste werden selten CVEs vergeben, ihr Fehlen ist kein Beleg. Suchmethode und durchsuchte Quellen sind im Report anzugeben."
+    praxis_hinweise:
+      - "Ein transparent aufgearbeiteter Vorfall kann ein Hinweis auf ein funktionierendes Incident-Management sein."
+      - "Die Abgrenzung von Vorfall und Schwachstelle bleibt eine fachliche Wertung. Der Report legt die Einordnung offen, die abschließende Beurteilung liegt beim Prüfer."
+
+  - id: KRYPT
+    kategorie: ergaenzend
+    name: "Verschlüsselung"
+    prueffragen:
+      - "Werden Daten bei der Übertragung verschlüsselt (TLS, Mindestversion)?"
+      - "Werden Daten im Ruhezustand verschlüsselt (Verfahren, z. B. AES-256)?"
+      - "Wer verwaltet die Schlüssel? Sind kundenverwaltete Schlüssel (BYOK/CMK) möglich?"
+    ampel:
+      gruen: "Verschlüsselung bei Übertragung und im Ruhezustand mit konkreten Verfahren dokumentiert."
+      gelb: "Nur eines von beiden dokumentiert oder nur unspezifische Angaben (z. B. „Verschlüsselung auf Bankniveau“)."
+      rot: "Unverschlüsselte Übertragung von Kundendaten belegt."
+    hinweis: "BYOK/CMK ist kein Grün-Kriterium, wird aber als Merkmal vermerkt."
+    praxis_hinweise:
+      - "BYOK/CMK ist meist an Enterprise-Tarife gebunden."
+
+  - id: VULN
+    kategorie: ergaenzend
+    name: "Sicherheitstests und Schwachstellenmanagement"
+    prueffragen:
+      - "Werden regelmäßige Penetrationstests durch unabhängige Dritte durchgeführt?"
+      - "Gibt es ein Bug-Bounty-Programm oder eine Vulnerability Disclosure Policy?"
+      - "Ist eine security.txt (RFC 9116) oder ein anderer Meldekanal veröffentlicht?"
+    gleichwertig:
+      - "Bug-Bounty-Programm"
+      - "Vulnerability Disclosure Policy mit Meldekanal"
+    ampel:
+      gruen: "Regelmäßige externe Pentests belegt und Bug-Bounty-Programm oder Disclosure Policy vorhanden."
+      gelb: "Nur eines von beiden belegt."
+      rot: null   # Kein positiver Mangelbeleg realistisch, Fehlen ergibt "nicht belegt"
+    praxis_hinweise:
+      - "Pentest-Berichte werden meist nur unter NDA herausgegeben, öffentlich ist oft nur die Aussage, dass getestet wird."
+
+  - id: KIDAT
+    kategorie: kern
+    name: "Nutzung von Kundendaten durch KI-Funktionen"
+    anwendbar_wenn: "Dienst bietet KI-Funktionen oder ist ein KI-Dienst; sonst nicht_anwendbar mit Begründung"
+    prueffragen:
+      - "Werden Kundeneingaben oder -ausgaben zum Training oder zur Verbesserung von Modellen genutzt?"
+      - "Ist das Training standardmäßig ausgeschlossen, per Opt-out abwählbar oder nur in bestimmten Tarifen ausgeschlossen?"
+      - "Wie lange werden Eingaben und Ausgaben gespeichert?"
+      - "Welche externen KI-Anbieter werden eingesetzt, und sind sie als Subprozessoren gelistet?"
+    ampel:
+      gruen: "Kein Training mit Kundendaten im bewerteten Tarif, Aufbewahrungsdauer dokumentiert, externe KI-Anbieter benannt."
+      gelb: "Training nur per Opt-out ausschließbar, Aufbewahrungsdauer unklar oder externe KI-Anbieter nicht benannt."
+      rot: "Kundendaten werden zum Training genutzt, ohne Möglichkeit des Ausschlusses."
+    praxis_hinweise:
+      - "Häufig gilt der Trainingsausschluss nur für Business- oder Enterprise-Tarife, nicht für Free-Tarife."
+      - "Kurzzeitige Speicherung zur Missbrauchserkennung ist verbreitet und vom Training zu unterscheiden."

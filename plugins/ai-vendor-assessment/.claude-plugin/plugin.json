@@ -1,0 +1,11 @@
+{
+  "name": "ai-vendor-assessment",
+  "displayName": "AI Vendor Assessment",
+  "version": "0.1.0",
+  "description": "Ersteinschätzung von Software- und Cloud-Anbietern nach öffentlichen Quellen (Ampel-Schema mit Belegen) und von KI-Anwendungsfällen nach dem EU AI Act. Keine Rechtsberatung.",
+  "author": {
+    "name": "Clemens Fetzer"
+  },
+  "license": "MIT",
+  "keywords": ["vendor-assessment", "informationssicherheit", "eu-ai-act", "ai-governance", "lieferantenbewertung"]
+}

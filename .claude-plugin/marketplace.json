@@ -1,0 +1,14 @@
+{
+  "name": "ai-vendor-assessment",
+  "description": "Marktplatz für das Plugin AI Vendor Assessment",
+  "owner": {
+    "name": "Clemens Fetzer"
+  },
+  "plugins": [
+    {
+      "name": "ai-vendor-assessment",
+      "source": "./plugins/ai-vendor-assessment",
+      "description": "Vendor-Security-Assessment und EU-AI-Act-Ersteinschätzung mit Belegen, Subagents und Prüfrunden. Keine Rechtsberatung."
+    }
+  ]
+}

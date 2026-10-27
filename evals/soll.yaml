@@ -1,0 +1,66 @@
+# Soll-Werte für die Eval-Suite (maschinenlesbar)
+# Lesbare Fassung mit Begründungen: evals/ai-act-testfaelle.md
+#
+# Status: Hypothese, keine Referenz. Die Soll-Werte sind eine Lesart der Referenzdatei
+# und nicht juristisch geprüft. Eine Trefferquote misst daher Übereinstimmung mit
+# dieser Lesart, nicht Richtigkeit.
+#
+# Felder je Fall:
+#   klasse      id aus schema/ai-act-fragebogen.yaml, ergebnis.risikoklassen
+#   fundstelle  Text, der in der Zeile „Risikoklasse des Systems“ des Reports vorkommen muss
+#   seit        Fragebogen-Version, ab der dieser Soll-Wert gilt
+
+stand: "27.10.2026"
+fragebogen: "0.6"
+
+ai_act:
+  - fall: 1
+    kurz: "Bewerber-Ranking mit allgemeinem Sprachmodell"
+    klasse: hochrisiko
+    fundstelle: "Anhang III Nr. 4"
+    seit: "0.2"
+  - fall: 2
+    kurz: "Chatbot Lieferstatus"
+    klasse: transparenz
+    fundstelle: "Art. 50 Abs. 1"
+    seit: "0.2"
+  - fall: 3
+    kurz: "Emotionserkennung bei Anrufenden im Callcenter"
+    klasse: hochrisiko
+    fundstelle: "Anhang III Nr. 1"
+    seit: "0.2"
+  - fall: 4
+    kurz: "Stimmanalyse bei Beschäftigten im Callcenter"
+    klasse: verboten
+    fundstelle: "Art. 5 Abs. 1 Buchst. f"
+    seit: "0.2"
+  - fall: 5
+    kurz: "KI-Schreibassistent einer Agentur"
+    klasse: transparenz
+    fundstelle: "Art. 50 Abs. 2"
+    seit: "0.4"   # Erwartung am 26.10.2026 korrigiert (Systemsicht statt Organisationssicht)
+  - fall: 6
+    kurz: "Kreditwürdigkeitsprüfung Ratenkredite"
+    klasse: hochrisiko
+    fundstelle: "Anhang III Nr. 5"
+    seit: "0.2"
+  - fall: 7
+    kurz: "KI-Werbebilder fiktiver Personen"
+    klasse: transparenz
+    fundstelle: "Art. 50 Abs. 2"
+    seit: "0.2"
+  - fall: 8
+    kurz: "Betrugserkennung Kartenzahlungen"
+    klasse: keine_besonderen
+    fundstelle: "Art. 4"
+    seit: "0.2"
+  - fall: 9
+    kurz: "Emotionsauswertung in Video-Bewerbungsinterviews"
+    klasse: verboten
+    fundstelle: "Art. 5 Abs. 1 Buchst. f"
+    seit: "0.6"
+  - fall: 10
+    kurz: "Inhaltsauswertung in Video-Bewerbungsinterviews"
+    klasse: hochrisiko
+    fundstelle: "Anhang III Nr. 4"
+    seit: "0.6"
