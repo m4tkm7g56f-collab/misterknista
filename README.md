@@ -1,6 +1,6 @@
 # AI Vendor Assessment
 
-> Status: Version 0.1.1. Beide Module und der gemeinsame Einstiegspunkt sind lauffähig und in Blindtests erprobt. Eine erste Gegenprüfung durch ein anderes KI-Modell ist im [Review-Log](reviews/review-log.md) dokumentiert, mit offenen Befunden. Eine fachliche Prüfung durch Menschen steht aus. **Keine Rechtsberatung**, siehe [Haftungshinweis](#haftungshinweis).
+> Status: Version 0.2.0. Beide Module und der gemeinsame Einstiegspunkt sind lauffähig und in Blindtests erprobt. Eine erste Gegenprüfung durch ein anderes KI-Modell ist im [Review-Log](reviews/review-log.md) dokumentiert, mit offenen Befunden. Eine fachliche Prüfung durch Menschen steht aus. **Keine Rechtsberatung**, siehe [Haftungshinweis](#haftungshinweis).
 
 Ein Plugin für [Claude Code](https://code.claude.com/docs) mit zwei Aufgaben aus der Informationssicherheit und AI Governance:
 
