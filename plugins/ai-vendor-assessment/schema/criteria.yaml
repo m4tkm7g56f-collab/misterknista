@@ -1,7 +1,7 @@
 # Bewertungsschema Vendor-Security-Assessment
 # Status: fachlich abgestimmt, in Testläufen erprobt, nicht unabhängig geprüft
 
-schema_version: "0.9"
+schema_version: "0.10"
 stand: "28.10.2026"
 
 # --- Grundsatz ---------------------------------------------------------------
@@ -224,6 +224,7 @@ kriterien:
         ausgeschlossen: "Das Dokument schließt das Merkmal ausdrücklich aus, mit Zitat."
       regeln:
         mehrere_bestandteile: "Gilt nur für GRUND: Es zählt der schwächste Bestandteil. Der Hinweis nennt jeden fehlenden oder eingeschränkten Bestandteil einzeln, z. B. „nicht gefunden: Art, Zweck, Gegenstand“."
+        hinweis_teilbelege: "Ist ein Merkmal aus mehreren Teilen nur teilweise belegt (GRUND, D, F), beginnt der Hinweis mit „Belegt: …“ und nennt danach „Nicht gefunden: …“, jeweils mit den Teilen und Q-Nummern."
         vertragsdokumente: "Maßgeblich sind alle Vertragsdokumente, die für dieselben Kundendaten gelten (DPA, Nutzungsbedingungen, Zusatzbedingungen). Eine Vorrangklausel zugunsten des DPA greift nur bei Widerspruch. Eine Klausel in einem anderen Dokument, der das DPA nicht ausdrücklich widerspricht, zählt für das Merkmal."
       liste:
         - id: GRUND
@@ -240,9 +241,11 @@ kriterien:
           inhalt: "Maßnahmen nach Art. 32 (Buchst. c)"
           belegt_auch: "TOMs als Anhang oder per Verweis auf eine öffentliche Sicherheitsdokumentation einbezogen. Bewertet wird nur, dass sie vertraglich einbezogen sind, nicht ihre Angemessenheit."
         - id: D
-          inhalt: "Bedingungen für weitere Auftragsverarbeiter nach Abs. 2 und 4 (Buchst. d)"
-          belegt_auch: "Allgemeine Genehmigung mit Liste, Vorabinformation über Änderungen und Einspruchsmöglichkeit. Besteht der Einspruch nur aus einem Kündigungsrecht: belegt, mit Hinweis „Auslegungsfrage, siehe references/dsgvo-art28.md Abschnitt 3 Nr. 3“."
-          eingeschraenkt: "Keine Vorabinformation über Änderungen."
+          inhalt: "Bedingungen für weitere Auftragsverarbeiter nach Abs. 2 und 4 (Buchst. d): Genehmigung, Information und Einspruch (Abs. 2) sowie Weitergabe derselben Datenschutzpflichten (Abs. 4 Satz 1)"
+          belegt_auch: "Allgemeine Genehmigung mit Liste, Vorabinformation über Änderungen und Einspruchsmöglichkeit, und vertragliche Weitergabe der Pflichten an weitere Auftragsverarbeiter mit Bezug auf das DPA, auf Art. 28 Abs. 3 oder einem gleichwertigen Maßstab (z. B. „no less protective“, „the same data protection obligations“). Besteht der Einspruch nur aus einem Kündigungsrecht: belegt, mit Hinweis „Auslegungsfrage, siehe references/dsgvo-art28.md Abschnitt 3 Nr. 3“."
+          eingeschraenkt: "Keine Vorabinformation über Änderungen, oder Weitergabe nur „angemessener“ Pflichten ohne Bezug auf das DPA, auf Art. 28 Abs. 3 oder einen gleichwertigen Maßstab."
+          nicht_gefunden: "Bedingungen nach Abs. 2 belegt, eine Weitergabe der Pflichten nach Abs. 4 Satz 1 nicht auffindbar."
+          hinweis: "Die Haftung für weitere Auftragsverarbeiter (Abs. 4 Satz 2) wird erfasst. Fehlt sie im Dokument: Hinweis im Befund, kein Einfluss auf den Status (references/dsgvo-art28.md Abschnitt 3 Nr. 3a)."
         - id: E
           inhalt: "Unterstützung bei Anträgen betroffener Personen (Buchst. e)"
           belegt_auch: "Unterstützung über Funktionen im Produkt."
