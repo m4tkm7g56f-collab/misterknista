@@ -2,10 +2,10 @@
 
 | Feld | Wert |
 |---|---|
-| Stand-Datum (Abruf und Auswertung) | 27.10.2026 |
+| Stand-Datum (Abruf und Auswertung) | 27.10.2026, ergänzt 28.10.2026 (Sprachfassungen zu Abs. 3 Unterabs. 2 und Art. 33 Abs. 2) |
 | Rechtsgrundlage | Verordnung (EU) 2016/679 (DSGVO), CELEX `32016R0679`, Art. 28 Abs. 2 bis 4 |
 | Standardvertragsklauseln | Durchführungsbeschluss (EU) 2021/915 der Kommission vom 04.06.2021 (CELEX `32021D0915`), Durchführungsbeschluss (EU) 2021/914 der Kommission vom 04.06.2021 (CELEX `32021D0914`) |
-| Abruf | Amt für Veröffentlichungen der EU, deutsche Fassung über `http://publications.europa.eu/resource/celex/<CELEX>`, abgerufen am 27.10.2026. EUR-Lex selbst war wegen Bot-Schutz nicht abrufbar |
+| Abruf | Amt für Veröffentlichungen der EU, deutsche Fassung über `http://publications.europa.eu/resource/celex/<CELEX>`, abgerufen am 27.10.2026. Für den Vergleich der Sprachfassungen am 28.10.2026 die deutsche und englische Fassung des Amtsblatts L 119 vom 04.05.2016 über `http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.<DEU|ENG>.xhtml` (Berichtigungen dabei nicht geprüft). EUR-Lex selbst war wegen Bot-Schutz nicht abrufbar |
 | Links für Leser | [DSGVO auf EUR-Lex](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679), [2021/915 auf EUR-Lex](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32021D0915), [2021/914 auf EUR-Lex](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32021D0914) |
 | Verwendet von | Kriterium AVV in `schema/criteria.yaml` (Bewerter und Prüfer) |
 
@@ -32,6 +32,10 @@
 
 **Abs. 3 Unterabs. 2:** „Mit Blick auf Unterabsatz 1 Buchstabe h informiert der Auftragsverarbeiter den Verantwortlichen unverzüglich, falls er der Auffassung ist, dass eine Weisung gegen diese Verordnung oder gegen andere Datenschutzbestimmungen der Union oder der Mitgliedstaaten verstößt.“
 
+Englische Fassung: „With regard to point (h) of the first subparagraph, the processor shall immediately inform the controller if, in its opinion, an instruction infringes this Regulation or other Union or Member State data protection provisions.“
+
+**Zum Vergleich Art. 33 Abs. 2:** „Wenn dem Auftragsverarbeiter eine Verletzung des Schutzes personenbezogener Daten bekannt wird, meldet er diese dem Verantwortlichen unverzüglich.“ Englische Fassung: „The processor shall notify the controller without undue delay after becoming aware of a personal data breach.“
+
 **Abs. 4 Satz 1 (Kern):** Einem weiteren Auftragsverarbeiter werden vertraglich „dieselben Datenschutzpflichten auferlegt, die in dem Vertrag oder anderen Rechtsinstrument zwischen dem Verantwortlichen und dem Auftragsverarbeiter gemäß Absatz 3 festgelegt sind“. Satz 2: Der erste Auftragsverarbeiter haftet gegenüber dem Verantwortlichen für die Einhaltung der Pflichten des weiteren Auftragsverarbeiters.
 
 ## 2. Standardvertragsklauseln der Kommission
@@ -52,3 +56,5 @@ Modul 2 der Klauseln nach 2021/914 betrifft laut Anhang die „Übermittlung von
 2. **Weisung (Buchst. a):** Dass der Vertrag, die Dokumentation und die Konfiguration des Dienstes durch den Kunden als Weisung gelten, ist eine verbreitete Ausgestaltung. Sie wird als belegt gewertet, wenn die Verarbeitung auf diese Weisungen beschränkt ist.
 3. **Weitere Auftragsverarbeiter (Buchst. d):** Abs. 2 erlaubt eine allgemeine Genehmigung, verlangt aber Information über Änderungen und die Möglichkeit des Einspruchs. Ob ein Einspruch, der nur zur Kündigung berechtigt, diese Möglichkeit wahrt, ist eine Auslegungsfrage. Sie wird als Hinweis im Befund vermerkt, nicht stillschweigend gewertet.
 4. **Nachweise und Überprüfungen (Buchst. h):** Abs. 3 Buchst. h nennt Überprüfungen „einschließlich Inspektionen“. Ein Nachweis vorrangig über Zertifikate oder Prüfberichte, mit Vor-Ort-Prüfung auf begründete Anfrage, wahrt nach dieser Auslegung den Kern. Ein vollständiger Ausschluss jeder Überprüfung außer Berichten wahrt ihn nicht.
+5. **Anonymisierte und aggregierte Daten (Buchst. a):** Behält sich der Anbieter vor, Kundendaten zu anonymisieren oder zu aggregieren und die so gewonnenen Daten für eigene Zwecke zu nutzen, ist offen, ob das Anonymisieren selbst noch auf Weisung des Verantwortlichen erfolgt. Diese Auslegungsfrage entscheidet das Projekt nicht. Ein solcher Vorbehalt wird als eingeschränkt gewertet und als Hinweis im Befund vermerkt. Ein Vorbehalt, personenbezogene Kundendaten für eigene Zwecke zu verarbeiten, schließt das Merkmal aus.
+6. **Frist für den Hinweis bei rechtswidriger Weisung (Abs. 3 Unterabs. 2):** Die deutsche Fassung verwendet in Abs. 3 Unterabs. 2 und in Art. 33 Abs. 2 dasselbe Wort „unverzüglich“, die englische unterscheidet „immediately“ und „without undue delay“ (Abschnitt 1). Weil beide Sprachfassungen gleich verbindlich sind, gelten alle drei Formulierungen als belegt. Formulierungen, die die Frist an die Umstände des Anbieters knüpfen (z. B. „as soon as reasonably practicable“), bleiben dahinter zurück und gelten als eingeschränkt.

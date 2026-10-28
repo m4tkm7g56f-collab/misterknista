@@ -35,6 +35,9 @@ Typische Fundorte je Kriterium. Hinweise für die Suche, kein Beleg. Was hier st
 - Hinweise, dass das DPA nur auf Anfrage oder nur in bestimmten Tarifen gilt
 - Fassung: Titel, Versionsnummer oder „Last updated“ am Dokumentanfang oder -ende
 - Einbeziehung von Standardvertragsklauseln: Abschnitte „Standard Contractual Clauses“, „SCCs“, „Commission Decision 2021/915“ bzw. „2021/914“, „Module Two“, „Module Three“, Vorrangklausel („in the event of conflict, the SCCs shall prevail“)
+- Anhänge des DPA: „Annex“, „Appendix“, „Schedule“, oft als eigene Seite oder PDF verlinkt
+- Rechte an Kundendaten außerhalb des DPA, typische Abschnittstitel in Nutzungsbedingungen: „Customer Data“, „Use of Data“, „Aggregated Data“, „Anonymised Data“, „Usage Data“, „Service Improvement“
+- Übermittlungsinstrument: „Standard Contractual Clauses“, „adequacy decision“, „Data Privacy Framework“, „Binding Corporate Rules“, im Abschnitt „International Transfers“ bzw. „Transfers outside the EEA“
 - Pflichtmerkmale nach Art. 28 Abs. 3, typische Abschnittstitel: „Scope“ bzw. „Description of Processing“ (Anhang, GRUND), „Instructions“ (A), „Confidentiality“ bzw. „Personnel“ (B), „Security Measures“ bzw. „Technical and Organizational Measures“ (C), „Sub-processors“ (D), „Data Subject Requests“ (E), „Security Incident“ bzw. „Personal Data Breach“ sowie „Data Protection Impact Assessment“ (F), „Deletion or Return“ bzw. „Termination“ (G), „Audits“ bzw. „Audit Rights“ (H), „Unlawful Instructions“ bzw. Hinweis im Abschnitt „Instructions“ (UA2)
 
 ## AUTH
