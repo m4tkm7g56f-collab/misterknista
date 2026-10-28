@@ -20,7 +20,7 @@ Leere Eingaben gelten als „nicht angegeben“.
 
 ## Grundregeln
 
-1. **Nur öffentlich zugängliche Quellen.** Keine Logins, keine Zugangsdaten, kein Umgehen von Zugangsbeschränkungen oder Bot-Schutz.
+1. **Nur öffentlich zugängliche Quellen.** Keine Logins, keine Zugangsdaten, keine Zugangsformulare, keine Challenges oder CAPTCHAs, robots.txt wird beachtet. Wehrt eine Seite nur das Abrufwerkzeug ab (HTTP 403 oder 429 ohne Challenge), ist ein Abruf per Browser erlaubt und wird gekennzeichnet. Die Einzelheiten stehen in `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/abrufregeln.md` und gelten für Rechercheur und Prüfer.
 2. **Nichts erfinden, nichts raten.** Jede Aussage im Report braucht eine Quelle mit URL und Abrufdatum. Fehlt ein Beleg, lautet der Status `nicht belegt`. Plausibilität ersetzt keinen Beleg.
 3. **Report-Stil:** sachlich, auditfest, keine Werbesprache. Quelle direkt bei der Aussage. Datumsformat DD.MM.YYYY.
 4. **Datenminimierung:** Angaben zum Anwendungsfall und zum Schutzbedarf gelangen nicht in Suchanfragen.

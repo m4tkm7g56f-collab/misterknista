@@ -62,6 +62,7 @@ Status mit Belegstufe in Klammern: A = Primärnachweis, B = Selbstauskunft des A
 ## Methodik und Grenzen
 
 - Grundlage sind ausschließlich öffentlich zugängliche Quellen zum Bewertungsdatum.
+- Abruf per Browser, nachdem die Seite das Abrufwerkzeug abgewehrt hatte (HTTP 403 oder 429, ohne Challenge): {{Domains mit Q-Nummern laut Belegliste, sonst „keiner“}}.
 - Status „Nicht belegt“ bedeutet: keine Quelle gefunden. Er trifft keine Aussage über Erfüllung oder Mangel.
 - Abweichungen von der Regelbewertung sind auf eine Stufe begrenzt und einzeln begründet.
 - Der Schutzbedarf beeinflusst nur das Gesamturteil. Für einen anderen Anwendungsfall kann das Gesamturteil bei identischen Einzelbefunden abweichen.

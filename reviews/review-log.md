@@ -29,3 +29,14 @@ Schwere: kritisch / hoch / mittel / niedrig / Hinweis. „kritisch“ heißt: fa
 | K01 | Konsistenz | `soll.yaml` nennt Fragebogen 0.6, ausgeliefert wird 0.7 | mittel | Teilweise bestätigt. Das Feld war veraltet, das Auswertungsskript nutzt es nicht. Es zählt je Fall nach „seit“ und je Lauf nach der tatsächlichen Version | niedrig | erledigt |
 | K02 | Konsistenz | Kopf des Fragebogens sagt „Testläufe ausstehend“ | niedrig | Bestätigt | niedrig | erledigt |
 | D01 | Darstellung | Haftungshinweis ist klar | Hinweis | – | Hinweis | zur Kenntnis |
+
+## Befunde aus eigenen Kontrollläufen
+
+Kontrolllauf am 28.10.2026 mit Schema 0.9, gleicher EU-Anbieter wie bei V01, Schutzbedarf hoch: BCM Gelb, Gesamtampel Gelb wie in den Vorläufen, Prüfer Runde 2 mit 122 gedeckten Aussagen und 6 nicht erreichbaren.
+
+| ID | Prüffeld | Befund | Schwere | Status |
+|---|---|---|---|---|
+| E01 | Sicherheit | Regeln widersprüchlich: „kein Umgehen von Bot-Schutz“ gegen „Browser, wenn ein Abruf keinen Inhalt liefert“. Der Rechercheur wich bei HTTP 403 und 429 auf den Browser aus (rund 85 von 91 Belegen), der Prüfer nicht. Beim Cookie-Banner war „Accept All“ nicht auszuschließen | hoch | erledigt: gemeinsame `abrufregeln.md` für Rechercheur und Prüfer (Challenge bricht ab, robots.txt wird beachtet, Browser nach 403 oder 429 nur mit Kennzeichnung, Cookie-Banner nicht anklicken), SKILL.md und README angepasst. Nicht neu gelaufen |
+| E02 | Vendor-Kriterien | Merkmal D prüft nur Abs. 2, nicht die Weitergabe derselben Pflichten an weitere Auftragsverarbeiter nach Abs. 4. Der Bewerter setzte D ohne Regel auf „nicht gefunden“ | mittel | offen, Entscheidung des Maintainers |
+| E03 | Vendor-Kriterien | Prüfer hält für Merkmal F bei Teilzusagen „eingeschränkt“ für passender als „nicht gefunden“ (Regel aus Schema 0.9) | niedrig | offen, Entscheidung des Maintainers |
+| E04 | Ablauf | Fehler in der Belegliste (Q71, KEV-Abgleich) wurde in der Korrekturrunde über den Prüfbericht korrigiert, nicht über die Belegliste. Bruch der Funktionstrennung, der Skill sieht keine Nachrecherche vor | mittel | offen |
