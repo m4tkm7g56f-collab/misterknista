@@ -1,7 +1,7 @@
 # Bewertungsschema Vendor-Security-Assessment
 # Status: fachlich abgestimmt, in Testläufen erprobt, nicht unabhängig geprüft
 
-schema_version: "0.8"
+schema_version: "0.9"
 stand: "28.10.2026"
 
 # --- Grundsatz ---------------------------------------------------------------
@@ -223,7 +223,7 @@ kriterien:
         nicht_gefunden: "Im abgerufenen Dokument nicht auffindbar. Kein Beleg für einen Mangel."
         ausgeschlossen: "Das Dokument schließt das Merkmal ausdrücklich aus, mit Zitat."
       regeln:
-        mehrere_bestandteile: "Besteht ein Merkmal aus mehreren Bestandteilen (z. B. GRUND), zählt der schwächste Bestandteil. Der Hinweis nennt jeden fehlenden oder eingeschränkten Bestandteil einzeln, z. B. „nicht gefunden: Art, Zweck, Gegenstand“."
+        mehrere_bestandteile: "Gilt nur für GRUND: Es zählt der schwächste Bestandteil. Der Hinweis nennt jeden fehlenden oder eingeschränkten Bestandteil einzeln, z. B. „nicht gefunden: Art, Zweck, Gegenstand“."
         vertragsdokumente: "Maßgeblich sind alle Vertragsdokumente, die für dieselben Kundendaten gelten (DPA, Nutzungsbedingungen, Zusatzbedingungen). Eine Vorrangklausel zugunsten des DPA greift nur bei Widerspruch. Eine Klausel in einem anderen Dokument, der das DPA nicht ausdrücklich widerspricht, zählt für das Merkmal."
       liste:
         - id: GRUND
@@ -248,8 +248,9 @@ kriterien:
           belegt_auch: "Unterstützung über Funktionen im Produkt."
         - id: F
           inhalt: "Unterstützung bei Art. 32 bis 36, einschließlich Meldung von Datenschutzverletzungen (Buchst. f)"
-          belegt_auch: "Meldung „unverzüglich“, „ohne unangemessene Verzögerung“ oder mit fester Frist zugesagt."
+          belegt_auch: "Meldung von Datenschutzverletzungen „unverzüglich“, „ohne unangemessene Verzögerung“ oder mit fester Frist zugesagt, und eine allgemeine Unterstützungszusage für Art. 32 bis 36."
           eingeschraenkt: "Meldung ohne jede Zeitangabe."
+          nicht_gefunden: "Meldung zugesagt, aber keine allgemeine Unterstützungszusage für Art. 32 bis 36 (z. B. nur Zusagen zu einzelnen Artikeln). Der Hinweis nennt die Artikel, zu denen eine Zusage fehlt."
         - id: G
           inhalt: "Löschung oder Rückgabe nach Vertragsende (Buchst. g)"
           belegt_auch: "Löschung mit genannter Frist, auch für Backups."

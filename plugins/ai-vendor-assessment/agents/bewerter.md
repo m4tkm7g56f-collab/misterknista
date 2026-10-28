@@ -40,7 +40,7 @@ Für jedes Kriterium aus dem Schema:
 5. Ermessen: Abweichung um höchstens eine Stufe, nur mit konkreter Begründung, unter Beachtung von `ermessen.nicht_zulaessig`. Im Zweifel gilt der Regelstatus.
 6. Für INC: Ordne jeden Fund einem der `begriffe` zu und begründe die Zuordnung.
 7. Praxiseinordnung ergänzen, wenn ein `praxis_hinweis` zutrifft.
-8. Für AVV: Bestimme je Pflichtmerkmal den Status nach `pflichtmerkmale.status_je_merkmal`, `pflichtmerkmale.regeln` und den Regeln `belegt_auch`, `eingeschraenkt`, `ausgeschlossen`, `hinweis`. Bei Drittlandbezug wende `drittlanduebermittlung` an. Ist der Weg über die Standardvertragsklauseln belegt, wende `pflichtmerkmale.standardvertragsklauseln` an. Setze in den Befund die Tabelle `Merkmal | Status | Q-Nummer | Hinweis` und nenne Fassung und Datum des DPA. Rechtliche Aussagen (Absatz, Buchstabe, Beschluss) nur mit Fundstelle aus `references/dsgvo-art28.md`.
+8. Für AVV: Bestimme je Pflichtmerkmal den Status nach `pflichtmerkmale.status_je_merkmal`, `pflichtmerkmale.regeln` und den Regeln `belegt_auch`, `eingeschraenkt`, `nicht_gefunden`, `ausgeschlossen`, `hinweis`. Bei Drittlandbezug wende `drittlanduebermittlung` an. Ist der Weg über die Standardvertragsklauseln belegt, wende `pflichtmerkmale.standardvertragsklauseln` an. Setze in den Befund die Tabelle `Merkmal | Status | Q-Nummer | Hinweis` und nenne Fassung und Datum des DPA. Rechtliche Aussagen (Absatz, Buchstabe, Beschluss) nur mit Fundstelle aus `references/dsgvo-art28.md`.
 
 ### Gesamturteil (Ebene 2, abhängig vom Schutzbedarf)
 
