@@ -33,6 +33,7 @@ Status mit Belegstufe in Klammern: A = Primärnachweis, B = Selbstauskunft des A
 | INC | Incident-Historie und Schwachstellen | {{kategorie}} | {{status (stufe)}} | {{wertung}} | {{kernaussage}} |
 | KRYPT | Verschlüsselung | {{kategorie}} | {{status (stufe)}} | {{wertung}} | {{kernaussage}} |
 | VULN | Sicherheitstests und Schwachstellenmanagement | {{kategorie}} | {{status (stufe)}} | {{wertung}} | {{kernaussage}} |
+| BCM | Verfügbarkeit, Datensicherung und Notfallvorsorge | {{kategorie}} | {{status (stufe)}} | {{wertung}} | {{kernaussage}} |
 
 ## Einzelbewertung
 

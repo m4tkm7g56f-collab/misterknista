@@ -103,7 +103,7 @@ schutzbedarf:
       ermessen_im_gesamturteil: beidseitig
     sehr_hoch:
       bedeutung: "Schadensauswirkungen können ein existenziell bedrohliches Ausmaß erreichen."
-      zusaetzliche_kernkriterien: [KRYPT, SUBP, INC, VULN]
+      zusaetzliche_kernkriterien: [KRYPT, SUBP, INC, VULN, BCM]
       nicht_belegt_in_kern: rot
       zusatzanforderungen:
         - kriterium: ZERT
@@ -365,6 +365,45 @@ kriterien:
       rot: null   # Kein positiver Mangelbeleg realistisch, Fehlen ergibt "nicht belegt"
     praxis_hinweise:
       - "Pentest-Berichte werden meist nur unter NDA herausgegeben, öffentlich ist oft nur die Aussage, dass getestet wird."
+
+  - id: BCM
+    kategorie: ergaenzend
+    name: "Verfügbarkeit, Datensicherung und Notfallvorsorge"
+    prueffragen:
+      - "Gibt es eine vertragliche Verfügbarkeitszusage (SLA) mit Prozentwert und Messzeitraum, ggf. mit Gutschriften? Für welchen Tarif gilt sie?"
+      - "Werden Kundendaten gesichert? Mit welcher Häufigkeit und Aufbewahrungsdauer, an welchem Ort (getrennter Standort), verschlüsselt?"
+      - "Werden Wiederherstellungen aus Backups getestet?"
+      - "Ist der Dienst redundant ausgelegt (mehrere Rechenzentren oder Verfügbarkeitszonen)?"
+      - "Gibt es einen Notfall- bzw. Wiederherstellungsplan, wird er getestet, sind RTO und RPO genannt?"
+      - "Gibt es eine öffentliche Statusseite mit Störungshistorie?"
+    teile:
+      - id: SLA
+        inhalt: "Vertragliche Verfügbarkeitszusage"
+      - id: BACKUP
+        inhalt: "Datensicherung (Häufigkeit, Aufbewahrung, Ort, Verschlüsselung, Wiederherstellungstests)"
+      - id: NOTFALL
+        inhalt: "Notfall- und Wiederherstellungsvorsorge (Redundanz, Notfallplan, Tests, RTO und RPO)"
+    dokumentation: "Der Befund nennt je Teil (SLA, BACKUP, NOTFALL) den Stand mit Q-Nummer oder „nicht gefunden“."
+    gleichwertig:   # Nachweise für NOTFALL, jeweils mit Geltungsbereich für den bewerteten Dienst
+      - "ISO 22301"
+      - "BSI C5 Typ 2 (Bereich BCM)"
+      - "SOC 2 Typ II mit dem Trust-Services-Kriterium Availability im Scope"
+    ampel:
+      gruen: "SLA vertraglich belegt (Belegstufe A) für den bewerteten Tarif, Backups mit Häufigkeit und Aufbewahrungsdauer belegt, und Notfall- und Wiederherstellungsvorsorge belegt (Nachweis nach „gleichwertig“ oder Selbstauskunft mit RTO/RPO oder Testangabe)."
+      gelb: "Nur Selbstauskunft ohne konkrete Angaben (z. B. „regelmäßige Backups“, „hochverfügbar“), SLA nur in bestimmten Tarifen oder auf Anfrage, oder einer der drei Teile nicht gefunden, jeweils benannt."
+      rot: "Belegter Mangel: Der Anbieter schließt die Datensicherung ausdrücklich aus oder überträgt sie allein dem Kunden (mit Zitat)."
+    auslegung:
+      - "Fehlt ein SLA, ergibt das allein kein Rot. Ein Gewährleistungsausschluss für Verfügbarkeit („as is“, „no guarantee of uninterrupted service“) ist ein Hinweis im Befund, der Teil SLA gilt dann als nicht gefunden."
+      - "Ist keiner der drei Teile belegt, ist der Status „nicht belegt“."
+    abgrenzung:
+      - "Vergangene Störungen und Vorfälle bewertet INC. Die Statusseite wird unter BCM nur als Merkmal vermerkt, ihre Historie wird nicht ausgewertet."
+      - "Löschfristen für Backups nach Vertragsende bewertet AVV (Merkmal G)."
+      - "Datenexport und Exit (Portabilität, Insolvenz des Anbieters) sind nicht Teil dieses Kriteriums."
+    hinweis: "Eine Statusseite ist kein Grün-Kriterium, wird aber als Merkmal vermerkt."
+    praxis_hinweise:
+      - "SLAs mit Gutschriften gibt es meist nur ab Business- oder Enterprise-Tarifen."
+      - "RTO und RPO werden selten öffentlich genannt, häufiger im Trust Center nach Zugangsanfrage."
+      - "Angaben zu Backups und Redundanz stehen oft in den TOM (Anhang zum DPA) oder im Security-Whitepaper."
 
   - id: KIDAT
     kategorie: kern

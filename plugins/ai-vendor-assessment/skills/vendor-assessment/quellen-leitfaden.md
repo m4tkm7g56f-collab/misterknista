@@ -76,6 +76,15 @@ Jede Anfrage ins Suchprotokoll, mit Stufe.
 - Bug-Bounty-Plattformen (Programmseiten des Anbieters)
 - Trust Center (Aussagen zu Pentests, Häufigkeit, externe Prüfer)
 
+## BCM
+
+- SLA: eigene Seite „Service Level Agreement“ bzw. „SLA“, Anhang zu Nutzungsbedingungen oder Order Form, Tarifvergleich auf der Preisseite
+- Gewährleistung in den Nutzungsbedingungen: Abschnitte „Availability“, „Warranty“, „Disclaimer“, „Customer Responsibilities“ (Datensicherung durch den Kunden)
+- Backups und Redundanz: TOM (oft Anhang zum DPA), Security-Whitepaper, Trust Center, Abschnitte „Backup“, „Data Backup“, „Redundancy“, „High Availability“
+- Notfallvorsorge: „Business Continuity“, „Disaster Recovery“, „BCP“, „DRP“, „RTO“, „RPO“
+- Nachweise: ISO 22301, BSI C5 (Bereich BCM), SOC 2 mit Availability im Scope, jeweils mit Geltungsbereich
+- Statusseite: oft unter `status.<domain>`
+
 ## KIDAT
 
 - Seiten zu KI-Funktionen, „AI“, „Trust“, „Data usage“, „Model training“

@@ -42,7 +42,8 @@ Lies:
    - **F** zitierst du mit der Meldefrist für Datenschutzverletzungen und mit der Unterstützungszusage für Art. 32 bis 36, als allgemeine Klausel oder als Zusagen zu einzelnen Artikeln.
    - **UA2** zitierst du einschließlich der Zeitangabe und der genannten Rechtsgrundlage (z. B. „the GDPR“ oder „applicable data protection law“).
    - **Drittlandübermittlung:** Halte wörtlich fest, welches Instrument das DPA nennt (Standardvertragsklauseln, Angemessenheitsbeschluss, Data Privacy Framework, verbindliche interne Datenschutzvorschriften) oder dass nur allgemeine Formeln wie „appropriate safeguards“ stehen.
-6. Erfasse ausdrücklich, wonach du gesucht und was du nicht gefunden hast. Fehlende Funde sind ein Ergebnis.
+6. Für BCM: Erfasse je Teil aus `teile` eigene Zeilen, in der Spalte Kriterium als `BCM-<Teil-ID>` (z. B. `BCM-SLA`). Beim SLA zitierst du Prozentwert, Messzeitraum, Gutschriften und den Tarif, für den es gilt, bei Backups Häufigkeit, Aufbewahrung, Ort, Verschlüsselung und Wiederherstellungstests, bei NOTFALL Redundanz, Notfallplan, Tests sowie RTO und RPO. Erfasse auch Gewährleistungsausschlüsse für Verfügbarkeit und Klauseln, nach denen der Kunde selbst für die Datensicherung verantwortlich ist. Bei Nachweisen nach `gleichwertig` hältst du den Geltungsbereich fest. Eine Statusseite vermerkst du mit URL, ihre Historie wertest du nicht aus.
+7. Erfasse ausdrücklich, wonach du gesucht und was du nicht gefunden hast. Fehlende Funde sind ein Ergebnis.
 
 ## Ausgabe
 

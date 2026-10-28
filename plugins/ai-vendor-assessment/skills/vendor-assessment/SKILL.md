@@ -1,6 +1,6 @@
 ---
 name: vendor-assessment
-description: Bewertet einen Software- oder Cloud-Anbieter anhand öffentlicher Quellen nach dem Ampel-Schema des Projekts (Zertifizierungen, Hosting, Subprozessoren, AVV, Authentifizierung, Incidents, Verschlüsselung, Schwachstellenmanagement, KI-Datennutzung) und erstellt einen geprüften, auditfesten Report mit Quellen inline. Arbeitet mit den Subagents rechercheur, bewerter und pruefer.
+description: Bewertet einen Software- oder Cloud-Anbieter anhand öffentlicher Quellen nach dem Ampel-Schema des Projekts (Zertifizierungen, Hosting, Subprozessoren, AVV, Authentifizierung, Incidents, Verschlüsselung, Schwachstellenmanagement, Notfallvorsorge, KI-Datennutzung) und erstellt einen geprüften, auditfesten Report mit Quellen inline. Arbeitet mit den Subagents rechercheur, bewerter und pruefer.
 argument-hint: <anbieter-url> [normal|hoch|sehr_hoch] ["Anwendungsfall"] ["Tarif"]
 arguments: [url, schutzbedarf, anwendungsfall, tarif]
 disable-model-invocation: true

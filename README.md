@@ -110,7 +110,7 @@ Das Plugin lädt nichts hoch und schreibt nichts in dieses Repository. Wer den e
 
 Das Schema in [`criteria.yaml`](plugins/ai-vendor-assessment/schema/criteria.yaml) trennt zwei Ebenen:
 
-- **Einzelbewertung:** neun Kriterien, unabhängig vom Anwendungsfall: Zertifizierungen, Hosting und Datenresidenz, Subprozessoren, Auftragsverarbeitung, Authentifizierung, Incidents, Verschlüsselung, Schwachstellenmanagement, Nutzung von Kundendaten durch KI. Status Grün, Gelb, Rot, nicht belegt oder nicht anwendbar, jeweils mit Belegstufe (A Primärnachweis, B Selbstauskunft des Anbieters, C Drittquelle).
+- **Einzelbewertung:** zehn Kriterien, unabhängig vom Anwendungsfall: Zertifizierungen, Hosting und Datenresidenz, Subprozessoren, Auftragsverarbeitung, Authentifizierung, Incidents, Verschlüsselung, Schwachstellenmanagement, Verfügbarkeit und Notfallvorsorge, Nutzung von Kundendaten durch KI. Status Grün, Gelb, Rot, nicht belegt oder nicht anwendbar, jeweils mit Belegstufe (A Primärnachweis, B Selbstauskunft des Anbieters, C Drittquelle).
 - **Gesamturteil:** abhängig vom Schutzbedarf des Anwendungsfalls (normal, hoch, sehr hoch, angelehnt an den BSI IT-Grundschutz). Ein höherer Schutzbedarf macht mehr Kriterien zu Kernkriterien und verschärft die Anforderungen. Schließt der Vertrag des Anbieters eine Datenart aus, die der Anwendungsfall enthält, ist das Ergebnis „Rot – vertraglich unzulässig“.
 
 Rot setzt einen belegten Mangel voraus. Fehlende Informationen ergeben „nicht belegt“, nicht Rot.
