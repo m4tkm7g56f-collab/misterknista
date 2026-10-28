@@ -15,7 +15,7 @@ Die Seite gilt als „nicht abrufbar“ (Rechercheur) bzw. „nicht erreichbar�
 
 - Vor dem ersten Abruf einer Domain `https://<domain>/robots.txt` abrufen, mit WebFetch. Wehrt WebFetch ab, einmal per Browser.
 - Maßgeblich ist die Gruppe für `Claude-User`. Gibt es keine, gilt die Gruppe für `*`. Verbote nur für andere Agenten (z. B. `ClaudeBot`, `GPTBot`) gelten nicht.
-- Ist robots.txt nicht abrufbar: bei HTTP 4xx keine Einschränkung, bei HTTP 5xx oder Netzwerkfehler die Domain nicht abrufen (RFC 9309).
+- Ist robots.txt nicht abrufbar: bei HTTP 4xx (auch 403 und 429) keine Einschränkung durch robots.txt, bei HTTP 5xx oder Netzwerkfehler die Domain nicht abrufen (RFC 9309). Ob die Seiten selbst abrufbar sind, entscheiden Abschnitt 1 und 3.
 
 ## 3. Abwehr nur des Abrufwerkzeugs
 
@@ -23,6 +23,7 @@ Liefert WebFetch HTTP 403 oder 429 und greift Abschnitt 1 nicht:
 
 - **403:** ein Abruf per Browser je URL.
 - **429:** Abrufrate senken. Zwischen zwei Abrufen dieser Domain mindestens 10 Sekunden warten (`browser_wait_for` mit Zeitangabe), auch per Browser. Höchstens ein erneuter Versuch je URL.
+- Hat eine Domain WebFetch einmal abgewehrt, dürfen weitere URLs dieser Domain direkt per Browser abgerufen werden, ohne neuen Versuch mit WebFetch. Das vermeidet zusätzliche Abrufe auf einer Domain, die schon abwehrt. Bei 429 gelten die Pausen weiter.
 - Jeder so gewonnene Beleg wird gekennzeichnet (Abschnitt 5).
 
 ## 4. Cookie-Banner
