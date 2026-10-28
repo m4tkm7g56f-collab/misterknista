@@ -1,7 +1,7 @@
 # Bewertungsschema Vendor-Security-Assessment
 # Status: fachlich abgestimmt, in Testläufen erprobt, nicht unabhängig geprüft
 
-schema_version: "0.10"
+schema_version: "0.11"
 stand: "28.10.2026"
 
 # --- Grundsatz ---------------------------------------------------------------
@@ -300,9 +300,14 @@ kriterien:
       - "Ist MFA verfügbar und durch Administratoren erzwingbar?"
       - "Wird SSO (SAML 2.0 oder OIDC) unterstützt, in welchem Tarif?"
       - "Gibt es rollenbasierte Berechtigungen?"
+    begriffe:
+      erzwingbar: "Eine Person mit Administrationsrechten kann MFA für alle Nutzer oder für Rollen bzw. Gruppen verbindlich vorgeben. Betroffene Nutzer können sich dann ohne zweiten Faktor nicht anmelden."
+    belegt_auch:
+      - "Eine zentrale Einstellung, mit der MFA für alle Nutzer oder für Rollen bzw. Gruppen aktiviert wird, gilt als erzwingbar, solange nicht belegt ist, dass Nutzer sie abwählen können."
+      - "Lässt sich SSO für Nutzer erzwingen, gilt MFA als erzwingbar über den Identitätsanbieter des Kunden. Hinweis im Befund: MFA liegt dann in der Verantwortung des Kunden."
     ampel:
-      gruen: "MFA durch Administratoren erzwingbar."
-      gelb: "MFA verfügbar, aber nicht erzwingbar."
+      gruen: "MFA durch Administratoren erzwingbar (siehe begriffe, belegt_auch)."
+      gelb: "MFA verfügbar, aber nicht erzwingbar, z. B. nur als Option, die jeder Nutzer selbst einschaltet."
       rot: "Keine MFA verfügbar."
     praxis_hinweise:
       - "SSO nur im Enterprise-Tarif ist marktüblich, wird vermerkt, wirkt sich nicht auf den Status aus."

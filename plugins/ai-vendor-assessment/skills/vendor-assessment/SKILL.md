@@ -65,7 +65,8 @@ Beauftrage den Subagent `bewerter` mit: Pfad der Belegliste, Schutzbedarf mit He
 ### 4. Prüfung mit einer Korrekturrunde
 
 1. Beauftrage den Subagent `pruefer` mit: Pfad des Reports, Pfad der Belegliste, Runde 1, Zielpfad `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/pruefbericht-1.md`.
-2. Enthält der Prüfbericht Befunde mit Handlungsbedarf (`teilweise gedeckt`, `nicht gedeckt`, `Belegstelle nicht gefunden`):
+2. Enthält der Prüfbericht Befunde mit Handlungsbedarf (`teilweise gedeckt`, `nicht gedeckt`, `Belegstelle nicht gefunden`) oder Einträge unter „Hinweise zur Belegliste“:
+   - Gibt es Hinweise zur Belegliste, beauftrage zuerst den `rechercheur` mit einer Nachrecherche: Pfad der Belegliste, Pfad des Prüfberichts, Bewertungsdatum. Er ergänzt oder korrigiert nur die genannten Belege.
    - Beauftrage den `bewerter` mit einer Korrekturrunde: zusätzlich Pfad des Prüfberichts.
    - Beauftrage den `pruefer` mit Runde 2, Zielpfad `pruefbericht-2.md`.
    - Keine weitere Runde.
