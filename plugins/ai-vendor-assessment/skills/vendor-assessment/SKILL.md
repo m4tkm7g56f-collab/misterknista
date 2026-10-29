@@ -52,6 +52,7 @@ Der Hauptagent recherchiert und bewertet nicht selbst. Er übergibt Aufträge, w
   - angegeben → übernehmen, Herkunft „angegeben“.
   - nicht angegeben, aber Anwendungsfall beschrieben → mit der `einstufungshilfe` herleiten, Herkunft „hergeleitet“, zutreffende Fragen festhalten. Nicht beantwortbare Fragen gelten als nicht zutreffend und werden als offener Punkt vermerkt.
   - weder noch → `normal`, Herkunft „Default, keine Angabe“.
+- **Browser:** Prüfe, ob das Werkzeug `mcp__plugin_ai-vendor-assessment_browser__browser_navigate` verfügbar ist (Werkzeugliste, sonst ToolSearch). Fehlt es, sage dem Auftraggeber vor dem Start: Ohne Browser sind Seiten, die per JavaScript laden oder das Abrufwerkzeug abwehren, nicht abrufbar, und das Ergebnis enthält dann deutlich mehr „nicht belegt“. Häufige Ursache ist fehlendes Node.js oder Google Chrome, siehe README. Frage, ob trotzdem gestartet werden soll. Bei Aufruf aus `/assessment` im Modus `test` nicht fragen, sondern weitermachen.
 - **Lauf-ID:** `<anbieter-slug>_<YYYY-MM-DD>`. Existiert `${CLAUDE_PROJECT_DIR}/reports/<lauf-id>.md` bereits, hänge einen sprechenden Zusatz an. Arbeitsordner: `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/`.
 
 ### 2. Recherche

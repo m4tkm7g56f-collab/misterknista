@@ -51,6 +51,7 @@ Für jedes Kriterium aus dem Schema:
 4. Regeln aus `gesamtbewertung.regeln` von oben nach unten, erste zutreffende gilt. Ausschlaggebende Kriterien und Regel benennen.
 5. Zählzusatz nach `gesamtbewertung.zaehlzusatz`.
 6. Verlangt der Auftrag eine zusätzliche Gesamtampel für einen anderen Schutzbedarf, ermittle sie aus denselben Einzelbewertungen.
+7. Aussagekraft: Steht im Kopf der Belegliste „Browser: nicht verfügbar“, oder sind mindestens zwei Kernkriterien `nicht belegt`, weil ihre üblichen Quellen unter „Nicht abrufbar“ stehen, setze unter die Gesamtampel den Hinweis „Aussagekraft eingeschränkt“ mit Grund. Er ändert die Gesamtampel nicht.
 
 ### Report
 

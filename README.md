@@ -16,14 +16,14 @@ Ein unveränderter Beispielreport mit beiden Prüfberichten liegt unter [`exampl
 Voraussetzungen:
 
 - Claude Code (Terminal, Desktop-App oder IDE-Erweiterung). In Cloud-Sessions werden lokal installierte Plugins nicht geladen.
-- Empfohlen: das Plugin `playwright` aus dem offiziellen Marktplatz. Rechercheur und Prüfer brauchen es für Trust Center, die ihre Inhalte per JavaScript laden. Ohne das Plugin arbeiten sie nur mit Websuche und Webabruf und finden dort entsprechend weniger Belege.
+- Node.js (für `npx`) und Google Chrome. Das Plugin bringt einen eigenen Browser-Server mit (Playwright MCP, feste Version 0.0.83, ohne Fenster, Profil nur im Speicher). Rechercheur und Prüfer brauchen ihn für Seiten, die per JavaScript laden oder das Abrufwerkzeug abwehren. Ein separates Playwright-Plugin ist nicht nötig.
+- ⚠️ Ohne Node.js oder Chrome startet der Browser-Server nicht. Der Skill weist dann vor dem Start darauf hin, und der Report trägt den Hinweis „Aussagekraft eingeschränkt“. Bei Anbietern, die das Abrufwerkzeug abwehren, bleiben dann viele Kriterien „nicht belegt“. Das ist eine Grenze des Werkzeugs, kein Befund über den Anbieter. Statt Chrome lässt sich über die Umgebungsvariable `PLAYWRIGHT_MCP_BROWSER` ein anderer Browser wählen (`msedge`, `firefox`, `webkit`), Firefox und WebKit brauchen dann einmalig `npx playwright install`.
 
 In einer Claude-Code-Session:
 
 ```text
 /plugin marketplace add m4tkm7g56f-collab/misterknista
 /plugin install ai-vendor-assessment@ai-vendor-assessment
-/plugin install playwright@claude-plugins-official
 ```
 
 Oder in der Shell:
@@ -36,7 +36,7 @@ claude plugin marketplace add m4tkm7g56f-collab/misterknista
 claude plugin install ai-vendor-assessment@ai-vendor-assessment
 ```
 
-Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills und sechs Subagents, keine Hooks und keine MCP-Server. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
+Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills, sechs Subagents und einen MCP-Server (`browser`), keine Hooks. Beim ersten Start lädt `npx` den Browser-Server aus npm. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
 
 Aktualisieren: Automatische Updates sind für Marktplätze außerhalb von Anthropic standardmäßig aus. Sie lassen sich in `/plugin` im Reiter **Marketplaces** einschalten. Manuell:
 
@@ -102,7 +102,7 @@ Alle Ergebnisse bleiben auf dem eigenen Rechner, im Projektordner, in dem Claude
 |---|---|
 | `reports/<lauf-id>.md` | Report |
 | `reports/_arbeit/<lauf-id>/` | Zwischenergebnisse: Belegliste, Aktualitätsprüfung, Prüfberichte |
-| `.playwright-mcp/` | Protokolle des Playwright-Plugins, falls installiert. Diesen Ordner legt Playwright an, nicht dieses Plugin |
+| `.playwright-mcp/` | Protokolle und Snapshots des Browser-Servers. Diesen Ordner legt Playwright MCP von sich aus an |
 
 Das Plugin lädt nichts hoch und schreibt nichts in dieses Repository. Wer den eigenen Projektordner mit Git versioniert, sollte `reports/` und `.playwright-mcp/` in die `.gitignore` aufnehmen, sonst landen Reports und Browser-Protokolle beim nächsten Push im eigenen Repository.
 
@@ -190,6 +190,8 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
 
 - **Webzugriff ohne Einzelbestätigung.** Rechercheur und Prüfer rufen während eines Laufs Webseiten und Suchen ab. Abgerufene Inhalte gelten laut Anweisung als Daten, nicht als Anweisungen. Ein verlässlicher Schutz gegen Prompt Injection ist das nicht.
 - ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Dass die Aktualitätsprüfung nur die zwei festen URLs abruft, ist ebenfalls nur eine Anweisung.
+- **Browser-Server mit fester Version.** Das Plugin startet Playwright MCP in Version 0.0.83, nicht `@latest`. Eine neue, möglicherweise kompromittierte Version läuft also nicht automatisch, Updates kommen nur mit einer neuen Plugin-Version. Der Browser läuft ohne Fenster und hält sein Profil nur im Speicher: Cookies und Einwilligungen bleiben nicht über den Lauf hinaus erhalten. Vom eigenen Browser ist er vollständig getrennt.
+- ⚠️ **Cookie-Banner.** Rechercheur und Prüfer sollen Cookie-Banner nicht anklicken. Das ist nur eine Anweisung, in Testläufen wurde sie nicht immer eingehalten. Folge einer versehentlichen Einwilligung: Tracking-Dienste des Anbieters erhalten die IP-Adresse und die besuchten Seiten. Im Firmennetz kann der Anbieter so erkennen, welche Organisation ihn gerade prüft.
 - ⚠️ **Abruf nach Abwehr.** Rechercheur und Prüfer lösen keine Challenges oder CAPTCHAs, nutzen keine Logins oder Zugangsformulare und beachten robots.txt. Wehrt eine Seite nur das Abrufwerkzeug ab (HTTP 403 oder 429 ohne Challenge), rufen sie sie per Browser ab, bei 429 mit Pausen. Das ist eine bewusst eingegangene Grauzone: Der Betreiber zeigt damit, dass er keine automatisierten Abrufe will, und auch der Browser ist automatisiert. Ohne diesen Weg blieben viele Anbieter weitgehend „nicht belegt“. Jeder so gewonnene Beleg ist in der Belegliste gekennzeichnet, der Report nennt die Domains unter „Methodik und Grenzen“. Die Regeln stehen in [`abrufregeln.md`](plugins/ai-vendor-assessment/skills/vendor-assessment/abrufregeln.md).
 - **Datenminimierung.** Suchanfragen enthalten Anbieter, Dienstumfang und Kriterium, aber nicht den Text des Anwendungsfalls. Bei `assessment` wird der Dienstumfang aus dem Anwendungsfall abgeleitet, siehe Abschnitt Architektur. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
 - **Beschreibungen sind Daten.** Die Beschreibung des Anwendungsfalls wird als Daten behandelt, nicht als Anweisung. Vertrauliche Details gehören trotzdem nicht hinein: Sie werden an das Sprachmodell übertragen und stehen im Report.

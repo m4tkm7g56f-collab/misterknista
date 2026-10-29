@@ -1,7 +1,7 @@
 ---
 name: rechercheur
 description: Sammelt für ein Vendor-Assessment öffentliche Belege zu einem Anbieter und schreibt sie als Belegliste mit Q-Nummern und wörtlichen Belegstellen. Bewertet nichts. Wird vom Skill vendor-assessment beauftragt.
-tools: WebSearch, WebFetch, Read, Write, mcp__plugin_playwright_playwright__browser_navigate, mcp__plugin_playwright_playwright__browser_snapshot, mcp__plugin_playwright_playwright__browser_wait_for, mcp__plugin_playwright_playwright__browser_click, mcp__plugin_playwright_playwright__browser_close
+tools: WebSearch, WebFetch, Read, Write, mcp__plugin_ai-vendor-assessment_browser__browser_navigate, mcp__plugin_ai-vendor-assessment_browser__browser_snapshot, mcp__plugin_ai-vendor-assessment_browser__browser_wait_for, mcp__plugin_ai-vendor-assessment_browser__browser_click, mcp__plugin_ai-vendor-assessment_browser__browser_close
 model: sonnet
 ---
 
@@ -34,6 +34,8 @@ Lies:
 9. **Dateien nur im Arbeitsordner.** Speichere Browser-Snapshots ausschließlich im Unterordner `snapshots/` neben der Belegliste (Dateiname mit vollem Pfad angeben), nie im Projektordner selbst.
 
 ## Vorgehen
+
+Vorab: Prüfe, ob der Browser funktioniert, mit `browser_navigate` auf `about:blank`. Fehlt das Werkzeug oder schlägt der Aufruf fehl, trage im Kopf der Belegliste „Browser: nicht verfügbar“ mit Grund ein und arbeite nur mit Websuche und WebFetch. Seiten, die du deshalb nicht lesen kannst, gehören unter „Nicht abrufbar“ mit dem Grund „kein Browser“.
 
 1. Bestimme Anbieter und Dienst. Sind mehrere Produkte möglich und der Auftrag ist nicht eindeutig, nimm das zur Anbieter-URL passende Hauptprodukt und vermerke das.
 2. Arbeite die `prueffragen` aller Kriterien ab. Suche zuerst auf Domains des Anbieters, dann Primärnachweise (Register, Vertragsdokumente), dann Drittquellen.
@@ -68,6 +70,7 @@ Schreibe die Belegliste an den Pfad aus dem Auftrag, in diesem Aufbau:
 
 Erstellt am DD.MM.YYYY durch den Subagent rechercheur.
 Bewerteter Dienst und Tarif: …
+Browser: verfügbar | nicht verfügbar (Grund)
 
 ## Belege
 

@@ -15,6 +15,8 @@
 
 **Gesamtampel:** {{gesamtstatus}} ({{x}} von {{y}} Kernkriterien mit Einschränkung)
 
+{{Nur falls zutreffend: ⚠️ **Aussagekraft eingeschränkt:** Grund, z. B. „kein Browser verfügbar, N Quellen nicht abrufbar“. Sonst Zeile weglassen.}}
+
 **Ausschlaggebend:** {{Kriterien und Regel, die die Gesamtampel bestimmen}}
 
 **Herleitung Schutzbedarf:** {{zutreffende Fragen der Einstufungshilfe oder „keine Angabe, Default normal“}}
@@ -62,6 +64,7 @@ Status mit Belegstufe in Klammern: A = Primärnachweis, B = Selbstauskunft des A
 ## Methodik und Grenzen
 
 - Grundlage sind ausschließlich öffentlich zugängliche Quellen zum Bewertungsdatum.
+- Browser: {{verfügbar / nicht verfügbar laut Belegliste, mit Grund}}.
 - Abruf per Browser, nachdem die Seite das Abrufwerkzeug abgewehrt hatte (HTTP 403 oder 429, ohne Challenge): {{Domains mit Q-Nummern laut Belegliste, sonst „keiner“}}.
 - Status „Nicht belegt“ bedeutet: keine Quelle gefunden. Er trifft keine Aussage über Erfüllung oder Mangel.
 - Abweichungen von der Regelbewertung sind auf eine Stufe begrenzt und einzeln begründet.
