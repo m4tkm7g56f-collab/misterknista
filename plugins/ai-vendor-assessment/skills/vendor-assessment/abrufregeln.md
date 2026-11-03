@@ -38,3 +38,14 @@ Liefert WebFetch HTTP 403 oder 429 und greift Abschnitt 1 nicht:
 - Rechercheur: Abschnitt „Abruf per Browser nach Abwehr“ in der Belegliste, je Domain mit Art der Abwehr (403 oder 429), Ergebnis der robots.txt-Prüfung und Q-Nummern.
 - Prüfer: Abschnitt „Abruf per Browser nach Abwehr“ im Prüfbericht, je Domain mit Art der Abwehr und Q-Nummern.
 - Seiten, die nur per JavaScript Inhalt laden (WebFetch liefert eine leere Seite, keine Abwehr), werden ohne Kennzeichnung per Browser abgerufen.
+
+## 6. Andere Darstellung derselben Seite
+
+Ist der Inhalt einer abgerufenen Seite nicht lesbar (z. B. eingeklappte Bereiche, ein Banner überlagert den Text), darf eine andere Darstellung desselben Inhalts abgerufen werden, etwa eine JSON-Schnittstelle, eine Druck- oder PDF-Fassung. Voraussetzungen:
+
+- Sie liegt auf demselben Host oder ist von der Seite selbst verlinkt.
+- robots.txt verbietet den Pfad nicht (Abschnitt 2).
+- Sie verlangt keinen Login, keinen API-Schlüssel und kein Token.
+- Abschnitt 1 greift für die Seite nicht. Eine andere Darstellung darf nie dazu dienen, eine Abwehr nach Abschnitt 1 zu umgehen.
+
+Als Quelle gilt die URL der Seite. Die tatsächlich abgerufene URL steht im Vermerk: beim Rechercheur in der Spalte Aussage der Belegzeile, beim Prüfer beim Befund im Prüfbericht.

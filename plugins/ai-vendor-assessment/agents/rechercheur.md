@@ -19,7 +19,7 @@ Lies:
 
 - `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml`: die Kriterien mit ihren `prueffragen`, die `belegstufen` und für INC die `begriffe` und `quellen_reihenfolge`
 - `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/quellen-leitfaden.md`: typische Fundorte je Kriterium
-- `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/abrufregeln.md`: verbindliche Regeln für jeden Abruf (Challenge, robots.txt, 403/429, Cookie-Banner, Kennzeichnung)
+- `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/abrufregeln.md`: verbindliche Regeln für jeden Abruf (Challenge, robots.txt, 403/429, Cookie-Banner, Kennzeichnung, andere Darstellung derselben Seite)
 
 ## Regeln
 
@@ -48,6 +48,7 @@ Vorab: Prüfe, ob der Browser funktioniert, mit `browser_navigate` auf `about:bl
    - **F** zitierst du mit der Meldefrist für Datenschutzverletzungen und mit der Unterstützungszusage für Art. 32 bis 36, als allgemeine Klausel oder als Zusagen zu einzelnen Artikeln.
    - **AUTH:** Zitiere zu MFA auch, wer die Einstellung vornimmt (Rolle) und was für die betroffenen Nutzer gilt (z. B. „needs to complete two steps to log in“), sowie ob sich SSO erzwingen lässt.
    - **UA2** zitierst du einschließlich der Zeitangabe und der genannten Rechtsgrundlage (z. B. „the GDPR“ oder „applicable data protection law“).
+   - **TOM:** Verweist das DPA oder eine Seite des Anbieters auf TOM, rufe sie ab, bevor du Angaben zu C, HOST, KRYPT oder BCM unter „Nicht gefunden“ einträgst. Gibt es die TOM im Trust Center nur auf Anfrage, suche trotzdem nach einer öffentlichen Fassung (Quellen-Leitfaden, Abschnitt AVV). Halte fest, ob das DPA die TOM einbezieht, welche Fassung es nennt und welche Fassung du gelesen hast.
    - **Drittlandübermittlung:** Halte wörtlich fest, welches Instrument das DPA nennt (Standardvertragsklauseln, Angemessenheitsbeschluss, Data Privacy Framework, verbindliche interne Datenschutzvorschriften) oder dass nur allgemeine Formeln wie „appropriate safeguards“ stehen.
 6. Für BCM: Erfasse je Teil aus `teile` eigene Zeilen, in der Spalte Kriterium als `BCM-<Teil-ID>` (z. B. `BCM-SLA`). Beim SLA zitierst du Prozentwert, Messzeitraum, Gutschriften und den Tarif, für den es gilt, bei Backups Häufigkeit, Aufbewahrung, Ort, Verschlüsselung und Wiederherstellungstests, bei NOTFALL Redundanz, Notfallplan, Tests sowie RTO und RPO. Erfasse auch Gewährleistungsausschlüsse für Verfügbarkeit und Klauseln, nach denen der Kunde selbst für die Datensicherung verantwortlich ist. Bei Nachweisen nach `gleichwertig` hältst du den Geltungsbereich fest. Eine Statusseite vermerkst du mit URL, ihre Historie wertest du nicht aus.
 7. Erfasse ausdrücklich, wonach du gesucht und was du nicht gefunden hast. Fehlende Funde sind ein Ergebnis.

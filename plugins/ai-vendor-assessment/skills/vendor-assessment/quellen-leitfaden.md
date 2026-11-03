@@ -36,6 +36,7 @@ Typische Fundorte je Kriterium. Hinweise für die Suche, kein Beleg. Was hier st
 - Fassung: Titel, Versionsnummer oder „Last updated“ am Dokumentanfang oder -ende
 - Einbeziehung von Standardvertragsklauseln: Abschnitte „Standard Contractual Clauses“, „SCCs“, „Commission Decision 2021/915“ bzw. „2021/914“, „Module Two“, „Module Three“, Vorrangklausel („in the event of conflict, the SCCs shall prevail“)
 - Anhänge des DPA: „Annex“, „Appendix“, „Schedule“, oft als eigene Seite oder PDF verlinkt
+- TOM: Verweisen DPA, Security- oder Trust-Seite auf veröffentlichte TOM („published“, „available at“, „Annex“), dem Link folgen. Ohne Link gezielt suchen: „Technical and Organisational Measures“ bzw. „Technische und organisatorische Maßnahmen“ mit Anbietername, „Art. 32“. Stehen die TOM im Trust Center nur auf Anfrage, kann es trotzdem eine öffentliche Fassung geben, oft unter einer unscheinbaren URL
 - Rechte an Kundendaten außerhalb des DPA, typische Abschnittstitel in Nutzungsbedingungen: „Customer Data“, „Use of Data“, „Aggregated Data“, „Anonymised Data“, „Usage Data“, „Service Improvement“
 - Übermittlungsinstrument: „Standard Contractual Clauses“, „adequacy decision“, „Data Privacy Framework“, „Binding Corporate Rules“, im Abschnitt „International Transfers“ bzw. „Transfers outside the EEA“
 - Pflichtmerkmale nach Art. 28 Abs. 3, typische Abschnittstitel: „Scope“ bzw. „Description of Processing“ (Anhang, GRUND), „Instructions“ (A), „Confidentiality“ bzw. „Personnel“ (B), „Security Measures“ bzw. „Technical and Organizational Measures“ (C), „Sub-processors“ bzw. „Sub-processor obligations“, Weitergabe mit Formeln wie „flow down“, „no less protective“, „same data protection obligations“ (D), „Data Subject Requests“ (E), „Security Incident“ bzw. „Personal Data Breach“ sowie „Data Protection Impact Assessment“ (F), „Deletion or Return“ bzw. „Termination“ (G), „Audits“ bzw. „Audit Rights“ (H), „Unlawful Instructions“ bzw. Hinweis im Abschnitt „Instructions“ (UA2)
@@ -80,7 +81,7 @@ Jede Anfrage ins Suchprotokoll, mit Stufe.
 
 - SLA: eigene Seite „Service Level Agreement“ bzw. „SLA“, Anhang zu Nutzungsbedingungen oder Order Form, Tarifvergleich auf der Preisseite
 - Gewährleistung in den Nutzungsbedingungen: Abschnitte „Availability“, „Warranty“, „Disclaimer“, „Customer Responsibilities“ (Datensicherung durch den Kunden)
-- Backups und Redundanz: TOM (oft Anhang zum DPA), Security-Whitepaper, Trust Center, Abschnitte „Backup“, „Data Backup“, „Redundancy“, „High Availability“
+- Backups und Redundanz: TOM (oft Anhang zum DPA, Suche siehe AVV), Security-Whitepaper, Trust Center, Abschnitte „Backup“, „Data Backup“, „Redundancy“, „High Availability“
 - Notfallvorsorge: „Business Continuity“, „Disaster Recovery“, „BCP“, „DRP“, „RTO“, „RPO“
 - Nachweise: ISO 22301, BSI C5 (Bereich BCM), SOC 2 mit Availability im Scope, jeweils mit Geltungsbereich
 - Statusseite: oft unter `status.<domain>`
