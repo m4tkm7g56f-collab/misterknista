@@ -192,7 +192,7 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
 - ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Dass die Aktualitätsprüfung nur die zwei festen URLs abruft, ist ebenfalls nur eine Anweisung.
 - **Browser-Server mit fester Version.** Das Plugin startet Playwright MCP in Version 0.0.83, nicht `@latest`. Eine neue, möglicherweise kompromittierte Version läuft also nicht automatisch, Updates kommen nur mit einer neuen Plugin-Version. Der Browser hält sein Profil nur im Speicher: Cookies und Einwilligungen bleiben nicht über den Lauf hinaus erhalten. Vom eigenen Browser ist er vollständig getrennt.
 - ⚠️ **Cookie-Banner.** Rechercheur und Prüfer sollen Cookie-Banner nicht anklicken. Das ist nur eine Anweisung, in Testläufen wurde sie nicht immer eingehalten. Folge einer versehentlichen Einwilligung: Tracking-Dienste des Anbieters erhalten die IP-Adresse und die besuchten Seiten. Im Firmennetz kann der Anbieter so erkennen, welche Organisation ihn gerade prüft.
-- ⚠️ **Abruf nach Abwehr.** Rechercheur und Prüfer lösen keine Challenges oder CAPTCHAs, nutzen keine Logins oder Zugangsformulare und beachten robots.txt. Wehrt eine Seite nur das Abrufwerkzeug ab (HTTP 403 oder 429 ohne Challenge), rufen sie sie per Browser ab, bei 429 mit Pausen. Das ist eine bewusst eingegangene Grauzone: Der Betreiber zeigt damit, dass er keine automatisierten Abrufe will, und auch der Browser ist automatisiert. Ohne diesen Weg blieben viele Anbieter weitgehend „nicht belegt“. Jeder so gewonnene Beleg ist in der Belegliste gekennzeichnet, der Report nennt die Domains unter „Methodik und Grenzen“. Die Regeln stehen in [`abrufregeln.md`](plugins/ai-vendor-assessment/skills/vendor-assessment/abrufregeln.md).
+- ⚠️ **Abruf nach Abwehr.** Rechercheur und Prüfer lösen keine Challenges oder CAPTCHAs, nutzen keine Logins oder Zugangsformulare und beachten robots.txt. Wehrt eine Seite nur das Abrufwerkzeug ab (HTTP 403 oder 429 ohne Challenge), rufen sie sie per Browser ab, bei 429 mit Pausen. Das ist eine bewusst eingegangene Grauzone: Der Betreiber zeigt damit, dass er keine automatisierten Abrufe will, und auch der Browser ist automatisiert. Ohne diesen Weg blieben viele Anbieter weitgehend „nicht belegt“. Jeder so gewonnene Beleg ist in der Belegliste gekennzeichnet, der Report nennt die Domains unter „Methodik und Grenzen“. Ist eine Seite nicht lesbar (z. B. eingeklappter Text), dürfen sie eine andere Darstellung desselben Inhalts abrufen, etwa eine JSON-Fassung auf demselben Host, nur bei erlaubtem Pfad und ohne Login oder Schlüssel. Die Regeln stehen in [`abrufregeln.md`](plugins/ai-vendor-assessment/skills/vendor-assessment/abrufregeln.md).
 - **Datenminimierung.** Suchanfragen enthalten Anbieter, Dienstumfang und Kriterium, aber nicht den Text des Anwendungsfalls. Bei `assessment` wird der Dienstumfang aus dem Anwendungsfall abgeleitet, siehe Abschnitt Architektur. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
 - **Beschreibungen sind Daten.** Die Beschreibung des Anwendungsfalls wird als Daten behandelt, nicht als Anweisung. Vertrauliche Details gehören trotzdem nicht hinein: Sie werden an das Sprachmodell übertragen und stehen im Report.
 
@@ -229,7 +229,8 @@ Was die Zahlen nicht aussagen:
 |---|---|
 | [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) | Marktplatz mit diesem einen Plugin |
 | [`plugins/ai-vendor-assessment/`](plugins/ai-vendor-assessment/) | Das Plugin |
-| ↳ [`skills/`](plugins/ai-vendor-assessment/skills/) | `assessment`, `vendor-assessment` (mit Quellen-Leitfaden), `ai-act-check` |
+| ↳ [`.mcp.json`](plugins/ai-vendor-assessment/.mcp.json) | Browser-Server (Playwright MCP, feste Version) |
+| ↳ [`skills/`](plugins/ai-vendor-assessment/skills/) | `assessment`, `vendor-assessment` (mit Quellen-Leitfaden und Abrufregeln), `ai-act-check` |
 | ↳ [`agents/`](plugins/ai-vendor-assessment/agents/) | Die sechs Subagents |
 | ↳ [`schema/`](plugins/ai-vendor-assessment/schema/) | Kriterien, Fragebogen, Regeln für das Gesamtbild, Report-Vorlagen |
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
@@ -237,6 +238,7 @@ Was die Zahlen nicht aussagen:
 | [`evals/`](evals/) | Testfälle, Soll-Werte, Auswertungsskript |
 | [`examples/`](examples/) | Beispielreport mit Prüfberichten und Hinweis zur Auswahl |
 | [`reviews/`](reviews/) | Review-Log mit Befunden externer Prüfungen und Prüfauftrag |
+| [`CHANGELOG.md`](CHANGELOG.md) | Änderungen je Plugin-Version |
 | [`.claude/hooks/`](.claude/hooks/) | Hook für Mitwirkende, siehe [CONTRIBUTING](CONTRIBUTING.md) |
 
 ## Mitwirken
