@@ -36,7 +36,7 @@ claude plugin marketplace add m4tkm7g56f-collab/misterknista
 claude plugin install ai-vendor-assessment@ai-vendor-assessment
 ```
 
-Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills, sechs Subagents und einen MCP-Server (`browser`), keine Hooks. Beim ersten Start lädt `npx` den Browser-Server aus npm. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
+Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills, sechs Subagents, einen MCP-Server (`browser`) und einen Hook (Schranke, siehe Sicherheitshinweise). Der Hook startet bei jedem Lese-, Schreib- und Abrufaufruf kurz Node.js, auch in Sessions ohne Plugin-Lauf. Er greift aber nur bei den Subagents des Plugins. Beim ersten Start lädt `npx` den Browser-Server aus npm. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
 
 Aktualisieren: Automatische Updates sind für Marktplätze außerhalb von Anthropic standardmäßig aus. Sie lassen sich in `/plugin` im Reiter **Marketplaces** einschalten. Manuell:
 
@@ -155,25 +155,25 @@ flowchart TD
     S --> REP["Gemeinsamer Report mit Prüfvermerk"]
 ```
 
-Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit getrennten Werkzeugrechten, nach dem Prinzip der geringsten Rechte. Die Rechte stehen im Feld `tools` der jeweiligen Datei und gelten technisch, nicht nur als Anweisung.
+Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit getrennten Werkzeugrechten, nach dem Prinzip der geringsten Rechte. Die Rechte stehen im Feld `tools` der jeweiligen Datei und gelten technisch, nicht nur als Anweisung. Zusätzlich begrenzt ein Hook (Schranke) Lese- und Schreibpfade und Abruf-URLs, siehe Sicherheitshinweise.
 
 | Subagent | Aufgabe | Webzugriff | Datei |
 |---|---|---|---|
-| `pruefer-aktualitaet` | Prüfen, ob die AI-Act-Referenz dem neuesten veröffentlichten Rechtsstand entspricht | nur Abruf, laut Anweisung nur zwei feste URLs | [`pruefer-aktualitaet.md`](plugins/ai-vendor-assessment/agents/pruefer-aktualitaet.md) |
+| `pruefer-aktualitaet` | Prüfen, ob die AI-Act-Referenz dem neuesten veröffentlichten Rechtsstand entspricht | nur Abruf, technisch auf zwei feste URLs begrenzt | [`pruefer-aktualitaet.md`](plugins/ai-vendor-assessment/agents/pruefer-aktualitaet.md) |
 | `ai-act-klassifizierer` | AI-Act-Einstufung nach Fragebogen | nein | [`ai-act-klassifizierer.md`](plugins/ai-vendor-assessment/agents/ai-act-klassifizierer.md) |
 | `pruefer-referenz` | Deckung jeder rechtlichen Aussage durch die Referenz prüfen | nein | [`pruefer-referenz.md`](plugins/ai-vendor-assessment/agents/pruefer-referenz.md) |
-| `rechercheur` | Belege zum Anbieter sammeln, mit wörtlicher Belegstelle | ja | [`rechercheur.md`](plugins/ai-vendor-assessment/agents/rechercheur.md) |
+| `rechercheur` | Belege zum Anbieter sammeln, mit wörtlicher Belegstelle | ja, ohne Klick-Werkzeug | [`rechercheur.md`](plugins/ai-vendor-assessment/agents/rechercheur.md) |
 | `bewerter` | Ampel je Kriterium, nur aus der Belegliste | nein | [`bewerter.md`](plugins/ai-vendor-assessment/agents/bewerter.md) |
 | `pruefer` | Deckung jeder Aussage prüfen, tragende Quellen erneut abrufen | nur Abruf | [`pruefer.md`](plugins/ai-vendor-assessment/agents/pruefer.md) |
 
-- Der Rechercheur erhält weder den Text des Anwendungsfalls noch den Schutzbedarf. ⚠️ Bei `assessment` erhält er aber den daraus abgeleiteten Dienstumfang, z. B. Modul und KI-Funktion, und darf ihn in Suchanfragen verwenden. Ein Teil des Anwendungsfalls kann so nach außen gelangen.
+- Der Rechercheur erhält weder den Text des Anwendungsfalls noch den Schutzbedarf. AI-Act- und Gesamt-Dateien kann er technisch nicht lesen. ⚠️ Bei `assessment` erhält er aber den daraus abgeleiteten Dienstumfang und darf ihn in Suchanfragen verwenden. Der Dienstumfang besteht laut Skill nur aus Produkt-, Modul- und Funktionsnamen des Anbieters, im Modus `dialog` bestätigt der Nutzer ihn vorher. Die Ableitung macht das Sprachmodell. Im Modus `test` prüft sie niemand.
 - Der Bewerter kann nicht nachrecherchieren. Was nicht in der Belegliste steht, ist „nicht belegt“. Findet der Prüfer beim erneuten Abruf eine fehlende oder fehlerhafte Belegstelle, meldet er sie als Hinweis zur Belegliste. Der Rechercheur ruft die Stelle dann selbst ab und ergänzt die Belegliste, erst danach korrigiert der Bewerter. Der Prüfbericht ist für den Bewerter nie eine Quelle.
 - Die Prüfer ändern keinen Report. Bei Befunden gibt es genau eine Korrekturrunde, danach werden verbliebene Befunde im Report als Prüfvermerk ausgewiesen.
 - Die Zwischenergebnisse unter `reports/_arbeit/` machen jeden Schritt nachvollziehbar.
 
 ## Aktualität der Rechtsgrundlage
 
-Die AI-Act-Einstufung stützt sich nur auf [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md), Stand 26.10.2026, ergänzt 27.10.2026 (konsolidierte Fassung CELEX `02024R1689-20260727`). Damit ein Report nicht unbemerkt auf veraltetem Recht beruht, fragt der Subagent `pruefer-aktualitaet` vor jeder Einstufung beim SPARQL-Dienst des Amts für Veröffentlichungen der EU ab, ob es eine neuere konsolidierte Fassung oder einen neuen Änderungsrechtsakt gibt. Die Beschreibung des Anwendungsfalls erhält er nicht.
+Die AI-Act-Einstufung stützt sich nur auf [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md), Stand 26.10.2026, ergänzt 27.10.2026 und 03.11.2026 (konsolidierte Fassung CELEX `02024R1689-20260727`). Damit ein Report nicht unbemerkt auf veraltetem Recht beruht, fragt der Subagent `pruefer-aktualitaet` vor jeder Einstufung beim SPARQL-Dienst des Amts für Veröffentlichungen der EU ab, ob es eine neuere konsolidierte Fassung oder einen neuen Änderungsrechtsakt gibt. Die Beschreibung des Anwendungsfalls erhält er nicht.
 
 | Ergebnis | Folge im Report |
 |---|---|
@@ -188,12 +188,23 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
 
 ## Sicherheitshinweise
 
-- **Webzugriff ohne Einzelbestätigung.** Rechercheur und Prüfer rufen während eines Laufs Webseiten und Suchen ab. Abgerufene Inhalte gelten laut Anweisung als Daten, nicht als Anweisungen. Ein verlässlicher Schutz gegen Prompt Injection ist das nicht.
-- ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Dass die Aktualitätsprüfung nur die zwei festen URLs abruft, ist ebenfalls nur eine Anweisung.
+- **Webzugriff ohne Einzelbestätigung.** Rechercheur und Prüfer rufen während eines Laufs Webseiten und Suchen ab. Abgerufene Inhalte gelten laut Anweisung als Daten, nicht als Anweisungen. Ein verlässlicher Schutz gegen Prompt Injection ist das nicht. Deshalb begrenzt die Schranke, was eine eingeschleuste Anweisung bewirken kann.
+- **Schranke.** Ein PreToolUse-Hook des Plugins ([`hooks/schranke.mjs`](plugins/ai-vendor-assessment/hooks/schranke.mjs)) prüft jeden Aufruf der sechs Subagents, bevor er ausgeführt wird, und blockiert:
+  - Lesen außerhalb des Plugin-Ordners und `reports/`, z. B. SSH-Schlüssel oder `.env`-Dateien.
+  - Schreiben außerhalb von `reports/`, für die Subagents mit Webzugriff außerhalb von `reports/_arbeit/`. Symlinks werden aufgelöst.
+  - Für Rechercheur und Prüfer: Abrufe außer http und https, IP-Adressen, interne Hostnamen, Hosts mit privater Adresse laut DNS, andere Ports als 80 und 443, URLs mit Zugangsdaten. Dazu AI-Act- und Gesamt-Dateien.
+  - Für die Aktualitätsprüfung jeden Abruf außer den zwei festen URLs.
+  - Fehlt Node.js, blockiert der Hook alle Aufrufe der Subagents, statt unbemerkt auszufallen. Bei einem internen Fehler blockiert er ebenfalls.
+  - Tests: `node --test tests/schranke.test.mjs`.
+- ⚠️ **Grenzen der Schranke.**
+  - Sie hindert Rechercheur und Prüfer nicht daran, öffentliche Adressen beliebiger Domains abzurufen. Daten, die sie lesen dürfen, könnten über eine präparierte URL nach außen gelangen. Lesen dürfen sie nur den Plugin-Ordner und die Vendor-Dateien in `reports/`. Der Vendor-Report enthält die Kurzbeschreibung des Anwendungsfalls, der Prüfer liest ihn.
+  - Leitet eine Seite im Browser auf eine interne Adresse um oder lädt sie Inhalte aus dem lokalen Netz nach, sieht der Hook das nicht. Er prüft nur die URL, die das Modell aufruft. DNS-Rebinding fängt er ebenfalls nicht ab.
+  - Der Hook kennt die Subagents nur am Namen (`ai-vendor-assessment:…`). Wer sie unter anderem Namen kopiert, ist nicht geschützt. Für den Hauptagent gilt er nicht.
+- ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Die Aktualitätsprüfung ist technisch auf die zwei festen URLs begrenzt (Schranke).
 - **Browser-Server mit fester Version.** Das Plugin startet Playwright MCP in Version 0.0.83, nicht `@latest`. Eine neue, möglicherweise kompromittierte Version läuft also nicht automatisch, Updates kommen nur mit einer neuen Plugin-Version. Der Browser hält sein Profil nur im Speicher: Cookies und Einwilligungen bleiben nicht über den Lauf hinaus erhalten. Vom eigenen Browser ist er vollständig getrennt.
-- ⚠️ **Cookie-Banner.** Rechercheur und Prüfer sollen Cookie-Banner nicht anklicken. Das ist nur eine Anweisung, in Testläufen wurde sie nicht immer eingehalten. Folge einer versehentlichen Einwilligung: Tracking-Dienste des Anbieters erhalten die IP-Adresse und die besuchten Seiten. Im Firmennetz kann der Anbieter so erkennen, welche Organisation ihn gerade prüft.
+- **Cookie-Banner.** Rechercheur und Prüfer haben kein Klick-Werkzeug und können deshalb nicht in Tracking einwilligen. Bis Version 0.2.0 hatte der Rechercheur es, und in Testläufen hat er trotz gegenteiliger Anweisung einen Banner akzeptiert. ⚠️ Folge: Liegt Text nur hinter einem Banner oder in eingeklappten Bereichen, bleibt er „nicht abrufbar“, außer es gibt eine andere Darstellung derselben Seite. Auch ohne Einwilligung sehen Anbieter beim Abruf die IP-Adresse. Im Firmennetz können sie so erkennen, welche Organisation sie gerade prüft.
 - ⚠️ **Abruf nach Abwehr.** Rechercheur und Prüfer lösen keine Challenges oder CAPTCHAs, nutzen keine Logins oder Zugangsformulare und beachten robots.txt. Wehrt eine Seite nur das Abrufwerkzeug ab (HTTP 403 oder 429 ohne Challenge), rufen sie sie per Browser ab, bei 429 mit Pausen. Das ist eine bewusst eingegangene Grauzone: Der Betreiber zeigt damit, dass er keine automatisierten Abrufe will, und auch der Browser ist automatisiert. Ohne diesen Weg blieben viele Anbieter weitgehend „nicht belegt“. Jeder so gewonnene Beleg ist in der Belegliste gekennzeichnet, der Report nennt die Domains unter „Methodik und Grenzen“. Ist eine Seite nicht lesbar (z. B. eingeklappter Text), dürfen sie eine andere Darstellung desselben Inhalts abrufen, etwa eine JSON-Fassung auf demselben Host, nur bei erlaubtem Pfad und ohne Login oder Schlüssel. Die Regeln stehen in [`abrufregeln.md`](plugins/ai-vendor-assessment/skills/vendor-assessment/abrufregeln.md).
-- **Datenminimierung.** Suchanfragen enthalten Anbieter, Dienstumfang und Kriterium, aber nicht den Text des Anwendungsfalls. Bei `assessment` wird der Dienstumfang aus dem Anwendungsfall abgeleitet, siehe Abschnitt Architektur. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
+- **Datenminimierung.** Suchanfragen enthalten Anbieter, Dienstumfang und Kriterium, aber nicht den Text des Anwendungsfalls. Bei `assessment` wird der Dienstumfang aus dem Anwendungsfall abgeleitet, nur aus Produktnamen des Anbieters und im Modus `dialog` mit Bestätigung, siehe Abschnitt Architektur. Im beruflichen Kontext kann schon die Information „Anbieter X wird geprüft“ vertraulich sein.
 - **Beschreibungen sind Daten.** Die Beschreibung des Anwendungsfalls wird als Daten behandelt, nicht als Anweisung. Vertrauliche Details gehören trotzdem nicht hinein: Sie werden an das Sprachmodell übertragen und stehen im Report.
 
 ## Qualitätssicherung
@@ -232,10 +243,12 @@ Was die Zahlen nicht aussagen:
 | ↳ [`.mcp.json`](plugins/ai-vendor-assessment/.mcp.json) | Browser-Server (Playwright MCP, feste Version) |
 | ↳ [`skills/`](plugins/ai-vendor-assessment/skills/) | `assessment`, `vendor-assessment` (mit Quellen-Leitfaden und Abrufregeln), `ai-act-check` |
 | ↳ [`agents/`](plugins/ai-vendor-assessment/agents/) | Die sechs Subagents |
+| ↳ [`hooks/`](plugins/ai-vendor-assessment/hooks/) | Schranke für die Subagents (Pfade und Abruf-URLs) |
 | ↳ [`schema/`](plugins/ai-vendor-assessment/schema/) | Kriterien, Fragebogen, Regeln für das Gesamtbild, Report-Vorlagen |
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
 | ↳ [`references/dsgvo-art28.md`](plugins/ai-vendor-assessment/references/dsgvo-art28.md) | Datierte Referenz zu Art. 28 DSGVO und den Standardvertragsklauseln, Grundlage des Kriteriums AVV |
 | [`evals/`](evals/) | Testfälle, Soll-Werte, Auswertungsskript |
+| [`tests/`](tests/) | Tests der Schranke |
 | [`examples/`](examples/) | Beispielreport mit Prüfberichten und Hinweis zur Auswahl |
 | [`reviews/`](reviews/) | Review-Log mit Befunden externer Prüfungen und Prüfauftrag |
 | [`CHANGELOG.md`](CHANGELOG.md) | Änderungen je Plugin-Version |

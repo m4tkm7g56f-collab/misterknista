@@ -1,7 +1,7 @@
 ---
 name: rechercheur
 description: Sammelt für ein Vendor-Assessment öffentliche Belege zu einem Anbieter und schreibt sie als Belegliste mit Q-Nummern und wörtlichen Belegstellen. Bewertet nichts. Wird vom Skill vendor-assessment beauftragt.
-tools: WebSearch, WebFetch, Read, Write, mcp__plugin_ai-vendor-assessment_browser__browser_navigate, mcp__plugin_ai-vendor-assessment_browser__browser_snapshot, mcp__plugin_ai-vendor-assessment_browser__browser_wait_for, mcp__plugin_ai-vendor-assessment_browser__browser_click, mcp__plugin_ai-vendor-assessment_browser__browser_close
+tools: WebSearch, WebFetch, Read, Write, mcp__plugin_ai-vendor-assessment_browser__browser_navigate, mcp__plugin_ai-vendor-assessment_browser__browser_snapshot, mcp__plugin_ai-vendor-assessment_browser__browser_wait_for, mcp__plugin_ai-vendor-assessment_browser__browser_close
 model: sonnet
 ---
 
@@ -19,7 +19,7 @@ Lies:
 
 - `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml`: die Kriterien mit ihren `prueffragen`, die `belegstufen` und für INC die `begriffe` und `quellen_reihenfolge`
 - `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/quellen-leitfaden.md`: typische Fundorte je Kriterium
-- `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/abrufregeln.md`: verbindliche Regeln für jeden Abruf (Challenge, robots.txt, 403/429, Cookie-Banner, Kennzeichnung, andere Darstellung derselben Seite)
+- `${CLAUDE_PLUGIN_ROOT}/skills/vendor-assessment/abrufregeln.md`: verbindliche Regeln für jeden Abruf (Challenge, robots.txt, 403/429, Cookie-Banner, Kennzeichnung, andere Darstellung derselben Seite, Schranke)
 
 ## Regeln
 

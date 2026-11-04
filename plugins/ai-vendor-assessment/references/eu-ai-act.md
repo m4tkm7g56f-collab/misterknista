@@ -11,6 +11,7 @@
 | Bekannte Änderungsrechtsakte | `32026R1744` (08.07.2026) |
 | Prüfung auf neuere Fassung | EUR-Lex-Metadaten zu CELEX `32024R1689` am 26.10.2026: neueste konsolidierte Fassung `02024R1689-20260727`, einzige Änderungsverordnung `32026R1744`. Bestätigt am 27.10.2026 über den SPARQL-Dienst des Amts für Veröffentlichungen der EU (publications.europa.eu) |
 | Ergänzung 27.10.2026 | Art. 3 Nr. 34 und 39, Auslegung zu Art. 5 Abs. 1 Buchst. f (Erwägungsgrund 44, Leitlinien der Kommission C(2025) 5052), siehe Abschnitt 3. Eigene Folgerungen dort ausdrücklich gekennzeichnet |
+| Ergänzung 03.11.2026 | Art. 50 Abs. 5 am konsolidierten Text geprüft (Abruf über den Cellar-Dienst des Amts für Veröffentlichungen) und in Abschnitt 5 präzisiert: keine eigene Pflicht, nur Modalität zu Abs. 1 bis 4 |
 
 ## Nutzungsregeln
 
@@ -168,7 +169,7 @@ Gilt seit 02.08.2026 (Art. 113 Unterabs. 2). Unabhängig von einer Hochrisiko-Ei
 | 2 | Anbieter | Synthetische Audio-, Bild-, Video- oder Textausgaben maschinenlesbar kennzeichnen und als künstlich erkennbar machen. Ausnahme: unterstützende Funktion für Standardbearbeitung oder keine wesentliche Veränderung der Eingaben. Für vor dem 02.08.2026 in Verkehr gebrachte Systeme Frist bis 02.12.2026 (Art. 111 Abs. 4) |
 | 3 | Betreiber | Betroffene über den Betrieb von Emotionserkennung oder biometrischer Kategorisierung informieren |
 | 4 | Betreiber | Deepfakes (Bild, Ton, Video) als künstlich erzeugt oder manipuliert offenlegen; bei künstlerischen, satirischen oder fiktionalen Werken eingeschränkt. KI-erzeugte oder manipulierte Texte, die zur Information der Öffentlichkeit über Angelegenheiten von öffentlichem Interesse veröffentlicht werden, offenlegen, außer bei menschlicher Prüfung bzw. redaktioneller Kontrolle mit redaktioneller Verantwortung |
-| 5 | beide | Information spätestens bei erster Interaktion oder Aussetzung, klar, eindeutig und barrierefrei |
+| 5 | keine eigene Pflicht | Regelt nur Art und Zeitpunkt der Informationen nach Abs. 1 bis 4: „Die in den Absätzen 1 bis 4 genannten Informationen werden den betreffenden natürlichen Personen spätestens zum Zeitpunkt der ersten Interaktion oder Aussetzung in klarer und eindeutiger Weise bereitgestellt.“ Sie müssen den geltenden Barrierefreiheitsanforderungen entsprechen. Wer informieren muss, ergibt sich allein aus Abs. 1 bis 4. Abs. 5 ist daher nie eine eigene Pflicht des Betreibers, sondern nur zusammen mit Abs. 3 oder 4 zu nennen |
 
 ## 6. KI-Modelle mit allgemeinem Verwendungszweck (Kapitel V)
 

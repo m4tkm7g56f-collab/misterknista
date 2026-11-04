@@ -2,6 +2,25 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.3.0 (03.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Sicherheit
+
+- **Schranke (S01, S03):** Ein PreToolUse-Hook begrenzt die Subagents technisch, nicht nur per Anweisung. Lesen nur im Plugin-Ordner und in `reports/`, Schreiben nur in `reports/`. Rechercheur und Prüfer rufen nur öffentliche Hosts über http und https ab, die Aktualitätsprüfung nur ihre zwei festen URLs. Fehlt Node.js, blockiert der Hook die Subagents. Tests in `tests/schranke.test.mjs`.
+- **Kein Klick-Werkzeug mehr für den Rechercheur (E07):** Cookie-Banner können nicht mehr akzeptiert werden. ⚠️ Text nur hinter Bannern oder in eingeklappten Bereichen bleibt dadurch eher „nicht abrufbar“.
+- **Datenminimierung bei `assessment` (S02):** Der Dienstumfang für den Rechercheur besteht nur aus Produktnamen des Anbieters. Im Modus `dialog` bestätigt der Nutzer ihn. AI-Act- und Gesamt-Dateien sind für Rechercheur und Prüfer gesperrt.
+
+### AI Act
+
+- Art. 50 Abs. 5 in der Referenz präzisiert: keine eigene Pflicht, nur Art und Zeitpunkt der Informationen nach Abs. 1 bis 4 (A04).
+
+### Bekannt und offen
+
+- Die Schranke ist in einer echten Session getestet (10 von 10 Aufrufen wie erwartet), ein vollständiger Vendor-Lauf mit 0.3.0 steht aus. Offen ist vor allem, wie sich das fehlende Klick-Werkzeug auf die Belege auswirkt.
+- Abfluss über URLs zu öffentlichen Domains, Umleitungen im Browser und DNS-Rebinding fängt die Schranke nicht ab.
+
 ## 0.2.0 (03.11.2026)
 
 Schema 0.11, Fragebogen 0.8.
@@ -22,8 +41,8 @@ Schema 0.11, Fragebogen 0.8.
 
 ### Bekannt und offen
 
-- Die Cookie-Banner-Regel ist nur eine Anweisung und wurde in Testläufen nicht immer eingehalten (E07). Eine technische Begrenzung ist für S01 vorgemerkt.
-- S01, S02 und S03 (technische Begrenzung von Schreibpfaden und Abrufen, Datenminimierung) sind offen.
+- Die Cookie-Banner-Regel ist nur eine Anweisung und wurde in Testläufen nicht immer eingehalten (E07). Behoben in 0.3.0.
+- S01, S02 und S03 (technische Begrenzung von Schreibpfaden und Abrufen, Datenminimierung) sind offen. Behoben in 0.3.0.
 
 ## 0.1.1
 

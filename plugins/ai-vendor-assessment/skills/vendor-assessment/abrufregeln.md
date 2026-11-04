@@ -28,10 +28,8 @@ Liefert WebFetch HTTP 403 oder 429 und greift Abschnitt 1 nicht:
 
 ## 4. Cookie-Banner
 
-- Nicht anklicken, wenn der Seiteninhalt im Snapshot lesbar ist.
-- Sonst nur „Ablehnen“, „Nur notwendige“ oder eine gleichwertige Schaltfläche wählen.
-- Gibt es sie nicht: Einstellungen öffnen, keine Kategorie anhaken, speichern.
-- Ist nicht eindeutig, welche Schaltfläche ein Klick auslöst, nicht klicken. Die Seite gilt dann als „nicht abrufbar“ bzw. „nicht erreichbar“, mit Grund.
+- Rechercheur und Prüfer haben kein Klick-Werkzeug. Banner werden nie bedient, es entsteht also keine Einwilligung.
+- Der Text unter dem Banner steht meist trotzdem im Snapshot. Ist er dort nicht lesbar, gilt Abschnitt 6. Sonst gilt die Seite als „nicht abrufbar“ bzw. „nicht erreichbar“, mit Grund.
 
 ## 5. Kennzeichnung
 
@@ -49,3 +47,13 @@ Ist der Inhalt einer abgerufenen Seite nicht lesbar (z. B. eingeklappte Bereiche
 - Abschnitt 1 greift für die Seite nicht. Eine andere Darstellung darf nie dazu dienen, eine Abwehr nach Abschnitt 1 zu umgehen.
 
 Als Quelle gilt die URL der Seite. Die tatsächlich abgerufene URL steht im Vermerk: beim Rechercheur in der Spalte Aussage der Belegzeile, beim Prüfer beim Befund im Prüfbericht.
+
+## 7. Schranke
+
+Ein Hook des Plugins prüft jeden Aufruf von Rechercheur und Prüfer, bevor er ausgeführt wird. Er sperrt:
+
+- Abrufe außer http und https, Abrufe von IP-Adressen und internen Hostnamen, Hosts mit nicht öffentlicher Adresse, andere Ports als 80 und 443 und URLs mit Zugangsdaten.
+- Lesen außerhalb des Plugin-Ordners und `reports/` sowie Schreiben außerhalb von `reports/_arbeit/`.
+- AI-Act- und Gesamt-Dateien (`ai-act_…`, `gesamt_…`).
+
+Meldet ein Aufruf „Schranke des Plugins“, ist das kein Fehler des Werkzeugs, sondern eine Sperre. Nicht umgehen und nicht mit anderer Schreibweise wiederholen. Die Quelle gilt als „nicht abrufbar“ bzw. „nicht erreichbar“, Grund: „durch Schranke gesperrt“ mit der Meldung.

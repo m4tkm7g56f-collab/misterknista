@@ -40,6 +40,12 @@ claude plugin validate .
 ruby .claude/hooks/check-frontmatter.rb --alle
 ```
 
+Bei Änderungen an der Schranke (`plugins/ai-vendor-assessment/hooks/`) oder an den URLs der Aktualitätsprüfung:
+
+```bash
+node --test tests/schranke.test.mjs
+```
+
 ## Der Hook für den YAML-Kopf
 
 [`.claude/hooks/check-frontmatter.rb`](.claude/hooks/check-frontmatter.rb) prüft den YAML-Kopf jeder `SKILL.md` und jeder Agent-Datei. Hintergrund: Ist der Kopf ungültig, verwirft Claude Code ihn ohne Fehlermeldung. Werkzeugsperren wie `disallowed-tools` oder `tools` wirken dann nicht mehr, und `claude plugin validate` erkennt das nicht.

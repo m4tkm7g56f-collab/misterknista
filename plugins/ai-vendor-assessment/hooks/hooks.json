@@ -1,0 +1,17 @@
+{
+  "description": "Schranke: begrenzt Lese- und Schreibpfade und Abruf-URLs der Plugin-Subagents. Andere Aufrufe bleiben unberührt.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit|MultiEdit|NotebookEdit|WebFetch|mcp__plugin_ai-vendor-assessment_browser__browser_navigate|mcp__plugin_ai-vendor-assessment_browser__browser_snapshot|mcp__plugin_ai-vendor-assessment_browser__browser_take_screenshot",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/schranke.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

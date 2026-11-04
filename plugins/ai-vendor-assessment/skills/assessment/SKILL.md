@@ -47,7 +47,10 @@ Eingaben:
 
 - Entfällt bei AI-Act-Risikoklasse „verbotene Praktik“ (`ueberspringen.vendor_bei_verbot`). Dann weiter mit Phase 5.
 - Sonst: Führe den Ablauf aus `vendor-assessment/SKILL.md` aus, mit URL, Tarif, Anwendungsfall und dem Schutzbedarf aus Phase 3 als angegebenem Schutzbedarf.
-- Bestimme aus dem Anwendungsfall den zu bewertenden Dienst- und Funktionsumfang (z. B. Modul und KI-Funktion) und gib ihn als „Dienstumfang“ weiter. Den Text des Anwendungsfalls erhält der Rechercheur nicht.
+- Bestimme aus dem Anwendungsfall den zu bewertenden Dienst- und Funktionsumfang und gib ihn als „Dienstumfang“ weiter. Den Text des Anwendungsfalls erhält der Rechercheur nicht. Der Dienstumfang gelangt in Suchanfragen, deshalb gilt:
+  - Er besteht nur aus Produkt-, Modul- und Funktionsnamen, wie der Anbieter sie selbst verwendet (z. B. „Recruiting, KI-Assistent“).
+  - Er enthält nichts über die eigene Organisation, ihre Branche, den Zweck, betroffene Personen oder Datenarten. Im Zweifel weglassen, dann gilt das Hauptprodukt.
+  - Modus `dialog`: Zeige dem Nutzer den Dienstumfang vor der Recherche, mit dem Hinweis, dass er in Suchanfragen gelangt. Lass ihn bestätigen, kürzen oder ändern. Modus `test`: ohne Rückfrage, nach den Regeln oben.
 - Bei AI-Act-Ergebnis „hochrisiko_nicht_ausgeschlossen“: Ermittle zusätzlich die Vendor-Gesamtampel für Schutzbedarf „hoch“ aus denselben Einzelbewertungen (keine neue Recherche).
 - Speichere den Vendor-Report wie dort beschrieben unter `${CLAUDE_PROJECT_DIR}/reports/<anbieter-slug>_…`.
 
