@@ -16,8 +16,9 @@ const projekt = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "schranke-
 fs.mkdirSync(path.join(projekt, "reports/_arbeit/anbieter_2026-11-03"), { recursive: true });
 const B = "mcp__plugin_ai-vendor-assessment_browser__";
 
-function lauf(agent, tool_name, tool_input, env = {}) {
+function lauf(agent, tool_name, tool_input, env = {}, nachher) {
   const eingabe = { session_id: "t", cwd: projekt, hook_event_name: "PreToolUse", tool_name, tool_input };
+  if (nachher !== undefined) Object.assign(eingabe, { hook_event_name: "PostToolUse", tool_response: nachher });
   if (agent) eingabe.agent_type = agent;
   const r = spawnSync("sh", [path.join(plugin, "hooks/schranke.sh")], {
     input: JSON.stringify(eingabe),
@@ -27,7 +28,9 @@ function lauf(agent, tool_name, tool_input, env = {}) {
   if (r.status === 2) return "deny";
   assert.equal(r.status, 0, r.stderr);
   if (r.stdout.trim() === "") return "durch";
-  return JSON.parse(r.stdout).hookSpecificOutput.permissionDecision;
+  const aus = JSON.parse(r.stdout).hookSpecificOutput;
+  if (aus.hookEventName === "PostToolUse") return aus.updatedMCPToolOutput ? "ersetzt" : "durch";
+  return aus.permissionDecision;
 }
 
 const R = "ai-vendor-assessment:rechercheur";
@@ -121,4 +124,43 @@ test("Ohne Node.js blockiert der Wrapper nur Plugin-Agents", () => {
 
 test("Fehlende Umgebung blockiert", () => {
   assert.equal(lauf(R, "Read", { file_path: path.join(plugin, "x.md") }, { CLAUDE_PLUGIN_ROOT: "" }), "deny");
+});
+
+test("Nur freigegebene Browser-Werkzeuge", () => {
+  for (const name of ["browser_navigate", "browser_snapshot", "browser_wait_for", "browser_close"]) {
+    assert.equal(lauf(R, `${B}${name}`, name === "browser_navigate" ? { url: "https://example.com/" } : {}), "durch", name);
+  }
+  for (const name of ["browser_click", "browser_type", "browser_evaluate", "browser_run_code_unsafe", "browser_file_upload", "browser_tabs", "browser_neu_nach_update"]) {
+    assert.equal(lauf(R, `${B}${name}`, {}), "deny", name);
+  }
+  assert.equal(lauf(W, `${B}browser_navigate`, { url: "https://example.com/" }), "deny");
+  assert.equal(lauf(undefined, `${B}browser_click`, {}), "durch");
+});
+
+const seite = (url) => [{ type: "text", text: `### Ran Playwright code\n\`\`\`js\nawait page.goto('x');\n\`\`\`\n### Page\n- Page URL: ${url}\n- Page Title: T\n### Snapshot\n- [Snapshot](a.yml)` }];
+
+test("Geladene Seite nach dem Abruf", () => {
+  const nav = `${B}browser_navigate`;
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, seite("https://example.com/")), "durch");
+  assert.equal(lauf(R, nav, { url: "about:blank" }, {}, seite("about:blank")), "durch");
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, seite("http://127.0.0.1/admin")), "ersetzt");
+  assert.equal(lauf(P, nav, { url: "https://example.com/" }, {}, seite("http://169.254.169.254/latest/")), "ersetzt");
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, seite("file:///etc/passwd")), "ersetzt");
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, "### Page\n- Page URL: http://intranet/\n"), "ersetzt");
+  // Seiteninhalt ohne erkennbare URL: zurückhalten. Reine Fehlermeldung: durchlassen.
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, [{ type: "text", text: "### Snapshot\n- x" }]), "ersetzt");
+  assert.equal(lauf(R, nav, { url: "https://example.com/" }, {}, [{ type: "text", text: "Error: net::ERR_NAME_NOT_RESOLVED" }]), "durch");
+  assert.equal(lauf(undefined, nav, { url: "https://example.com/" }, {}, seite("http://127.0.0.1/")), "durch");
+});
+
+test("Gesperrter Snapshot wird gelöscht", () => {
+  const datei = arbeit("anbieter_2026-11-03/snapshots/intern.yml");
+  fs.mkdirSync(path.dirname(datei), { recursive: true });
+  fs.writeFileSync(datei, "geheim");
+  assert.equal(lauf(R, `${B}browser_snapshot`, { filename: datei }, {}, seite("http://10.0.0.5/")), "ersetzt");
+  assert.equal(fs.existsSync(datei), false);
+  const gut = arbeit("anbieter_2026-11-03/snapshots/ok.yml");
+  fs.writeFileSync(gut, "ok");
+  assert.equal(lauf(R, `${B}browser_snapshot`, { filename: gut }, {}, seite("https://example.com/")), "durch");
+  assert.equal(fs.existsSync(gut), true);
 });

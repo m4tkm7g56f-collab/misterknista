@@ -50,10 +50,12 @@ Als Quelle gilt die URL der Seite. Die tatsächlich abgerufene URL steht im Verm
 
 ## 7. Schranke
 
-Ein Hook des Plugins prüft jeden Aufruf von Rechercheur und Prüfer, bevor er ausgeführt wird. Er sperrt:
+Ein Hook des Plugins prüft jeden Aufruf von Rechercheur und Prüfer, bevor er ausgeführt wird, und nach jedem Browser-Aufruf die geladene Seite. Er sperrt:
 
 - Abrufe außer http und https, Abrufe von IP-Adressen und internen Hostnamen, Hosts mit nicht öffentlicher Adresse, andere Ports als 80 und 443 und URLs mit Zugangsdaten.
 - Lesen außerhalb des Plugin-Ordners und `reports/` sowie Schreiben außerhalb von `reports/_arbeit/`.
 - AI-Act- und Gesamt-Dateien (`ai-act_…`, `gesamt_…`).
+- alle Browser-Werkzeuge außer `browser_navigate`, `browser_snapshot`, `browser_wait_for` und `browser_close`.
+- geladene Seiten, deren URL gegen diese Regeln verstößt, etwa nach einer Weiterleitung. Die Ausgabe wird dann durch die Meldung ersetzt, ein dabei geschriebener Snapshot gelöscht.
 
 Meldet ein Aufruf „Schranke des Plugins“, ist das kein Fehler des Werkzeugs, sondern eine Sperre. Nicht umgehen und nicht mit anderer Schreibweise wiederholen. Die Quelle gilt als „nicht abrufbar“ bzw. „nicht erreichbar“, Grund: „durch Schranke gesperrt“ mit der Meldung.

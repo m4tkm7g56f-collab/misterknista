@@ -36,7 +36,7 @@ claude plugin marketplace add m4tkm7g56f-collab/misterknista
 claude plugin install ai-vendor-assessment@ai-vendor-assessment
 ```
 
-Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills, sechs Subagents, einen MCP-Server (`browser`) und einen Hook (Schranke, siehe Sicherheitshinweise). Der Hook startet bei jedem Lese-, Schreib- und Abrufaufruf kurz Node.js, auch in Sessions ohne Plugin-Lauf. Er greift aber nur bei den Subagents des Plugins. Beim ersten Start lädt `npx` den Browser-Server aus npm. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
+Vor der Installation zeigt `/plugin` an, was das Plugin mitbringt: drei Skills, sechs Subagents, einen MCP-Server (`browser`) und einen Hook (Schranke, siehe Sicherheitshinweise). Der Hook startet bei jedem Lese-, Schreib- und Abrufaufruf und nach jedem Aufruf des Plugin-Browsers kurz Node.js, auch in Sessions ohne Plugin-Lauf. Er greift aber nur bei den Subagents des Plugins. Beim ersten Start lädt `npx` den Browser-Server aus npm. Laut `claude plugin details` kostet das Plugin etwa 690 Tokens in jeder Session, in der es aktiv ist. Jeder Aufruf eines Skills oder Subagents kostet zusätzlich etwa 600 bis 1.300 Tokens für dessen Anweisungen, dazu kommt die eigentliche Arbeit (Recherche, Bewertung, Prüfung).
 
 Aktualisieren: Automatische Updates sind für Marktplätze außerhalb von Anthropic standardmäßig aus. Sie lassen sich in `/plugin` im Reiter **Marketplaces** einschalten. Manuell:
 
@@ -155,7 +155,7 @@ flowchart TD
     S --> REP["Gemeinsamer Report mit Prüfvermerk"]
 ```
 
-Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit getrennten Werkzeugrechten, nach dem Prinzip der geringsten Rechte. Die Rechte stehen im Feld `tools` der jeweiligen Datei und gelten technisch, nicht nur als Anweisung. Zusätzlich begrenzt ein Hook (Schranke) Lese- und Schreibpfade und Abruf-URLs, siehe Sicherheitshinweise.
+Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit getrennten Werkzeugrechten, nach dem Prinzip der geringsten Rechte. Die Rechte stehen im Feld `tools` der jeweiligen Datei und gelten technisch, nicht nur als Anweisung. Zusätzlich begrenzt ein Hook (Schranke) Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge, siehe Sicherheitshinweise.
 
 | Subagent | Aufgabe | Webzugriff | Datei |
 |---|---|---|---|
@@ -193,12 +193,15 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
   - Lesen außerhalb des Plugin-Ordners und `reports/`, z. B. SSH-Schlüssel oder `.env`-Dateien.
   - Schreiben außerhalb von `reports/`, für die Subagents mit Webzugriff außerhalb von `reports/_arbeit/`. Symlinks werden aufgelöst.
   - Für Rechercheur und Prüfer: Abrufe außer http und https, IP-Adressen, interne Hostnamen, Hosts mit privater Adresse laut DNS, andere Ports als 80 und 443, URLs mit Zugangsdaten. Dazu AI-Act- und Gesamt-Dateien.
+  - Für Rechercheur und Prüfer jedes Browser-Werkzeug außer Seite laden, Snapshot, Warten und Schließen. Klicken, Tippen, JavaScript und Werkzeuge, die ein Update des Browser-Servers neu mitbringt, sind damit gesperrt. Die anderen Subagents dürfen den Browser gar nicht nutzen.
   - Für die Aktualitätsprüfung jeden Abruf außer den zwei festen URLs.
+  - Nach jedem Browser-Aufruf prüft der Hook die tatsächlich geladene Seiten-URL nach denselben Regeln (PostToolUse). Hat eine Weiterleitung auf eine gesperrte Adresse geführt, ersetzt er die Ausgabe durch eine Sperrmeldung und löscht einen dabei geschriebenen Snapshot.
   - Fehlt Node.js, blockiert der Hook alle Aufrufe der Subagents, statt unbemerkt auszufallen. Bei einem internen Fehler blockiert er ebenfalls.
   - Tests: `node --test tests/schranke.test.mjs`.
 - ⚠️ **Grenzen der Schranke.**
   - Sie hindert Rechercheur und Prüfer nicht daran, öffentliche Adressen beliebiger Domains abzurufen. Daten, die sie lesen dürfen, könnten über eine präparierte URL nach außen gelangen. Lesen dürfen sie nur den Plugin-Ordner und die Vendor-Dateien in `reports/`. Der Vendor-Report enthält die Kurzbeschreibung des Anwendungsfalls, der Prüfer liest ihn.
-  - Leitet eine Seite im Browser auf eine interne Adresse um oder lädt sie Inhalte aus dem lokalen Netz nach, sieht der Hook das nicht. Er prüft nur die URL, die das Modell aufruft. DNS-Rebinding fängt er ebenfalls nicht ab.
+  - Die Prüfung nach dem Laden verhindert den Abruf nicht. Bei einer Weiterleitung auf eine interne Adresse hat der Browser sie schon aufgerufen. Der Hook verhindert nur, dass der Inhalt beim Subagent ankommt. Inhalte, die eine Seite aus dem lokalen Netz nachlädt (Bilder, Skripte, Frames), sieht er nicht, DNS-Rebinding fängt er ebenfalls nicht ab.
+  - Ob Claude Code die ersetzte Ausgabe übernimmt, ist bisher nur mit Tests des Hooks geprüft, nicht in einer echten Session. Als Rückfall meldet der Hook die Sperre zusätzlich als Hinweis an den Subagent.
   - Der Hook kennt die Subagents nur am Namen (`ai-vendor-assessment:…`). Wer sie unter anderem Namen kopiert, ist nicht geschützt. Für den Hauptagent gilt er nicht.
 - ⚠️ **Webabruf im AI-Act-Teil.** Eine Werkzeugsperre im Skill (`disallowed-tools`) gilt auch für alle Subagents, die er beauftragt. Weil die Aktualitätsprüfung Webabruf braucht, sperrt `ai-act-check` nur die Websuche. Dass der Hauptagent selbst keine Webseiten abruft, ist damit nur eine Anweisung, keine technische Sperre. Klassifizierer und Referenz-Prüfer haben technisch keinen Webzugriff. Die Aktualitätsprüfung ist technisch auf die zwei festen URLs begrenzt (Schranke).
 - **Browser-Server mit fester Version.** Das Plugin startet Playwright MCP in Version 0.0.83, nicht `@latest`. Eine neue, möglicherweise kompromittierte Version läuft also nicht automatisch, Updates kommen nur mit einer neuen Plugin-Version. Der Browser hält sein Profil nur im Speicher: Cookies und Einwilligungen bleiben nicht über den Lauf hinaus erhalten. Vom eigenen Browser ist er vollständig getrennt.
@@ -243,7 +246,7 @@ Was die Zahlen nicht aussagen:
 | ↳ [`.mcp.json`](plugins/ai-vendor-assessment/.mcp.json) | Browser-Server (Playwright MCP, feste Version) |
 | ↳ [`skills/`](plugins/ai-vendor-assessment/skills/) | `assessment`, `vendor-assessment` (mit Quellen-Leitfaden und Abrufregeln), `ai-act-check` |
 | ↳ [`agents/`](plugins/ai-vendor-assessment/agents/) | Die sechs Subagents |
-| ↳ [`hooks/`](plugins/ai-vendor-assessment/hooks/) | Schranke für die Subagents (Pfade und Abruf-URLs) |
+| ↳ [`hooks/`](plugins/ai-vendor-assessment/hooks/) | Schranke für die Subagents (Pfade, Abruf-URLs, Browser-Werkzeuge) |
 | ↳ [`schema/`](plugins/ai-vendor-assessment/schema/) | Kriterien, Fragebogen, Regeln für das Gesamtbild, Report-Vorlagen |
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
 | ↳ [`references/dsgvo-art28.md`](plugins/ai-vendor-assessment/references/dsgvo-art28.md) | Datierte Referenz zu Art. 28 DSGVO und den Standardvertragsklauseln, Grundlage des Kriteriums AVV |

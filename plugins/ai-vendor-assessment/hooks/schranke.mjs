@@ -1,5 +1,6 @@
 // Schranke für die Subagents des Plugins (Befunde S01, S03 und S02 im Review-Log).
-// PreToolUse-Hook: begrenzt Lese- und Schreibpfade sowie Abruf-URLs technisch, statt nur per Anweisung.
+// PreToolUse: begrenzt Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge technisch, statt nur per Anweisung.
+// PostToolUse (Browser): prüft die tatsächlich geladene Seiten-URL, etwa nach einer Weiterleitung.
 // Greift nur, wenn agent_type mit "ai-vendor-assessment:" beginnt. Alle anderen Aufrufe laufen unverändert durch.
 // Im Zweifel wird blockiert (fail closed).
 
@@ -23,6 +24,11 @@ const AKTUALITAET_URLS = new Set([
 const INTERNE_ENDUNGEN = [".localhost", ".local", ".internal", ".intranet", ".lan", ".home", ".home.arpa", ".corp", ".localdomain"];
 
 const BROWSER = "mcp__plugin_ai-vendor-assessment_browser__";
+// Einzige Browser-Werkzeuge, die Rechercheur und Prüfer nutzen dürfen. Alles andere (Klicken, Tippen,
+// JavaScript, Datei-Upload, neue Werkzeuge nach einem Update) wird gesperrt.
+const BROWSER_ERLAUBT = new Set(["browser_navigate", "browser_snapshot", "browser_wait_for", "browser_close"]);
+// Seiten ohne Inhalt eines Hosts, die nach einem Abruf als Seiten-URL erscheinen dürfen.
+const LEERE_SEITEN = new Set(["about:blank", "chrome-error://chromewebdata/"]);
 
 class Sperre extends Error {}
 
@@ -150,19 +156,22 @@ async function pruefeUrl(agent, url, ctx) {
   }
 }
 
-async function pruefe(eingabe) {
-  const agent = eingabe.agent_type.slice(PRAEFIX.length);
-  const werkzeug = eingabe.tool_name;
-  const input = eingabe.tool_input ?? {};
+function kontext(eingabe) {
   const pluginRoh = process.env.CLAUDE_PLUGIN_ROOT;
   const projekt = process.env.CLAUDE_PROJECT_DIR || eingabe.cwd;
   if (!pluginRoh || !projekt) sperre("CLAUDE_PLUGIN_ROOT oder Projektordner unbekannt.");
-  const ctx = {
-    werkzeug,
+  return {
+    werkzeug: eingabe.tool_name,
     plugin: echterPfad(pluginRoh),
     projekt: echterPfad(projekt),
     berichte: echterPfad(path.join(projekt, "reports")),
   };
+}
+
+async function pruefe(agent, eingabe, ctx) {
+  const werkzeug = eingabe.tool_name;
+  const input = eingabe.tool_input ?? {};
+  pruefeBrowserWerkzeug(agent, werkzeug);
 
   switch (werkzeug) {
     case "Read":
@@ -187,6 +196,50 @@ async function pruefe(eingabe) {
   }
 }
 
+function pruefeBrowserWerkzeug(agent, werkzeug) {
+  if (!werkzeug.startsWith(BROWSER)) return;
+  if (!NUR_VENDOR.has(agent)) sperre(`Browser-Werkzeuge sind für ${agent} gesperrt.`);
+  const name = werkzeug.slice(BROWSER.length);
+  if (!BROWSER_ERLAUBT.has(name)) sperre(`Browser-Werkzeug nicht freigegeben: ${name}`);
+}
+
+function textAus(antwort) {
+  if (typeof antwort === "string") return antwort;
+  const bloecke = Array.isArray(antwort) ? antwort : Array.isArray(antwort?.content) ? antwort.content : null;
+  if (bloecke) return bloecke.map((b) => (typeof b?.text === "string" ? b.text : "")).join("\n");
+  return JSON.stringify(antwort ?? "");
+}
+
+// Nach einem Browser-Aufruf: jede gemeldete Seiten-URL muss dieselbe Prüfung bestehen wie vor dem Abruf.
+async function pruefeSeite(agent, eingabe, ctx) {
+  const text = textAus(eingabe.tool_response);
+  const urls = [...text.matchAll(/^- Page URL: (\S+)/gm)].map((m) => m[1]);
+  if (urls.length === 0) {
+    if (/^### (Page|Snapshot)\b/m.test(text)) sperre("Seiten-URL nicht feststellbar, Inhalt vorsorglich zurückgehalten.");
+    return;
+  }
+  for (const url of urls) {
+    if (LEERE_SEITEN.has(url)) continue;
+    try {
+      await pruefeUrl(agent, url, ctx);
+    } catch (e) {
+      if (e instanceof Sperre) sperre(`Geladene Seite ist gesperrt (z. B. nach Weiterleitung). ${e.message}`);
+      throw e;
+    }
+  }
+}
+
+// Bei Sperre nach dem Abruf: vom Werkzeug geschriebene Snapshot-Datei entfernen, damit der Inhalt nicht über Read zurückkommt.
+function entferneDatei(agent, input, ctx) {
+  if (typeof input?.filename !== "string") return;
+  try {
+    const p = pruefeSchreiben(agent, input.filename, ctx);
+    if (liegtIn(p, path.join(ctx.berichte, "_arbeit"))) fs.rmSync(p, { force: true });
+  } catch {
+    // Pfad außerhalb von reports/_arbeit/: wurde schon vor dem Aufruf gesperrt.
+  }
+}
+
 function antworte(entscheidung, grund) {
   process.stdout.write(
     JSON.stringify({
@@ -195,6 +248,18 @@ function antworte(entscheidung, grund) {
         permissionDecision: entscheidung,
         permissionDecisionReason: grund,
       },
+    }),
+  );
+}
+
+// Ersetzt die Ausgabe des Browser-Werkzeugs. "block" mit reason bleibt als Hinweis, falls die Ersetzung nicht greift.
+function ersetzeAusgabe(antwortRoh, grund) {
+  const ersatz = Array.isArray(antwortRoh) ? [{ type: "text", text: grund }] : grund;
+  process.stdout.write(
+    JSON.stringify({
+      decision: "block",
+      reason: grund,
+      hookSpecificOutput: { hookEventName: "PostToolUse", updatedMCPToolOutput: ersatz },
     }),
   );
 }
@@ -216,9 +281,24 @@ try {
 }
 
 if (typeof eingabe.agent_type !== "string" || !eingabe.agent_type.startsWith(PRAEFIX)) process.exit(0);
+const agent = eingabe.agent_type.slice(PRAEFIX.length);
+
+if (eingabe.hook_event_name === "PostToolUse") {
+  if (typeof eingabe.tool_name !== "string" || !eingabe.tool_name.startsWith(BROWSER)) process.exit(0);
+  let ctx;
+  try {
+    ctx = kontext(eingabe);
+    await pruefeSeite(agent, eingabe, ctx);
+  } catch (e) {
+    const grund = e instanceof Sperre ? e.message : `interner Fehler (${e.message}), Inhalt vorsorglich zurückgehalten`;
+    if (ctx) entferneDatei(agent, eingabe.tool_input, ctx);
+    ersetzeAusgabe(eingabe.tool_response, `Schranke des Plugins: ${grund}`);
+  }
+  process.exit(0);
+}
 
 try {
-  await pruefe(eingabe);
+  await pruefe(agent, eingabe, kontext(eingabe));
 } catch (e) {
   const grund = e instanceof Sperre ? e.message : `interner Fehler (${e.message}), Aufruf vorsorglich blockiert`;
   antworte("deny", `Schranke des Plugins: ${grund}`);

@@ -2,6 +2,20 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.3.1 (05.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Sicherheit
+
+- **Browser-Werkzeuge auf Liste begrenzt (S01):** Rechercheur und Prüfer dürfen nur Seite laden, Snapshot, Warten und Schließen. Jedes andere Werkzeug des Browser-Servers wird gesperrt, auch solche, die ein späteres Update mitbringt. Die anderen Subagents dürfen den Browser nicht nutzen.
+- **Prüfung der geladenen Seite (S01):** Ein PostToolUse-Hook prüft nach jedem Browser-Aufruf die gemeldete Seiten-URL. Führt eine Weiterleitung auf eine gesperrte Adresse, ersetzt er die Ausgabe und löscht einen dabei geschriebenen Snapshot. 12 Tests grün.
+
+### Bekannt und offen
+
+- ⚠️ Die Ersetzung der Ausgabe ist nur mit Tests des Hooks geprüft, nicht in einer echten Session.
+- Der Abruf der internen Adresse selbst wird nicht verhindert, nur die Weitergabe des Inhalts. Nachgeladene Inhalte aus dem lokalen Netz und DNS-Rebinding bleiben offen.
+
 ## 0.3.0 (03.11.2026)
 
 Schema 0.11, Fragebogen 0.8.
