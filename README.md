@@ -102,9 +102,9 @@ Alle Ergebnisse bleiben auf dem eigenen Rechner, im Projektordner, in dem Claude
 |---|---|
 | `reports/<lauf-id>.md` | Report |
 | `reports/_arbeit/<lauf-id>/` | Zwischenergebnisse: Belegliste, Aktualitätsprüfung, Prüfberichte |
-| `.playwright-mcp/` | Protokolle und Snapshots des Browser-Servers. Diesen Ordner legt Playwright MCP von sich aus an |
+| `reports/_arbeit/_browser/` | Protokolle und Snapshots, die der Browser-Server von sich aus anlegt (öffentliche Seiten). Ab Plugin 0.3.2, vorher `.playwright-mcp/` im Projektordner |
 
-Das Plugin lädt nichts hoch und schreibt nichts in dieses Repository. Wer den eigenen Projektordner mit Git versioniert, sollte `reports/` und `.playwright-mcp/` in die `.gitignore` aufnehmen, sonst landen Reports und Browser-Protokolle beim nächsten Push im eigenen Repository.
+Das Plugin lädt nichts hoch und schreibt nichts in dieses Repository. Wer den eigenen Projektordner mit Git versioniert, sollte `reports/` in die `.gitignore` aufnehmen (bei Läufen mit älteren Versionen auch `.playwright-mcp/`), sonst landen Reports und Browser-Protokolle beim nächsten Push im eigenen Repository.
 
 ## Wie die Bewertung funktioniert
 

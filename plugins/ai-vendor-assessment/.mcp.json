@@ -1,6 +1,6 @@
 {
   "browser": {
     "command": "npx",
-    "args": ["-y", "@playwright/mcp@0.0.83", "--isolated"]
+    "args": ["-y", "@playwright/mcp@0.0.83", "--isolated", "--output-dir", "reports/_arbeit/_browser"]
   }
 }

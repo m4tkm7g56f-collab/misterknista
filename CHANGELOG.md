@@ -2,6 +2,14 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.3.2 (06.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Abruf
+
+- **Ausgabeordner des Browser-Servers (E13):** Snapshots und Konsolen-Logs, die der Browser-Server von sich aus anlegt, landen in `reports/_arbeit/_browser/` statt in `.playwright-mcp/` im Projektordner. Snapshots mit Dateinamen schreiben die Subagents weiter in den Arbeitsordner des Laufs. ⚠️ Der Ordner wächst mit jedem Lauf und wird nicht automatisch geleert.
+
 ## 0.3.1 (05.11.2026)
 
 Schema 0.11, Fragebogen 0.8.
