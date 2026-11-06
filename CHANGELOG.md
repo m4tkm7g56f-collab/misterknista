@@ -13,7 +13,7 @@ Schema 0.11, Fragebogen 0.8.
 
 ### Bekannt und offen
 
-- ⚠️ Die Ersetzung der Ausgabe ist nur mit Tests des Hooks geprüft, nicht in einer echten Session.
+- Die Ersetzung der Ausgabe ist am 05.11.2026 in einer echten Session getestet, mit einem Testhook statt einer echten Weiterleitung auf eine interne Adresse.
 - Der Abruf der internen Adresse selbst wird nicht verhindert, nur die Weitergabe des Inhalts. Nachgeladene Inhalte aus dem lokalen Netz und DNS-Rebinding bleiben offen.
 
 ## 0.3.0 (03.11.2026)
