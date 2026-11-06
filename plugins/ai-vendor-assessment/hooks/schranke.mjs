@@ -64,9 +64,14 @@ function istAiActOderGesamt(pfad, berichte) {
     .some((teil) => teil.startsWith("ai-act_") || teil.startsWith("gesamt_"));
 }
 
+// Ausgabeordner des Browser-Servers (.mcp.json, --output-dir). Dort liegen automatisch angelegte Snapshots,
+// auch von Seiten, die die Schranke nach dem Laden gesperrt hat. Für alle Subagents gesperrt.
+const browserAblage = (ctx) => path.join(ctx.berichte, "_arbeit", "_browser");
+
 function pruefeLesen(agent, datei, ctx) {
   if (typeof datei !== "string" || datei === "") sperre("Lesen ohne Pfad.");
   const p = echterPfad(datei);
+  if (liegtIn(p, browserAblage(ctx))) sperre(`Dateien des Browser-Servers sind gesperrt, Snapshots mit Dateinamen im Arbeitsordner speichern: ${datei}`);
   if (agent === "pruefer-aktualitaet") {
     if (!liegtIn(p, ctx.plugin)) sperre(`Lesen nur im Plugin-Ordner erlaubt: ${datei}`);
     return;
@@ -91,6 +96,7 @@ function pruefeSchreiben(agent, datei, ctx) {
   if (NUR_VENDOR.has(agent) && istAiActOderGesamt(p, ctx.berichte)) {
     sperre(`AI-Act- und Gesamt-Dateien sind für ${agent} gesperrt: ${datei}`);
   }
+  if (liegtIn(p, browserAblage(ctx))) sperre(`Der Ausgabeordner des Browser-Servers ist gesperrt: ${datei}`);
   return p;
 }
 
@@ -229,8 +235,13 @@ async function pruefeSeite(agent, eingabe, ctx) {
   }
 }
 
-// Bei Sperre nach dem Abruf: vom Werkzeug geschriebene Snapshot-Datei entfernen, damit der Inhalt nicht über Read zurückkommt.
-function entferneDatei(agent, input, ctx) {
+// Bei Sperre nach dem Abruf: geschriebene Snapshots entfernen, damit der Inhalt nicht auf der Platte bleibt.
+// Das sind die Datei mit ausdrücklichem Namen und die automatisch angelegten Dateien, auf die die Ausgabe verlinkt.
+function entferneDatei(agent, input, antwort, ctx) {
+  for (const m of textAus(antwort).matchAll(/\]\(([^)\s]+)\)/g)) {
+    const p = echterPfad(path.isAbsolute(m[1]) ? m[1] : path.join(ctx.projekt, m[1]));
+    if (liegtIn(p, browserAblage(ctx)) && p !== browserAblage(ctx)) fs.rmSync(p, { force: true });
+  }
   if (typeof input?.filename !== "string") return;
   try {
     const p = pruefeSchreiben(agent, input.filename, ctx);
@@ -291,7 +302,13 @@ if (eingabe.hook_event_name === "PostToolUse") {
     await pruefeSeite(agent, eingabe, ctx);
   } catch (e) {
     const grund = e instanceof Sperre ? e.message : `interner Fehler (${e.message}), Inhalt vorsorglich zurückgehalten`;
-    if (ctx) entferneDatei(agent, eingabe.tool_input, ctx);
+    if (ctx) {
+      try {
+        entferneDatei(agent, eingabe.tool_input, eingabe.tool_response, ctx);
+      } catch {
+        // Ersetzen der Ausgabe geht vor.
+      }
+    }
     ersetzeAusgabe(eingabe.tool_response, `Schranke des Plugins: ${grund}`);
   }
   process.exit(0);

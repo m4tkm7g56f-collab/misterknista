@@ -102,7 +102,7 @@ Alle Ergebnisse bleiben auf dem eigenen Rechner, im Projektordner, in dem Claude
 |---|---|
 | `reports/<lauf-id>.md` | Report |
 | `reports/_arbeit/<lauf-id>/` | Zwischenergebnisse: Belegliste, Aktualitätsprüfung, Prüfberichte |
-| `reports/_arbeit/_browser/` | Protokolle und Snapshots, die der Browser-Server von sich aus anlegt (öffentliche Seiten). Ab Plugin 0.3.2, vorher `.playwright-mcp/` im Projektordner |
+| `reports/_arbeit/_browser/` | Protokolle und Snapshots, die der Browser-Server von sich aus anlegt (öffentliche Seiten). Für die Subagents gesperrt. Ab Plugin 0.3.2, vorher `.playwright-mcp/` im Projektordner |
 
 Das Plugin lädt nichts hoch und schreibt nichts in dieses Repository. Wer den eigenen Projektordner mit Git versioniert, sollte `reports/` in die `.gitignore` aufnehmen (bei Läufen mit älteren Versionen auch `.playwright-mcp/`), sonst landen Reports und Browser-Protokolle beim nächsten Push im eigenen Repository.
 
@@ -195,7 +195,8 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
   - Für Rechercheur und Prüfer: Abrufe außer http und https, IP-Adressen, interne Hostnamen, Hosts mit privater Adresse laut DNS, andere Ports als 80 und 443, URLs mit Zugangsdaten. Dazu AI-Act- und Gesamt-Dateien.
   - Für Rechercheur und Prüfer jedes Browser-Werkzeug außer Seite laden, Snapshot, Warten und Schließen. Klicken, Tippen, JavaScript und Werkzeuge, die ein Update des Browser-Servers neu mitbringt, sind damit gesperrt. Die anderen Subagents dürfen den Browser gar nicht nutzen.
   - Für die Aktualitätsprüfung jeden Abruf außer den zwei festen URLs.
-  - Nach jedem Browser-Aufruf prüft der Hook die tatsächlich geladene Seiten-URL nach denselben Regeln (PostToolUse). Hat eine Weiterleitung auf eine gesperrte Adresse geführt, ersetzt er die Ausgabe durch eine Sperrmeldung und löscht einen dabei geschriebenen Snapshot.
+  - Lesen und Schreiben im Ausgabeordner des Browser-Servers (`reports/_arbeit/_browser/`). Dort legt der Server auch Snapshots von Seiten ab, die die Schranke nach dem Laden sperrt.
+  - Nach jedem Browser-Aufruf prüft der Hook die tatsächlich geladene Seiten-URL nach denselben Regeln (PostToolUse). Hat eine Weiterleitung auf eine gesperrte Adresse geführt, ersetzt er die Ausgabe durch eine Sperrmeldung und löscht die dabei geschriebenen Snapshots.
   - Fehlt Node.js, blockiert der Hook alle Aufrufe der Subagents, statt unbemerkt auszufallen. Bei einem internen Fehler blockiert er ebenfalls.
   - Tests: `node --test tests/schranke.test.mjs`.
 - ⚠️ **Grenzen der Schranke.**

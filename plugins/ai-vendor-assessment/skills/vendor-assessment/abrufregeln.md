@@ -55,6 +55,7 @@ Ein Hook des Plugins prüft jeden Aufruf von Rechercheur und Prüfer, bevor er a
 - Abrufe außer http und https, Abrufe von IP-Adressen und internen Hostnamen, Hosts mit nicht öffentlicher Adresse, andere Ports als 80 und 443 und URLs mit Zugangsdaten.
 - Lesen außerhalb des Plugin-Ordners und `reports/` sowie Schreiben außerhalb von `reports/_arbeit/`.
 - AI-Act- und Gesamt-Dateien (`ai-act_…`, `gesamt_…`).
+- den Ausgabeordner des Browser-Servers (`reports/_arbeit/_browser/`). Snapshots immer mit Dateinamen im Arbeitsordner des Laufs speichern.
 - alle Browser-Werkzeuge außer `browser_navigate`, `browser_snapshot`, `browser_wait_for` und `browser_close`.
 - geladene Seiten, deren URL gegen diese Regeln verstößt, etwa nach einer Weiterleitung. Die Ausgabe wird dann durch die Meldung ersetzt, ein dabei geschriebener Snapshot gelöscht.
 

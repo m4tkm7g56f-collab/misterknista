@@ -2,6 +2,14 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.3.3 (06.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Sicherheit
+
+- **Ausgabeordner des Browser-Servers gesperrt (E13):** Mit 0.3.2 lagen die automatisch angelegten Snapshots in `reports/`, wo die Subagents lesen dürfen. Damit wäre auch der Snapshot einer Seite lesbar gewesen, die die Schranke nach dem Laden gesperrt hat. Die Schranke sperrt den Ordner jetzt für Lesen und Schreiben und löscht bei einer Sperre auch die automatisch angelegten Snapshots, auf die die Ausgabe verlinkt. 13 Tests grün.
+
 ## 0.3.2 (06.11.2026)
 
 Schema 0.11, Fragebogen 0.8.

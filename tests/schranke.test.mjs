@@ -164,3 +164,18 @@ test("Gesperrter Snapshot wird gelöscht", () => {
   assert.equal(lauf(R, `${B}browser_snapshot`, { filename: gut }, {}, seite("https://example.com/")), "durch");
   assert.equal(fs.existsSync(gut), true);
 });
+
+test("Ausgabeordner des Browser-Servers", () => {
+  const ablage = path.join(projekt, "reports/_arbeit/_browser");
+  fs.mkdirSync(ablage, { recursive: true });
+  const auto = path.join(ablage, "page-2026-11-06T07-32-20-496Z.yml");
+  fs.writeFileSync(auto, "intern");
+  assert.equal(lauf(R, "Read", { file_path: auto }), "deny");
+  assert.equal(lauf(P, "Read", { file_path: auto }), "deny");
+  assert.equal(lauf(R, "Write", { file_path: path.join(ablage, "x.md") }), "deny");
+  const antwort = (url) => [{ type: "text", text: `### Page\n- Page URL: ${url}\n### Snapshot\n- [Snapshot](reports/_arbeit/_browser/page-2026-11-06T07-32-20-496Z.yml)` }];
+  assert.equal(lauf(R, `${B}browser_navigate`, { url: "https://example.com/" }, {}, antwort("https://example.com/")), "durch");
+  assert.equal(fs.existsSync(auto), true);
+  assert.equal(lauf(R, `${B}browser_navigate`, { url: "https://example.com/" }, {}, antwort("http://10.1.2.3/")), "ersetzt");
+  assert.equal(fs.existsSync(auto), false);
+});
