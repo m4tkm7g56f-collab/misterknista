@@ -2,6 +2,14 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.1 (11.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Prüfung
+
+- **Kipppunkt in beide Richtungen (E14):** In 0.4.0 nannte der Prüfer bei offener Lesart nur den ungünstigsten Status. Stand der Report schon auf Rot, blieb ein möglicher Wechsel zurück auf Gelb unmarkiert, und die Gesamtampel erschien als stabil. Jetzt gilt „Kann Status ändern: ja“ für Ab- und Aufwertung, bei mehreren Lesarten mit allen abweichenden Status.
+
 ## 0.4.0 (11.11.2026)
 
 Schema 0.11, Fragebogen 0.8.
