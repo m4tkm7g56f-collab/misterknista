@@ -59,7 +59,7 @@ Vorab: Prüfe, ob der Browser funktioniert, mit `browser_navigate` auf `about:bl
 2. Steht die Stelle auf der Seite, trage sie als neue Zeile mit der nächsten freien Q-Nummer ein, mit wörtlicher Belegstelle aus deinem Abruf.
 3. Ist ein Eintrag fehlerhaft, lösche ihn nicht. Ergänze in der Spalte Aussage „korrigiert durch Q<neu>“ und trage die richtige Fassung als neue Zeile ein.
 4. Steht die Stelle nicht auf der Seite oder ist die Seite nicht abrufbar, vermerke das unter „Nicht gefunden“ bzw. „Nicht abrufbar“, mit Bezug auf die Nummer des Hinweises.
-5. Recherchiere nichts darüber hinaus. Ergänze am Ende der Belegliste den Abschnitt „Nachrecherche“ mit Datum, Pfad des Prüfberichts und je Hinweis: neue bzw. korrigierte Q-Nummer oder Ergebnis.
+5. Recherchiere nichts darüber hinaus. Ergänze am Ende der Belegliste den Abschnitt „Nachrecherche“ mit Datum, Pfad des Prüfberichts und je Hinweis: neue bzw. korrigierte Q-Nummer oder Ergebnis. Gibt es den Abschnitt schon (zweite Nachrecherche), lass ihn stehen und füge darunter „Nachrecherche 2“ an. Nennt der Auftrag betroffene Kriterien, bearbeite nur Hinweise zu diesen Kriterien.
 6. Antworte in höchstens drei Sätzen: Anzahl neuer und korrigierter Belege, Hinweise ohne Ergebnis.
 
 ## Ausgabe

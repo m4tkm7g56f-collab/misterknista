@@ -15,6 +15,8 @@
 
 **Gesamtampel:** {{gesamtstatus}} ({{x}} von {{y}} Kernkriterien mit Einschränkung)
 
+{{Nur falls das Ergebnis nicht stabil ist (vom Skill nach der Prüfung gesetzt): ⚠️ **Vorläufig:** Nach der letzten Prüfrunde ist offen, ob <Kriterium> <Status> bleibt oder <möglicher Status> wird. Dann wäre die Gesamtampel <mögliche Gesamtampel>. Siehe Prüfvermerk. Sonst Zeile weglassen.}}
+
 {{Nur falls zutreffend: ⚠️ **Aussagekraft eingeschränkt:** Grund, z. B. „kein Browser verfügbar, N Quellen nicht abrufbar“. Sonst Zeile weglassen.}}
 
 **Ausschlaggebend:** {{Kriterien und Regel, die die Gesamtampel bestimmen}}
@@ -92,26 +94,34 @@ Betrachtungszeitraum: {{DD.MM.YYYY}} bis {{DD.MM.YYYY}}
 
 ## Prüfvermerk
 
-<!-- Wird nach der Prüfung durch den Subagent pruefer vom Skill ergänzt. Format fest, damit evals/ die Prüfbefunde auswerten kann: Zeilen und Spalten nicht umbenennen, keine weiteren einfügen. Runde 2 = „–“, wenn keine Korrekturrunde nötig war. -->
+<!-- Wird nach der Prüfung durch den Subagent pruefer vom Skill ergänzt. Format fest, damit evals/ die Prüfbefunde auswerten kann: Zeilen und Spalten nicht umbenennen, keine weiteren einfügen. Runde 2 = „–“, wenn keine Korrekturrunde nötig war, Runde 3 = „–“, wenn kein Kipppunkt nach Runde 2 bestand. Runde 3 prüft nur die betroffenen Kriterien, ihre Zahlen beziehen sich nur auf diese. „Letzte Runde“ heißt je Kriterium: Runde 3 für die betroffenen Kriterien, sonst Runde 2. -->
 
 Geprüft am {{DD.MM.YYYY}} durch den Subagent `pruefer` gegen die Belegliste und erneut abgerufene Quellen. Maßgeblich ist die letzte Runde.
 
-| Befund | Runde 1 | Runde 2 |
-|---|---|---|
-| gedeckt | {{n}} | {{n / –}} |
-| teilweise gedeckt | {{n}} | {{n / –}} |
-| nicht gedeckt | {{n}} | {{n / –}} |
-| Belegstelle nicht gefunden | {{n}} | {{n / –}} |
-| nicht erreichbar | {{n}} | {{n / –}} |
-| Summe | {{n}} | {{n / –}} |
+| Befund | Runde 1 | Runde 2 | Runde 3 |
+|---|---|---|---|
+| gedeckt | {{n}} | {{n / –}} | {{n / –}} |
+| teilweise gedeckt | {{n}} | {{n / –}} | {{n / –}} |
+| nicht gedeckt | {{n}} | {{n / –}} | {{n / –}} |
+| Belegstelle nicht gefunden | {{n}} | {{n / –}} | {{n / –}} |
+| nicht erreichbar | {{n}} | {{n / –}} | {{n / –}} |
+| Summe | {{n}} | {{n / –}} | {{n / –}} |
 
-Erneut abgerufen: {{n}} tragende Q-Nummern (Runde 1), {{n / –}} (Runde 2).
+Erneut abgerufen: {{n}} tragende Q-Nummern (Runde 1), {{n / –}} (Runde 2), {{n / –}} (Runde 3).
+
+Runde 3: {{„nicht nötig“ oder „für <Kriterien>, weil <Eintrag> die Gesamtampel ändern konnte“}}
 
 **Verbliebene Befunde mit Handlungsbedarf (letzte Runde):**
 
-{{Nummerierte Liste: Kriterium, Q-Nummer, Befund, Begründung in einem Satz. Sonst „Keine“.}}
+{{Nummerierte Liste: Kriterium, Q-Nummer, Befund, Begründung in einem Satz, „Kann Status ändern“ wörtlich. Sonst „Keine“.}}
 
-Prüfberichte: [Runde 1]({{_arbeit/<lauf-id>/pruefbericht-1.md, relativ zum Report}}), [Runde 2]({{_arbeit/<lauf-id>/pruefbericht-2.md, relativ zum Report}})
+**Offene Hinweise zur Belegliste, die einen Status ändern können (letzte Runde):**
+
+{{Nummerierte Liste: Kriterium, Fundstelle, „Kann Status ändern“ wörtlich. Nur Einträge mit `ja`. Sonst „Keine“.}}
+
+{{Nur falls das Ergebnis nicht stabil ist: ⚠️ **Ergebnis nicht stabil:** Welcher Eintrag welche Änderung der Gesamtampel auslösen könnte, in einem Satz je Eintrag. Ein Mensch muss diese Stelle an der Quelle prüfen. Sonst Block weglassen.}}
+
+Prüfberichte: [Runde 1]({{_arbeit/<lauf-id>/pruefbericht-1.md, relativ zum Report}}), [Runde 2]({{_arbeit/<lauf-id>/pruefbericht-2.md, relativ zum Report}}), [Runde 3]({{_arbeit/<lauf-id>/pruefbericht-3.md, nur falls gelaufen}})
 
 ## Haftungshinweis
 

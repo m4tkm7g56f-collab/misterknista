@@ -63,16 +63,19 @@ Beauftrage den Subagent `rechercheur` mit: Anbieter-URL, Dienstumfang, Tarif, Be
 
 Beauftrage den Subagent `bewerter` mit: Pfad der Belegliste, Schutzbedarf mit Herkunft und Herleitung, Anwendungsfall, Tarif, Bewertungsdatum, Zielpfad `${CLAUDE_PROJECT_DIR}/reports/<lauf-id>.md`. Falls der Auftraggeber (z. B. `/assessment`) eine zusätzliche Gesamtampel für einen anderen Schutzbedarf verlangt, gib das mit.
 
-### 4. Prüfung mit einer Korrekturrunde
+### 4. Prüfung mit Korrekturrunde
 
 1. Beauftrage den Subagent `pruefer` mit: Pfad des Reports, Pfad der Belegliste, Runde 1, Zielpfad `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/pruefbericht-1.md`.
 2. Enthält der Prüfbericht Befunde mit Handlungsbedarf (`teilweise gedeckt`, `nicht gedeckt`, `Belegstelle nicht gefunden`) oder Einträge unter „Hinweise zur Belegliste“:
    - Gibt es Hinweise zur Belegliste, beauftrage zuerst den `rechercheur` mit einer Nachrecherche: Pfad der Belegliste, Pfad des Prüfberichts, Bewertungsdatum. Er ergänzt oder korrigiert nur die genannten Belege.
    - Beauftrage den `bewerter` mit einer Korrekturrunde: zusätzlich Pfad des Prüfberichts.
    - Beauftrage den `pruefer` mit Runde 2, Zielpfad `pruefbericht-2.md`.
-   - Keine weitere Runde.
-3. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md` (feste Tabelle mit Runde 1 und Runde 2, verbliebene Befunde mit Handlungsbedarf, Links auf die Prüfberichte). Befunde wörtlich übernehmen, nicht umdeuten. Kommentare der Vorlage (`<!-- … -->`) nicht in den Report übernehmen.
+3. **Kipppunkt nach Runde 2:** Sieh in `pruefbericht-2.md` die Spalte „Kann Status ändern“ in beiden Tabellen (Befunde mit Handlungsbedarf, Hinweise zur Belegliste) an. Prüfe für jeden Eintrag mit `ja`, ob der dort genannte mögliche Status die Gesamtampel ändern würde. Wende dazu nur die Regeln aus `gesamtbewertung` in `criteria.yaml` auf die Statustabelle des Reports an (Kern oder ergänzend steht dort), ohne eigene fachliche Bewertung. Beispiel: Kernkriterium Gelb → Rot bei Gesamtampel Gelb ändert die Gesamtampel.
+   - Ändert mindestens ein Eintrag die Gesamtampel, folgt Runde 3, nur für die betroffenen Kriterien: Nachrecherche durch den `rechercheur` mit Pfad von `pruefbericht-2.md` und den betroffenen Kriterien (nur wenn es zu ihnen Hinweise zur Belegliste gibt), Korrekturrunde durch den `bewerter` mit Pfad von `pruefbericht-2.md` und den betroffenen Kriterien, `pruefer` mit Runde 3, den betroffenen Kriterien und Zielpfad `pruefbericht-3.md`.
+   - Sonst keine weitere Runde. Nach Runde 3 nie eine weitere Runde.
+4. **Stabilität:** Prüfe die letzte Runde wie in Schritt 3. Ändert danach noch ein Eintrag die Gesamtampel, gilt das Ergebnis als nicht stabil: Setze im Report direkt unter die Zeile „Gesamtampel“ die Zeile „⚠️ **Vorläufig:** …“ aus der Vorlage und fülle im Prüfvermerk den Block „Ergebnis nicht stabil“.
+5. Ergänze am Ende des Reports, vor dem Haftungshinweis, den Abschnitt „Prüfvermerk“ genau im Format von `${CLAUDE_PLUGIN_ROOT}/schema/report-template.md` (feste Tabelle mit Runde 1 bis 3, verbliebene Befunde mit Handlungsbedarf, offene Hinweise zur Belegliste mit `ja`, Links auf die Prüfberichte). Nach einer Runde 3 gilt für die betroffenen Kriterien `pruefbericht-3.md`, für alle anderen weiter `pruefbericht-2.md`. Befunde und Hinweise wörtlich übernehmen, nicht umdeuten. Kommentare der Vorlage (`<!-- … -->`) nicht in den Report übernehmen.
 
 ### 5. Ausgabe im Chat
 
-Gesamtampel mit Zählzusatz, ausschlaggebende Kriterien mit je einer verlinkten Hauptquelle, Anzahl „nicht belegt“, Ergebnis der Prüfung (Befunde der letzten Runde), Links auf Report, Belegliste und Prüfberichte, mit Pfaden relativ zum Projektordner.
+Gesamtampel mit Zählzusatz, ausschlaggebende Kriterien mit je einer verlinkten Hauptquelle, Anzahl „nicht belegt“, Ergebnis der Prüfung (Befunde der letzten Runde, ob Runde 3 lief, ob das Ergebnis stabil ist), Links auf Report, Belegliste und Prüfberichte, mit Pfaden relativ zum Projektordner.

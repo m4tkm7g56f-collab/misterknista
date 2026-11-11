@@ -2,6 +2,17 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.0 (11.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Prüfung
+
+- **Kipppunkt nach Runde 2 (E14):** Der Prüfer markiert jeden Befund mit Handlungsbedarf und jeden Hinweis zur Belegliste mit „Kann Status ändern“. Würde ein Eintrag aus Runde 2 die Gesamtampel ändern, folgt eine Runde 3 nur für die betroffenen Kriterien (Nachrecherche, Korrektur, Prüfung). Bleibt die Stelle danach offen, ist die Gesamtampel im Report als vorläufig markiert, und der Prüfvermerk nennt den Kipppunkt. Bisher blieben Hinweise aus Runde 2 ohne Folge und tauchten im Report nicht auf.
+- Prüfvermerk mit Spalte Runde 3 und dem Abschnitt „Offene Hinweise zur Belegliste, die einen Status ändern können“.
+- `assessment` übernimmt eine vorläufige Vendor-Gesamtampel: Würde die mögliche Ampel eine andere Stufe im Gesamtbild ergeben, ist auch das Gesamtbild vorläufig.
+- Eine zweite Nachrecherche ergänzt die Belegliste um „Nachrecherche 2“ statt den ersten Abschnitt zu ersetzen.
+
 ## 0.3.3 (06.11.2026)
 
 Schema 0.11, Fragebogen 0.8.

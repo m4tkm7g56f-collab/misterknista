@@ -56,7 +56,7 @@ Eingaben:
 
 ### 5. Synthese
 
-1. **Gesamtbild:** Prüfe die Stufen aus `gesamtbild.stufen` von oben nach unten. Die erste zutreffende gilt. Nenne die auslösende Bedingung.
+1. **Gesamtbild:** Prüfe die Stufen aus `gesamtbild.stufen` von oben nach unten. Die erste zutreffende gilt. Nenne die auslösende Bedingung. Ist die Vendor-Gesamtampel im Report als „Vorläufig“ markiert, prüfe die Stufen auch mit der dort genannten möglichen Gesamtampel. Ergibt sich eine andere Stufe, ist auch das Gesamtbild vorläufig: Nenne beide Stufen und setze den Kipppunkt als ersten offenen Punkt.
 2. **Wechselwirkungen:** Prüfe jede Regel W1 bis W7 aus `wechselwirkungen` und führe jeden Treffer mit Folge auf.
 3. **Offene Punkte:** Führe die offenen Punkte beider Reports und die Folgen der Wechselwirkungen zusammen. Entferne Dubletten. Sortiere nach `priorisierung_offene_punkte`.
 4. **Nachfragen an den Anbieter:** Führe die Nachfragen aus dem Vendor-Report mit den anbieterbezogenen Klärungsaufträgen aus dem AI-Act-Report und den Wechselwirkungen zusammen.

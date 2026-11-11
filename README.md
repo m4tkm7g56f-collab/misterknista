@@ -148,7 +148,7 @@ flowchart TD
         R["rechercheur<br/>Web, ohne Anwendungsfall"] --> B["bewerter<br/>nur Belegliste, kein Web"]
         B --> P["pruefer<br/>tragende Quellen erneut abrufen"]
         P -. "Hinweise zur Belegliste: Nachrecherche" .-> R
-        P -. "Befunde: eine Korrekturrunde" .-> B
+        P -. "Befunde: Korrekturrunde, Runde 3 nur bei Kipppunkt" .-> B
     end
 
     P --> S["Synthese<br/>Gesamtbild in vier Stufen, Wechselwirkungen"]
@@ -168,7 +168,7 @@ Die Skills führen die Arbeit nicht selbst aus. Sie beauftragen Subagents mit ge
 
 - Der Rechercheur erhält weder den Text des Anwendungsfalls noch den Schutzbedarf. AI-Act- und Gesamt-Dateien kann er technisch nicht lesen. ⚠️ Bei `assessment` erhält er aber den daraus abgeleiteten Dienstumfang und darf ihn in Suchanfragen verwenden. Der Dienstumfang besteht laut Skill nur aus Produkt-, Modul- und Funktionsnamen des Anbieters, im Modus `dialog` bestätigt der Nutzer ihn vorher. Die Ableitung macht das Sprachmodell. Im Modus `test` prüft sie niemand.
 - Der Bewerter kann nicht nachrecherchieren. Was nicht in der Belegliste steht, ist „nicht belegt“. Findet der Prüfer beim erneuten Abruf eine fehlende oder fehlerhafte Belegstelle, meldet er sie als Hinweis zur Belegliste. Der Rechercheur ruft die Stelle dann selbst ab und ergänzt die Belegliste, erst danach korrigiert der Bewerter. Der Prüfbericht ist für den Bewerter nie eine Quelle.
-- Die Prüfer ändern keinen Report. Bei Befunden gibt es genau eine Korrekturrunde, danach werden verbliebene Befunde im Report als Prüfvermerk ausgewiesen.
+- Die Prüfer ändern keinen Report. Bei Befunden gibt es eine Korrekturrunde, danach werden verbliebene Befunde im Report als Prüfvermerk ausgewiesen. Im Vendor-Teil markiert der Prüfer jeden Befund und jeden Hinweis zur Belegliste damit, ob er einen Status ändern kann. Könnte ein Eintrag aus Runde 2 die Gesamtampel ändern, folgt eine Runde 3 nur für die betroffenen Kriterien. Bleibt die Stelle danach offen, steht die Gesamtampel als „vorläufig“ im Report, und der Prüfvermerk nennt den Kipppunkt. ⚠️ Ob ein Eintrag die Gesamtampel ändert, ermittelt der Hauptagent aus den Regeln der Gesamtbewertung. Dass er das richtig macht, ist nur eine Anweisung.
 - Die Zwischenergebnisse unter `reports/_arbeit/` machen jeden Schritt nachvollziehbar.
 
 ## Aktualität der Rechtsgrundlage
