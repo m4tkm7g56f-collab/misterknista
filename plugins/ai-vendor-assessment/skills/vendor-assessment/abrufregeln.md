@@ -19,10 +19,10 @@ Die Seite gilt als „nicht abrufbar“ (Rechercheur) bzw. „nicht erreichbar�
 
 ## 3. Abwehr nur des Abrufwerkzeugs
 
-Liefert WebFetch HTTP 403 oder 429 und greift Abschnitt 1 nicht:
+Liefert WebFetch HTTP 403 oder 429 und greift Abschnitt 1 nicht, ist der Versuch per Browser Pflicht. Wegen 403 oder 429 gilt eine URL erst als „nicht abrufbar“ bzw. „nicht erreichbar“, wenn auch der Browser-Versuch gescheitert ist, mit Grund.
 
-- **403:** ein Abruf per Browser je URL.
-- **429:** Abrufrate senken. Zwischen zwei Abrufen dieser Domain mindestens 10 Sekunden warten (`browser_wait_for` mit Zeitangabe), auch per Browser. Höchstens ein erneuter Versuch je URL.
+- **403:** genau ein Abruf per Browser je URL.
+- **429:** Abrufrate senken. Zwischen zwei Abrufen dieser Domain mindestens 10 Sekunden warten (`browser_wait_for` mit Zeitangabe), auch per Browser. Genau ein erneuter Versuch je URL.
 - Hat eine Domain WebFetch einmal abgewehrt, dürfen weitere URLs dieser Domain direkt per Browser abgerufen werden, ohne neuen Versuch mit WebFetch. Das vermeidet zusätzliche Abrufe auf einer Domain, die schon abwehrt. Bei 429 gelten die Pausen weiter.
 - Jeder so gewonnene Beleg wird gekennzeichnet (Abschnitt 5).
 

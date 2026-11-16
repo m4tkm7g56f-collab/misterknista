@@ -2,6 +2,15 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.2 (15.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Abruf
+
+- **Browser-Versuch nach 403 oder 429 ist Pflicht (E15):** Bisher war der Abruf per Browser nach Abwehr nur erlaubt. Ein Rechercheur ließ ihn bei einem Presseartikel weg, obwohl er zulässig war. Jetzt gilt eine URL wegen 403 oder 429 erst als „nicht abrufbar“, wenn auch der Browser-Versuch gescheitert ist. Challenge, Login und robots.txt gehen weiter vor.
+- **Suchtreffer sind keine Belege (E15):** Titel und Auszug einer Suchmaschine bekommen keine Q-Nummer mehr. Nicht abrufbare Treffer stehen unter „Nicht abrufbar“, bei INC zusätzlich im Suchprotokoll als „Treffer ohne Abruf“.
+
 ## 0.4.1 (11.11.2026)
 
 Schema 0.11, Fragebogen 0.8.
