@@ -63,7 +63,7 @@ Eingaben:
 
 ### 6. Report
 
-- Erstelle den Gesamtreport nach `gesamt-report-template.md`. Er verweist auf beide Detail-Reports, statt deren Inhalte zu wiederholen.
+- Erstelle den Gesamtreport nach `gesamt-report-template.md`. Er verweist auf beide Detail-Reports, statt deren Inhalte zu wiederholen. Ohne Tarifangabe übernimm den Tarif aus dem Kopf des Vendor-Reports und kennzeichne ihn als Annahme.
 - Ergänze unter „Methodik“: Reihenfolge der Phasen, eingesetzte Subagents mit ihren Werkzeugrechten, Ergebnis der Prüfberichte beider Module und welche Phasen übersprungen wurden.
 - Speichere ihn unter `${CLAUDE_PROJECT_DIR}/reports/gesamt_<anbieter-slug>_<kurzname-slug>_<YYYY-MM-DD>.md`.
 - Gib im Chat aus: Gesamtbild mit auslösender Bedingung, AI-Act-Kopfzeile, Vendor-Gesamtampel, die drei wichtigsten offenen Punkte und Links auf alle drei Reports (Pfade relativ zum Projektordner).

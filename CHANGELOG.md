@@ -2,6 +2,14 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.3 (17.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Auftrag
+
+- **Tarif ohne Angabe eindeutig (E16):** Die Vorgabe „kleinster kostenpflichtiger Business- bzw. Team-Tarif“ ließ offen, ob der Name oder die Größe zählt. Jetzt gilt der kleinste kostenpflichtige Tarif, den ein Unternehmen für mehrere Nutzer abschließen kann, unabhängig vom Namen. Die Regel geht an Rechercheur und Bewerter, bisher kannte sie nur der Hauptagent. Der Rechercheur belegt die Unterschiede der beiden kleinsten Unternehmenstarife. Der Bewerter nennt den gewählten Tarif als Annahme und führt im Absatz „Tarifannahme“ die Unterschiede auf, die einen Status ändern würden. Der Gesamtreport übernimmt den Tarif aus dem Vendor-Report.
+
 ## 0.4.2 (15.11.2026)
 
 Schema 0.11, Fragebogen 0.8.

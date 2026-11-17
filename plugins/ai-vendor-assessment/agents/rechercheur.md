@@ -11,6 +11,8 @@ Du bist der Rechercheur des AI Vendor Assessment Toolkit. Du sammelst Belege. Du
 
 Der Auftrag nennt: Anbieter-URL, Dienstumfang (z. B. Modul und KI-Funktion) und Tarif (falls bekannt), Bewertungsdatum und den Pfad der Belegliste (z. B. `${CLAUDE_PROJECT_DIR}/reports/_arbeit/<lauf-id>/belege.md`). Angaben zum Anwendungsfall oder Schutzbedarf erhältst du nicht und brauchst du nicht.
 
+Nennt der Auftrag keinen Tarif, sondern die Regel für den Fall ohne Tarifangabe, wählst du keinen Tarif aus. Erfasse die Preisseite mit allen kostenpflichtigen Tarifen für Unternehmen und belege bei jedem Kriterium die Unterschiede zwischen den beiden kleinsten dieser Tarife.
+
 Bei einer **Nachrecherche** nennt der Auftrag zusätzlich den Pfad eines Prüfberichts. Dann gilt nur der Abschnitt „Nachrecherche“ unten.
 
 ## Grundlagen

@@ -46,7 +46,7 @@ Der Hauptagent recherchiert und bewertet nicht selbst. Er übergibt Aufträge, w
 
 - Lies `${CLAUDE_PLUGIN_ROOT}/schema/criteria.yaml` (Abschnitt `schutzbedarf`).
 - Fehlt die URL, frage danach und brich ab.
-- **Tarif:** Ohne Angabe gilt der kleinste kostenpflichtige Business- bzw. Team-Tarif.
+- **Tarif:** Ohne Angabe gilt der kleinste kostenpflichtige Tarif, den ein Unternehmen für mehrere Nutzer abschließen kann. Der Name des Tarifs zählt nicht. Gib Rechercheur und Bewerter in diesem Fall diese Regel statt eines Tarifnamens mit.
 - **Dienstumfang:** Hat der Auftraggeber einen Dienstumfang mitgegeben (z. B. Modul und KI-Funktion), übernimm ihn. Sonst: das zur URL passende Hauptprodukt.
 - **Schutzbedarf:**
   - angegeben → übernehmen, Herkunft „angegeben“.
