@@ -196,6 +196,7 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
   - Für Rechercheur und Prüfer jedes Browser-Werkzeug außer Seite laden, Snapshot, Warten und Schließen. Klicken, Tippen, JavaScript und Werkzeuge, die ein Update des Browser-Servers neu mitbringt, sind damit gesperrt. Die anderen Subagents dürfen den Browser gar nicht nutzen.
   - Für die Aktualitätsprüfung jeden Abruf außer den zwei festen URLs.
   - Lesen und Schreiben im Ausgabeordner des Browser-Servers (`reports/_arbeit/_browser/`). Dort legt der Server auch Snapshots von Seiten ab, die die Schranke nach dem Laden sperrt.
+  - In der Nachrecherche jedes Schreiben der Belegliste, das bisherige Zeilen ändert oder löscht. Erlaubt ist nur der Vermerk „korrigiert durch Q…“ in der Spalte Aussage, neue Zeilen sind frei. Die Belegliste schreibt nur der Rechercheur. So bleibt die Regel „Korrekturen ohne Löschen“ überprüfbar.
   - Nach jedem Browser-Aufruf prüft der Hook die tatsächlich geladene Seiten-URL nach denselben Regeln (PostToolUse). Hat eine Weiterleitung auf eine gesperrte Adresse geführt, ersetzt er die Ausgabe durch eine Sperrmeldung und löscht die dabei geschriebenen Snapshots.
   - Fehlt Node.js, blockiert der Hook alle Aufrufe der Subagents, statt unbemerkt auszufallen. Bei einem internen Fehler blockiert er ebenfalls.
   - Tests: `node --test tests/schranke.test.mjs`.
@@ -247,7 +248,7 @@ Was die Zahlen nicht aussagen:
 | ↳ [`.mcp.json`](plugins/ai-vendor-assessment/.mcp.json) | Browser-Server (Playwright MCP, feste Version) |
 | ↳ [`skills/`](plugins/ai-vendor-assessment/skills/) | `assessment`, `vendor-assessment` (mit Quellen-Leitfaden und Abrufregeln), `ai-act-check` |
 | ↳ [`agents/`](plugins/ai-vendor-assessment/agents/) | Die sechs Subagents |
-| ↳ [`hooks/`](plugins/ai-vendor-assessment/hooks/) | Schranke für die Subagents (Pfade, Abruf-URLs, Browser-Werkzeuge) |
+| ↳ [`hooks/`](plugins/ai-vendor-assessment/hooks/) | Schranke für die Subagents (Pfade, Abruf-URLs, Browser-Werkzeuge, Belegliste) |
 | ↳ [`schema/`](plugins/ai-vendor-assessment/schema/) | Kriterien, Fragebogen, Regeln für das Gesamtbild, Report-Vorlagen |
 | ↳ [`references/eu-ai-act.md`](plugins/ai-vendor-assessment/references/eu-ai-act.md) | Datierte Referenz zum AI Act, einzige Rechtsgrundlage der Einstufung |
 | ↳ [`references/dsgvo-art28.md`](plugins/ai-vendor-assessment/references/dsgvo-art28.md) | Datierte Referenz zu Art. 28 DSGVO und den Standardvertragsklauseln, Grundlage des Kriteriums AVV |

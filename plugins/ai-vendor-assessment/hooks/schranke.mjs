@@ -1,6 +1,7 @@
-// Schranke für die Subagents des Plugins (Befunde S01, S03 und S02 im Review-Log).
+// Schranke für die Subagents des Plugins (Befunde S01, S03, S02 und E17 im Review-Log).
 // PreToolUse: begrenzt Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge technisch, statt nur per Anweisung.
 // PostToolUse (Browser): prüft die tatsächlich geladene Seiten-URL, etwa nach einer Weiterleitung.
+// Belegliste: nur der Rechercheur schreibt sie, und in der Nachrecherche bleiben bisherige Zeilen unverändert (E17).
 // Greift nur, wenn agent_type mit "ai-vendor-assessment:" beginnt. Alle anderen Aufrufe laufen unverändert durch.
 // Im Zweifel wird blockiert (fail closed).
 
@@ -100,6 +101,121 @@ function pruefeSchreiben(agent, datei, ctx) {
   return p;
 }
 
+// --- Belegliste (E17) ---
+// In der Nachrecherche schreibt der Rechercheur die Belegliste vollständig neu (er hat kein Edit-Werkzeug).
+// Die Schranke vergleicht dann alt und neu: Jede bisherige Tabellenzeile muss erhalten bleiben. Einzige erlaubte
+// Änderung ist ein Zusatz in der Spalte Aussage eines Belegs, der „korrigiert durch Q<neu>“ enthält, gern mit kurzer
+// Begründung. Der bisherige Text muss davor erhalten bleiben (schließende Klammer oder Punkt am Ende darf wandern,
+// so wie Rechercheure den Vermerk bisher in eine Klammer gesetzt haben). Neue Zeilen sind frei.
+
+const BELEGLISTE = "belege.md";
+const BELEG_SPALTEN = ["Nr.", "Kriterium", "Aussage", "Titel", "URL", "Abgerufen am", "Belegstufe", "Belegstelle"];
+const SPALTE_AUSSAGE = 2;
+const VERMERK_KORREKTUR = /korrigiert durch Q\d+/;
+const MAX_MELDUNGEN = 8;
+
+// Nachrecherche: Belegliste existiert schon, und im selben Ordner liegt ein Prüfbericht.
+function istNachrecherche(datei) {
+  if (!fs.existsSync(datei)) return false;
+  return fs.readdirSync(path.dirname(datei)).some((n) => /^pruefbericht-.*\.md$/.test(n));
+}
+
+// Tabellenzeilen ohne Trennzeilen, Zellen getrimmt, Leerraum vereinheitlicht. Escapte \| bleiben Teil der Zelle.
+function tabellenzeilen(text) {
+  const zeilen = [];
+  for (const roh of text.split(/\r?\n/)) {
+    const z = roh.trim();
+    if (!z.startsWith("|")) continue;
+    if (/^\|[\s|:-]*\|$/.test(z)) continue;
+    const zellen = z
+      .replace(/^\|/, "")
+      .replace(/(?<!\\)\|$/, "")
+      .split(/(?<!\\)\|/)
+      .map((c) => c.trim().replace(/\s+/g, " "));
+    zeilen.push(zellen);
+  }
+  return zeilen;
+}
+
+const qNummer = (zellen) => (/^Q\d+$/.test(zellen[0] ?? "") ? zellen[0] : null);
+const kurz = (zellen) => {
+  const t = `| ${zellen.join(" | ")} |`;
+  return t.length > 90 ? `${t.slice(0, 87)}…` : t;
+};
+
+// Neue Aussage = bisherige Aussage (ohne schließende Satzzeichen) + Zusatz mit „korrigiert durch Q<neu>“.
+function istKorrekturvermerk(alt, neu) {
+  const kern = alt.replace(/[\s.)]+$/, "");
+  if (!neu.startsWith(kern)) return false;
+  const zusatz = neu.slice(kern.length);
+  return VERMERK_KORREKTUR.test(zusatz) && !VERMERK_KORREKTUR.test(alt.slice(kern.length));
+}
+
+function vergleicheBelegliste(alt, neu) {
+  const fehler = [];
+  const altZeilen = tabellenzeilen(alt);
+  const neuZeilen = tabellenzeilen(neu);
+
+  const neuBelege = new Map();
+  for (const z of neuZeilen) {
+    const q = qNummer(z);
+    if (!q) continue;
+    if (neuBelege.has(q)) fehler.push(`${q} kommt mehrfach vor.`);
+    else neuBelege.set(q, z);
+  }
+
+  const neuSonstige = new Map();
+  for (const z of neuZeilen) {
+    if (qNummer(z)) continue;
+    const k = z.join("|");
+    neuSonstige.set(k, (neuSonstige.get(k) ?? 0) + 1);
+  }
+
+  for (const a of altZeilen) {
+    const q = qNummer(a);
+    if (!q) {
+      const k = a.join("|");
+      const n = neuSonstige.get(k) ?? 0;
+      if (n === 0) fehler.push(`Zeile fehlt oder wurde geändert: ${kurz(a)}`);
+      else neuSonstige.set(k, n - 1);
+      continue;
+    }
+    const n = neuBelege.get(q);
+    if (!n) {
+      fehler.push(`${q} fehlt.`);
+      continue;
+    }
+    if (n.length !== a.length) {
+      fehler.push(`${q}: Spaltenzahl geändert (${a.length} statt ${n.length}).`);
+      continue;
+    }
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] === n[i]) continue;
+      if (i === SPALTE_AUSSAGE && istKorrekturvermerk(a[i], n[i])) continue;
+      fehler.push(`${q}: Spalte „${BELEG_SPALTEN[i] ?? i + 1}“ geändert.`);
+    }
+  }
+  return fehler;
+}
+
+function pruefeBelegliste(agent, werkzeug, datei, input) {
+  if (path.basename(datei) !== BELEGLISTE) return;
+  if (agent !== "rechercheur") sperre(`Die Belegliste schreibt nur der Rechercheur: ${datei}`);
+  if (!istNachrecherche(datei)) return;
+  if (werkzeug !== "Write") sperre("In der Nachrecherche die Belegliste nur vollständig per Write schreiben.");
+  if (typeof input.content !== "string") sperre("Write ohne Inhalt.");
+  const fehler = vergleicheBelegliste(fs.readFileSync(datei, "utf8"), input.content);
+  if (fehler.length === 0) return;
+  const liste = fehler.slice(0, MAX_MELDUNGEN).map((f) => `- ${f}`).join("\n");
+  const mehr = fehler.length > MAX_MELDUNGEN ? `\n- … und ${fehler.length - MAX_MELDUNGEN} weitere` : "";
+  sperre(
+    `Nachrecherche: Bisherige Einträge der Belegliste dürfen nicht geändert oder gelöscht werden (E17).\n${liste}${mehr}\n` +
+      "Lies die vorhandene Belegliste und übernimm alle bisherigen Zeilen wörtlich. Erlaubt ist nur ein Zusatz " +
+      "„korrigiert durch Q<neu>“ am Ende der Spalte Aussage. Neue und korrigierte Belege kommen als neue Zeilen dazu, " +
+      "auch in den übrigen Tabellen (z. B. eine weitere Zeile statt geänderter Q-Nummern in einer bestehenden).",
+  );
+}
+
 function istOeffentlicheIPv4(ip) {
   const [a, b, c] = ip.split(".").map(Number);
   if (a === 0 || a === 10 || a === 127 || a >= 224) return false;
@@ -185,8 +301,10 @@ async function pruefe(agent, eingabe, ctx) {
     case "Write":
     case "Edit":
     case "MultiEdit":
-    case "NotebookEdit":
-      return void pruefeSchreiben(agent, input.file_path ?? input.notebook_path, ctx);
+    case "NotebookEdit": {
+      const p = pruefeSchreiben(agent, input.file_path ?? input.notebook_path, ctx);
+      return pruefeBelegliste(agent, werkzeug, p, input);
+    }
     case "WebFetch":
     case `${BROWSER}browser_navigate`:
       return pruefeUrl(agent, input.url, ctx);

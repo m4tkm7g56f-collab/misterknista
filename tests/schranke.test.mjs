@@ -179,3 +179,95 @@ test("Ausgabeordner des Browser-Servers", () => {
   assert.equal(lauf(R, `${B}browser_navigate`, { url: "https://example.com/" }, {}, antwort("http://10.1.2.3/")), "ersetzt");
   assert.equal(fs.existsSync(auto), false);
 });
+
+// --- Belegliste in der Nachrecherche (E17) ---
+
+const KOPF = "| Nr. | Kriterium | Aussage (sachlich, ohne Bewertung) | Titel | URL | Abgerufen am | Belegstufe | Belegstelle (wörtlich) |\n|---|---|---|---|---|---|---|---|";
+const zeile = (q, aussage, stelle = "We encrypt data at rest.") =>
+  `| ${q} | VERS | ${aussage} | Security | https://example.com/security | 09.11.2026 | B | „${stelle}“ |`;
+const liste = (...belege) =>
+  `# Belegliste: Anbieter, Dienst\n\n## Belege\n\n${KOPF}\n${belege.join("\n")}\n\n## Nicht gefunden\n\n| Kriterium | Prüffrage | Gesucht in bzw. mit |\n|---|---|---|\n| HOST | Rechenzentrum | Website, Suche |\n`;
+
+function laufMitGrund(agent, tool_name, tool_input) {
+  const eingabe = { session_id: "t", cwd: projekt, hook_event_name: "PreToolUse", tool_name, tool_input, agent_type: agent };
+  const r = spawnSync("sh", [path.join(plugin, "hooks/schranke.sh")], {
+    input: JSON.stringify(eingabe),
+    env: { ...process.env, CLAUDE_PLUGIN_ROOT: plugin, CLAUDE_PROJECT_DIR: projekt },
+    encoding: "utf8",
+  });
+  if (r.stdout.trim() === "") return { entscheidung: "durch", grund: "" };
+  const aus = JSON.parse(r.stdout).hookSpecificOutput;
+  return { entscheidung: aus.permissionDecision, grund: aus.permissionDecisionReason };
+}
+
+function lauford(name, mitPruefbericht = true) {
+  const ordner = arbeit(name);
+  fs.mkdirSync(ordner, { recursive: true });
+  const datei = path.join(ordner, "belege.md");
+  fs.writeFileSync(datei, liste(zeile("Q1", "Daten verschlüsselt."), zeile("Q2", "TLS 1.2.")));
+  if (mitPruefbericht) fs.writeFileSync(path.join(ordner, "pruefbericht-1.md"), "# Prüfbericht");
+  return datei;
+}
+
+test("Belegliste: nur der Rechercheur schreibt sie", () => {
+  const datei = lauford("nur-rechercheur", false);
+  assert.equal(lauf(W, "Write", { file_path: datei, content: "x" }), "deny");
+  assert.equal(lauf(P, "Write", { file_path: datei, content: "x" }), "deny");
+  assert.equal(lauf(W, "Write", { file_path: path.join(path.dirname(datei), "notiz.md"), content: "x" }), "durch");
+});
+
+test("Belegliste: Erstrecherche darf frei überschreiben", () => {
+  const datei = lauford("erstrecherche", false);
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Ganz anders.")) }), "durch");
+});
+
+test("Belegliste: Nachrecherche mit unveränderten Zeilen und neuen Belegen", () => {
+  const datei = lauford("nachrecherche-ok");
+  const neu = liste(
+    zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3"),
+    zeile("Q2", "TLS 1.2."),
+    zeile("Q3", "Daten mit AES-256 verschlüsselt."),
+  ) + "\n## Nachrecherche\n\n| Hinweis | Ergebnis |\n|---|---|\n| 1 | Q3 |\n";
+  assert.equal(lauf(R, "Write", { file_path: datei, content: neu }), "durch");
+  // Andere Spaltenausrichtung und Leerraum zählen nicht.
+  const breit = liste(zeile("Q1", "Daten   verschlüsselt."), zeile("Q2", "TLS 1.2.")).replace("| Q2 |", "|   Q2   |");
+  assert.equal(lauf(R, "Write", { file_path: datei, content: breit }), "durch");
+  // Formen aus bisherigen Läufen: Klammer, Begründung, Vermerk in die schließende Klammer gezogen.
+  for (const [vorher, nachher] of [
+    ["Daten verschlüsselt.", "Daten verschlüsselt. (korrigiert durch Q3)"],
+    ["Daten verschlüsselt.", "Daten verschlüsselt (fehlerhaft, korrigiert durch Q3: AES-256)"],
+    ["Daten verschlüsselt.", "Daten verschlüsselt; korrigiert durch Q3 und Q4 (eigene URL)."],
+  ]) {
+    fs.writeFileSync(datei, liste(zeile("Q1", vorher), zeile("Q2", "TLS 1.2.")));
+    assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", nachher), zeile("Q2", "TLS 1.2."), zeile("Q3", "Neu.")) }), "durch", nachher);
+  }
+  fs.writeFileSync(datei, liste(zeile("Q1", "TOM (zehn Positionen)"), zeile("Q2", "TLS 1.2.")));
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "TOM (zehn Positionen; korrigiert durch Q3: 17 Positionen)"), zeile("Q2", "TLS 1.2.")) }), "durch");
+});
+
+test("Belegliste: Nachrecherche sperrt Änderungen an bisherigen Zeilen", () => {
+  const datei = lauford("nachrecherche-sperre");
+  let r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt.", "We encrypt all data."), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Q1: Spalte „Belegstelle“ geändert/);
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Q2 fehlt/);
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt, auch Backups."), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Q1: Spalte „Aussage“ geändert/);
+  // Zusatz ohne Q-Nummer oder Text verändert und Vermerk nur angehängt: gesperrt.
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch die nächste Zeile"), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten teils verschlüsselt. korrigiert durch Q3"), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt."), zeile("Q2", "TLS 1.2."), zeile("Q2", "Doppelt.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Q2 kommt mehrfach vor/);
+  const ohneNichtGefunden = liste(zeile("Q1", "Daten verschlüsselt."), zeile("Q2", "TLS 1.2.")).replace("| HOST | Rechenzentrum | Website, Suche |\n", "");
+  r = laufMitGrund(R, "Write", { file_path: datei, content: ohneNichtGefunden });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Zeile fehlt oder wurde geändert: \| HOST/);
+  assert.equal(lauf(R, "Edit", { file_path: datei, old_string: "TLS", new_string: "SSL" }), "deny");
+  assert.equal(lauf(R, "Write", { file_path: datei }), "deny");
+});

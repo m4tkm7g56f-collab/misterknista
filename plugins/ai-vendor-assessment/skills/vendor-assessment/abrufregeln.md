@@ -58,5 +58,8 @@ Ein Hook des Plugins prüft jeden Aufruf von Rechercheur und Prüfer, bevor er a
 - den Ausgabeordner des Browser-Servers (`reports/_arbeit/_browser/`). Snapshots immer mit Dateinamen im Arbeitsordner des Laufs speichern.
 - alle Browser-Werkzeuge außer `browser_navigate`, `browser_snapshot`, `browser_wait_for` und `browser_close`.
 - geladene Seiten, deren URL gegen diese Regeln verstößt, etwa nach einer Weiterleitung. Die Ausgabe wird dann durch die Meldung ersetzt, ein dabei geschriebener Snapshot gelöscht.
+- in der Nachrecherche jedes Schreiben der Belegliste, das bisherige Zeilen ändert oder löscht. Die Belegliste schreibt nur der Rechercheur.
 
 Meldet ein Aufruf „Schranke des Plugins“, ist das kein Fehler des Werkzeugs, sondern eine Sperre. Nicht umgehen und nicht mit anderer Schreibweise wiederholen. Die Quelle gilt als „nicht abrufbar“ bzw. „nicht erreichbar“, Grund: „durch Schranke gesperrt“ mit der Meldung.
+
+Ausnahme Belegliste: Sperrt die Schranke das Schreiben der Belegliste in der Nachrecherche, nennt die Meldung die betroffenen Zeilen. Stelle sie aus der vorhandenen Belegliste wörtlich wieder her und schreibe erneut.

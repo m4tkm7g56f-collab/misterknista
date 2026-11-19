@@ -2,6 +2,15 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.4 (19.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Ablauf
+
+- **Belegliste in der Nachrecherche geschützt (E17):** Der Rechercheur schreibt die Belegliste in der Nachrecherche komplett neu, weil er kein Edit-Werkzeug hat. Ob dabei alte Einträge verändert wurden, prüfte bisher niemand. Jetzt vergleicht die Schranke alt und neu, sobald im Arbeitsordner ein Prüfbericht liegt. Jede bisherige Tabellenzeile muss erhalten bleiben. Erlaubt ist nur der Vermerk „korrigiert durch Q…“ am Ende der Spalte Aussage, neue Zeilen sind frei. Sonst sperrt die Schranke und nennt die betroffenen Zeilen, der Rechercheur stellt sie wieder her und schreibt erneut. Die Belegliste schreibt nur noch der Rechercheur.
+- Ein schon vorhandener Arbeitsordner führt jetzt ebenfalls zu einer neuen Lauf-ID, damit ein abgebrochener Lauf die Prüfung nicht auslöst.
+
 ## 0.4.3 (17.11.2026)
 
 Schema 0.11, Fragebogen 0.8.

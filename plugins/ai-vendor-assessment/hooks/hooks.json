@@ -1,5 +1,5 @@
 {
-  "description": "Schranke: begrenzt Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge der Plugin-Subagents und prüft geladene Seiten-URLs. Andere Aufrufe bleiben unberührt.",
+  "description": "Schranke: begrenzt Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge der Plugin-Subagents und prüft geladene Seiten-URLs. In der Nachrecherche sperrt sie Änderungen an bisherigen Zeilen der Belegliste. Andere Aufrufe bleiben unberührt.",
   "hooks": {
     "PreToolUse": [
       {
