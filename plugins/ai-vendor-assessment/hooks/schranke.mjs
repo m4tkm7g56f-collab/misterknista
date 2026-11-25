@@ -1,7 +1,8 @@
 // Schranke für die Subagents des Plugins (Befunde S01, S03, S02 und E17 im Review-Log).
 // PreToolUse: begrenzt Lese- und Schreibpfade, Abruf-URLs und Browser-Werkzeuge technisch, statt nur per Anweisung.
 // PostToolUse (Browser): prüft die tatsächlich geladene Seiten-URL, etwa nach einer Weiterleitung.
-// Belegliste: nur der Rechercheur schreibt sie, und in der Nachrecherche bleiben bisherige Zeilen unverändert (E17).
+// Belegliste: nur der Rechercheur schreibt sie, und in der Nachrecherche bleiben bisherige Zeilen unverändert (E17),
+// jede Korrektur bekommt eine eigene Ersatzzeile (E20).
 // Greift nur, wenn agent_type mit "ai-vendor-assessment:" beginnt. Alle anderen Aufrufe laufen unverändert durch.
 // Im Zweifel wird blockiert (fail closed).
 
@@ -144,11 +145,17 @@ const kurz = (zellen) => {
 };
 
 // Neue Aussage = bisherige Aussage (ohne schließende Satzzeichen) + Zusatz mit „korrigiert durch Q<neu>“.
-function istKorrekturvermerk(alt, neu) {
+// Gibt die Q-Nummern zurück, auf die der neue Zusatz verweist, sonst null.
+function korrekturZiele(alt, neu) {
   const kern = alt.replace(/[\s.)]+$/, "");
-  if (!neu.startsWith(kern)) return false;
+  if (!neu.startsWith(kern)) return null;
   const zusatz = neu.slice(kern.length);
-  return VERMERK_KORREKTUR.test(zusatz) && !VERMERK_KORREKTUR.test(alt.slice(kern.length));
+  if (!VERMERK_KORREKTUR.test(zusatz) || VERMERK_KORREKTUR.test(alt.slice(kern.length))) return null;
+  const ziele = new Set();
+  for (const m of zusatz.matchAll(/korrigiert durch ((?:Q\d+(?:\s*(?:,|und|sowie|\/)\s*)?)+)/g)) {
+    for (const q of m[1].match(/Q\d+/g)) ziele.add(q);
+  }
+  return [...ziele];
 }
 
 function vergleicheBelegliste(alt, neu) {
@@ -171,6 +178,10 @@ function vergleicheBelegliste(alt, neu) {
     neuSonstige.set(k, (neuSonstige.get(k) ?? 0) + 1);
   }
 
+  const altBelege = new Set(altZeilen.map(qNummer).filter(Boolean));
+  // Ersatzzeile -> bisherige Einträge, die in dieser Nachrecherche auf sie verweisen (E20).
+  const ersetzt = new Map();
+
   for (const a of altZeilen) {
     const q = qNummer(a);
     if (!q) {
@@ -191,8 +202,20 @@ function vergleicheBelegliste(alt, neu) {
     }
     for (let i = 0; i < a.length; i++) {
       if (a[i] === n[i]) continue;
-      if (i === SPALTE_AUSSAGE && istKorrekturvermerk(a[i], n[i])) continue;
+      const ziele = i === SPALTE_AUSSAGE ? korrekturZiele(a[i], n[i]) : null;
+      if (ziele) {
+        for (const z of ziele) ersetzt.set(z, [...(ersetzt.get(z) ?? []), q]);
+        continue;
+      }
       fehler.push(`${q}: Spalte „${BELEG_SPALTEN[i] ?? i + 1}“ geändert.`);
+    }
+  }
+
+  for (const [ziel, quellen] of ersetzt) {
+    if (altBelege.has(ziel)) fehler.push(`Vermerk bei ${quellen.join(", ")} verweist auf ${ziel}, einen bisherigen Eintrag. Die Ersatzzeile braucht eine neue Q-Nummer.`);
+    else if (!neuBelege.has(ziel)) fehler.push(`Vermerk bei ${quellen.join(", ")} verweist auf ${ziel}, diese Zeile fehlt.`);
+    if (quellen.length > 1) {
+      fehler.push(`${ziel} ist als Ersatz für mehrere Einträge vermerkt (${quellen.join(", ")}). Je fehlerhaftem Eintrag eine eigene neue Zeile mit allen Spalten (E20).`);
     }
   }
   return fehler;
@@ -209,9 +232,9 @@ function pruefeBelegliste(agent, werkzeug, datei, input) {
   const liste = fehler.slice(0, MAX_MELDUNGEN).map((f) => `- ${f}`).join("\n");
   const mehr = fehler.length > MAX_MELDUNGEN ? `\n- … und ${fehler.length - MAX_MELDUNGEN} weitere` : "";
   sperre(
-    `Nachrecherche: Bisherige Einträge der Belegliste dürfen nicht geändert oder gelöscht werden (E17).\n${liste}${mehr}\n` +
+    `Nachrecherche: Bisherige Einträge der Belegliste dürfen nicht geändert oder gelöscht werden, und jede Korrektur braucht eine eigene Ersatzzeile (E17, E20).\n${liste}${mehr}\n` +
       "Lies die vorhandene Belegliste und übernimm alle bisherigen Zeilen wörtlich. Erlaubt ist nur ein Zusatz " +
-      "„korrigiert durch Q<neu>“ am Ende der Spalte Aussage. Neue und korrigierte Belege kommen als neue Zeilen dazu, " +
+      "„korrigiert durch Q<neu>“ am Ende der Spalte Aussage, je fehlerhaftem Eintrag mit eigener neuer Zeile. Neue und korrigierte Belege kommen als neue Zeilen dazu, " +
       "auch in den übrigen Tabellen (z. B. eine weitere Zeile statt geänderter Q-Nummern in einer bestehenden).",
   );
 }

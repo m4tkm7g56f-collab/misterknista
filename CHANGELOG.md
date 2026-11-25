@@ -2,6 +2,14 @@
 
 Versionen des Plugins. Schema und Fragebogen haben eigene Versionsnummern, sie stehen jeweils dabei. Befund-IDs verweisen auf das [Review-Log](reviews/review-log.md).
 
+## 0.4.5 (25.11.2026)
+
+Schema 0.11, Fragebogen 0.8.
+
+### Ablauf
+
+- **Eigene Ersatzzeile je Korrektur (E20):** Im Test von 0.4.4 korrigierte der Rechercheur die Belegstufe von sechs Einträgen mit einer einzigen neuen Zeile. Der Bewerter verwendet korrigierte Einträge nicht mehr und verlor so deren Inhalt, etwa die Häufigkeit der Backups. Jetzt bekommt jeder fehlerhafte Eintrag eine eigene neue Zeile mit allen Spalten. Die Schranke sperrt Vermerke, bei denen mehrere Einträge auf dieselbe neue Zeile verweisen, und Vermerke auf fehlende oder bisherige Zeilen. Fehlt in der Ersatzzeile trotzdem ein Inhalt, nennt ihn der Bewerter als offenen Punkt zur Belegliste.
+
 ## 0.4.4 (19.11.2026)
 
 Schema 0.11, Fragebogen 0.8.

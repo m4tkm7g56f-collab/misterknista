@@ -65,7 +65,7 @@ Für jedes Kriterium aus dem Schema:
 
 Enthält der Auftrag einen Prüfbericht: Korrigiere jede Aussage, die dort als „nicht gedeckt“ oder „teilweise gedeckt“ befundet ist. Ist eine Aussage durch die Belegliste nicht zu halten, streiche sie oder setze das Kriterium auf `nicht belegt`. Passe Status und Gesamturteil an, wenn sich dadurch etwas ändert. Nennt der Auftrag betroffene Kriterien (Runde 3), korrigiere nur diese, berücksichtige dabei auch die Hinweise zur Belegliste mit „Kann Status ändern: ja“, soweit die Nachrecherche sie als Q-Nummer eingetragen hat, und lass alle anderen Kriterien unverändert. Überschreibe den Report am selben Pfad.
 
-Lies die Belegliste neu, auch ihren Abschnitt „Nachrecherche“: Neue und korrigierte Q-Nummern stehen dort. Einträge mit dem Vermerk „korrigiert durch Q…“ verwendest du nicht mehr, sondern die neue Zeile. Der Prüfbericht ist keine Quelle: Auszüge aus seinem Abschnitt „Hinweise zur Belegliste“ verwendest du nur, wenn sie als Q-Nummer in der Belegliste stehen.
+Lies die Belegliste neu, auch ihren Abschnitt „Nachrecherche“: Neue und korrigierte Q-Nummern stehen dort. Einträge mit dem Vermerk „korrigiert durch Q…“ verwendest du nicht mehr, sondern die neue Zeile. Enthält die neue Zeile einen Inhalt des alten Eintrags nicht, übernimm ihn nicht aus dem alten Eintrag und lass ihn nicht stillschweigend weg: Nenne ihn als offenen Punkt zur Belegliste, mit beiden Q-Nummern. Der Prüfbericht ist keine Quelle: Auszüge aus seinem Abschnitt „Hinweise zur Belegliste“ verwendest du nur, wenn sie als Q-Nummer in der Belegliste stehen.
 
 ## Selbstprüfung vor dem Speichern
 

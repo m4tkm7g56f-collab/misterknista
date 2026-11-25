@@ -196,7 +196,7 @@ Der Lauf bricht in keinem Fall ab. Grenzen der Prüfung:
   - Für Rechercheur und Prüfer jedes Browser-Werkzeug außer Seite laden, Snapshot, Warten und Schließen. Klicken, Tippen, JavaScript und Werkzeuge, die ein Update des Browser-Servers neu mitbringt, sind damit gesperrt. Die anderen Subagents dürfen den Browser gar nicht nutzen.
   - Für die Aktualitätsprüfung jeden Abruf außer den zwei festen URLs.
   - Lesen und Schreiben im Ausgabeordner des Browser-Servers (`reports/_arbeit/_browser/`). Dort legt der Server auch Snapshots von Seiten ab, die die Schranke nach dem Laden sperrt.
-  - In der Nachrecherche jedes Schreiben der Belegliste, das bisherige Zeilen ändert oder löscht. Erlaubt ist nur der Vermerk „korrigiert durch Q…“ in der Spalte Aussage, neue Zeilen sind frei. Die Belegliste schreibt nur der Rechercheur. So bleibt die Regel „Korrekturen ohne Löschen“ überprüfbar.
+  - In der Nachrecherche jedes Schreiben der Belegliste, das bisherige Zeilen ändert oder löscht. Erlaubt ist nur der Vermerk „korrigiert durch Q…“ in der Spalte Aussage, neue Zeilen sind frei. Jeder korrigierte Eintrag braucht eine eigene Ersatzzeile. Die Belegliste schreibt nur der Rechercheur. So bleibt die Regel „Korrekturen ohne Löschen“ überprüfbar.
   - Nach jedem Browser-Aufruf prüft der Hook die tatsächlich geladene Seiten-URL nach denselben Regeln (PostToolUse). Hat eine Weiterleitung auf eine gesperrte Adresse geführt, ersetzt er die Ausgabe durch eine Sperrmeldung und löscht die dabei geschriebenen Snapshots.
   - Fehlt Node.js, blockiert der Hook alle Aufrufe der Subagents, statt unbemerkt auszufallen. Bei einem internen Fehler blockiert er ebenfalls.
   - Tests: `node --test tests/schranke.test.mjs`.

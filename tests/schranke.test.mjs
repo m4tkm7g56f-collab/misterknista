@@ -239,10 +239,13 @@ test("Belegliste: Nachrecherche mit unveränderten Zeilen und neuen Belegen", ()
     ["Daten verschlüsselt.", "Daten verschlüsselt; korrigiert durch Q3 und Q4 (eigene URL)."],
   ]) {
     fs.writeFileSync(datei, liste(zeile("Q1", vorher), zeile("Q2", "TLS 1.2.")));
-    assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", nachher), zeile("Q2", "TLS 1.2."), zeile("Q3", "Neu.")) }), "durch", nachher);
+    assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", nachher), zeile("Q2", "TLS 1.2."), zeile("Q3", "Neu."), zeile("Q4", "Neu.")) }), "durch", nachher);
   }
   fs.writeFileSync(datei, liste(zeile("Q1", "TOM (zehn Positionen)"), zeile("Q2", "TLS 1.2.")));
-  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "TOM (zehn Positionen; korrigiert durch Q3: 17 Positionen)"), zeile("Q2", "TLS 1.2.")) }), "durch");
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "TOM (zehn Positionen; korrigiert durch Q3: 17 Positionen)"), zeile("Q2", "TLS 1.2."), zeile("Q3", "TOM mit 17 Positionen.")) }), "durch");
+  // Zweiter Vermerk in einer späteren Nachrecherche zählt nur mit dem neuen Ziel.
+  fs.writeFileSync(datei, liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3 (Belegstufe)"), zeile("Q2", "TLS 1.2."), zeile("Q3", "Daten verschlüsselt.")));
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3 (Belegstufe) korrigiert durch Q4"), zeile("Q2", "TLS 1.2."), zeile("Q3", "Daten verschlüsselt."), zeile("Q4", "Daten verschlüsselt, Abschnitt 2.")) }), "durch");
 });
 
 test("Belegliste: Nachrecherche sperrt Änderungen an bisherigen Zeilen", () => {
@@ -270,4 +273,24 @@ test("Belegliste: Nachrecherche sperrt Änderungen an bisherigen Zeilen", () => 
   assert.match(r.grund, /Zeile fehlt oder wurde geändert: \| HOST/);
   assert.equal(lauf(R, "Edit", { file_path: datei, old_string: "TLS", new_string: "SSL" }), "deny");
   assert.equal(lauf(R, "Write", { file_path: datei }), "deny");
+});
+
+test("Belegliste: Ersatzzeilen je Eintrag (E20)", () => {
+  const datei = lauford("ersatzzeilen");
+  // Eine alte Zeile, zwei neue Ersatzzeilen: erlaubt.
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3 und Q4"), zeile("Q2", "TLS 1.2."), zeile("Q3", "Neu A."), zeile("Q4", "Neu B.")) }), "durch");
+  // Je alte Zeile eine eigene Ersatzzeile: erlaubt.
+  assert.equal(lauf(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3"), zeile("Q2", "TLS 1.2. korrigiert durch Q4"), zeile("Q3", "Neu A."), zeile("Q4", "Neu B.")) }), "durch");
+  // Sammelzeile für zwei Einträge: gesperrt.
+  let r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q3 (Belegstufe)"), zeile("Q2", "TLS 1.2. korrigiert durch Q3 (Belegstufe)"), zeile("Q3", "Dokument ist Teil des Vertrags.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /Q3 ist als Ersatz für mehrere Einträge vermerkt \(Q1, Q2\)/);
+  // Verweis auf eine fehlende Zeile: gesperrt.
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q9"), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /verweist auf Q9, diese Zeile fehlt/);
+  // Verweis auf einen bisherigen Eintrag: gesperrt.
+  r = laufMitGrund(R, "Write", { file_path: datei, content: liste(zeile("Q1", "Daten verschlüsselt. korrigiert durch Q2"), zeile("Q2", "TLS 1.2.")) });
+  assert.equal(r.entscheidung, "deny");
+  assert.match(r.grund, /verweist auf Q2, einen bisherigen Eintrag/);
 });
